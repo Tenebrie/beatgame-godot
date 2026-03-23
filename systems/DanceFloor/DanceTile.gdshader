@@ -6,25 +6,25 @@ uniform vec3 BaseColor : source_color = vec3(0.8, 0.8, 0.8);
 uniform vec3 TelegraphColor : source_color = vec3(0.5, 0.3, 0.1);
 uniform vec3 ImpactColor : source_color = vec3(0.4, 0.05, 0.05);
 
-void vertex() {
-	// Called for every vertex the material is visible on.
-}
-
 void fragment() {
 	float fillValue = TelegraphProgress / 2.0;
 	float minValue = 1.0 - fillValue - 0.5;
 	float maxValue = fillValue + 0.5;
-	//float dist = (UV.x - 0.5) * (UV.x - 0.5) + (UV.y - 0.5) * (UV.y - 0.5);
-	if (UV.x >= minValue && UV.x <= maxValue && UV.y >= minValue && UV.y <= maxValue) {
-	//if (dist < TelegraphProgress / 2.0) {
-		ALBEDO = TelegraphColor;
-	} else {
-		ALBEDO = BaseColor;
-	}
-	ALBEDO = mix(ALBEDO, ImpactColor, ImpactProgress);
+	
+	//vec2 d = max(vec2(minValue) - UV, UV - vec2(maxValue));
+	//float dist = max(d.x, d.y);
+	vec2 center = (vec2(minValue) + vec2(maxValue)) * 0.5;
+    vec2 halfSize = (vec2(maxValue) - vec2(minValue)) * 0.5;
+    float radius = 0.00; // corner radius in UV units
+    vec2 d = abs(UV - center) - halfSize + vec2(radius);
+    float dist = length(max(d, vec2(0.0))) + min(max(d.x, d.y), 0.0) - radius;
+	float telegraphMask = 1.0 - smoothstep(-0.005, 0.005, dist);
+    ALBEDO = mix(BaseColor, TelegraphColor, telegraphMask);
+    ALBEDO = mix(ALBEDO, ImpactColor, ImpactProgress);
+	//if (UV.x >= minValue && UV.x <= maxValue && UV.y >= minValue && UV.y <= maxValue) {
+		//ALBEDO = TelegraphColor;
+	//} else {
+		//ALBEDO = BaseColor;
+	//}
+	//ALBEDO = mix(ALBEDO, ImpactColor, ImpactProgress);
 }
-
-//void light() {
-//	// Called for every pixel for every light affecting the material.
-//	// Uncomment to replace the default light processing function with this one.
-//}

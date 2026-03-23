@@ -1,21 +1,26 @@
 class_name Pattern extends Node
 
 var tiles: Array[String]
-var explodeTimer: SceneTreeTimer
+var explodeTimer: MusicTimer
 #var telegraphTimer: SceneTreeTimer
-var telegraphDelayTimer: SceneTreeTimer
+var telegraphDelayTimer: MusicTimer
 
 signal resolved
 
 const letters = 'abcdefghijklmnopqrstuvwxyz'
 
+static var BuilderTime: float = 0.0
+
 func _init(newTiles: Array[String]) -> void:
 	self.tiles = newTiles
 	name = "AttackPatternTile"
 	var danceFloor := GlobalContext.GetDanceFloor()
-	explodeTimer = danceFloor.get_tree().create_timer(0.0)
+	#explodeTimer = danceFloor.get_tree().create_timer(0.0)
+	explodeTimer = MusicTimer.new()
+	danceFloor.add_child(explodeTimer)
+	explodeTimer.start(BuilderTime)
 	explodeTimer.timeout.connect(
-		func() -> void:
+		func(beat: int) -> void:
 			for tile in tiles:
 				var x := letters.find(tile[0])
 				var y := int(tile[1]) - 1
@@ -26,22 +31,23 @@ func _init(newTiles: Array[String]) -> void:
 func Telegraph(delay: float) -> Pattern:
 	var danceFloor := GlobalContext.GetDanceFloor()
 	
-	telegraphDelayTimer = danceFloor.get_tree().create_timer(0.0)
+	telegraphDelayTimer = MusicTimer.new()
+	danceFloor.add_child(telegraphDelayTimer)
+	telegraphDelayTimer.start(BuilderTime)
 	telegraphDelayTimer.timeout.connect(
-		func() -> void:
+		func(beat: int) -> void:
 			for tile in tiles:
 				var x := letters.find(tile[0])
 				var y := int(tile[1]) - 1
 				SignalBus.telegraphTile.emit(Vector2i(x, y), delay)
 	)
-	explodeTimer.time_left += delay
-	#telegraphTimer = danceFloor.get_tree().create_timer(delay)
+	explodeTimer.triggerBeat += delay
 	return self
 	
 func Delay(delay: float) -> Pattern:
-	explodeTimer.time_left += delay
+	explodeTimer.triggerBeat += delay
 	if is_instance_valid(telegraphDelayTimer):
-		telegraphDelayTimer.time_left += delay
+		telegraphDelayTimer.triggerBeat += delay
 	return self
 	
 func Done() -> void:
@@ -69,3 +75,6 @@ static func Column(column: String) -> Pattern:
 	for i in danceFloor.gridSize.y:
 		newTiles.append(column + str(i + 1))
 	return Pattern.new(newTiles)
+	
+static func Advance(beats: float) -> void:
+	BuilderTime += beats

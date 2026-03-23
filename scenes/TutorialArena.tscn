@@ -2,8 +2,10 @@
 
 [ext_resource type="PackedScene" uid="uid://cs7xdnc23k4he" path="res://systems/DanceFloor/DanceFloor.tscn" id="1_auhpn"]
 [ext_resource type="Script" uid="uid://j0xa7fe7oxv8" path="res://scenes/TutorialArena.gd" id="1_w5bc6"]
-[ext_resource type="PackedScene" uid="uid://bbvr3ouw6tjd7" path="res://systems/DanceFloor/Player.tscn" id="2_auhpn"]
+[ext_resource type="PackedScene" uid="uid://bbvr3ouw6tjd7" path="res://player/Player.tscn" id="2_auhpn"]
 [ext_resource type="PackedScene" uid="uid://bmc8tfti12rqu" path="res://systems/Boss/Boss.tscn" id="4_adxne"]
+[ext_resource type="PackedScene" uid="uid://3qpw055ur5dl" path="res://systems/AudioSystem/AudioAgent.tscn" id="5_vxy8m"]
+[ext_resource type="PackedScene" uid="uid://ceiwb524wex1j" path="res://ui/Playhead/PlayheadWidget.tscn" id="6_3elwe"]
 
 [node name="TutorialArena" type="Node" unique_id=1546456810]
 script = ExtResource("1_w5bc6")
@@ -20,3 +22,7 @@ transform = Transform3D(0.99999994, 0, 0, 0, 0.17364822, 0.9848077, 0, -0.984807
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=711198869]
 transform = Transform3D(1, 0, 0, 0, 0.74301636, 0.66927326, 0, -0.66927326, 0.74301636, 0, 2.491136, 1.1915557)
+
+[node name="AudioAgent" parent="." unique_id=1144407143 instance=ExtResource("5_vxy8m")]
+
+[node name="PlayheadWidget" parent="." unique_id=137896877 instance=ExtResource("6_3elwe")]

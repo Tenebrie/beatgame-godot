@@ -21,6 +21,9 @@ func GetPlayer() -> Player:
 	
 func GetBoss() -> Boss:
 	return Find(Boss)
+	
+func GetAudioAgent() -> AudioAgent:
+	return Find(AudioAgent)
 
 func GetDanceFloor() -> DanceFloor:
 	return Find(DanceFloor)

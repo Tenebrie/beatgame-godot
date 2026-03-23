@@ -15,7 +15,6 @@ func _ready() -> void:
 		
 	GlobalContext.GetPlayer().set_grid_size(gridSize)
 	GlobalContext.GetBoss().set_grid_size(gridSize)
-	#var secondsPassed := 0.0
 	
 	for x in range(gridSize.x):
 		for y in range(gridSize.y):
@@ -40,27 +39,11 @@ func _ready() -> void:
 		add_child(scene)
 		
 	GlobalContext.GetBoss().queue_patterns()
-			
-	#for i in range(0, 4):
-		#secondsPassed = 4.0 * i
-		#for x in range(gridSize.x):
-			#for y in range(gridSize.y / 2.0):
-				#secondsPassed += 0.1
-				#var currentSeconds := secondsPassed
-				#var timer := get_tree().create_timer(currentSeconds)
-				#timer.timeout.connect(_on_telegraph_tile.bind(x, y))
-				#
-		#secondsPassed = 4 * i + 2
-		#for x in range(gridSize.x):
-			#for y in range(gridSize.y / 2.0):
-				#secondsPassed += 0.1
-				#var currentSeconds := secondsPassed
-				#var timer := get_tree().create_timer(currentSeconds)
-				#timer.timeout.connect(_on_telegraph_tile.bind(x, y + gridSize.y / 2.0))
 				
 	position -= Vector3(gridSize.x / 2.0 - 0.5, 0.0, gridSize.y / 2.0 - 0.5)
 		
 func _on_telegraph_tile(x: int, y: int) -> void:
 	SignalBus.telegraphTile.emit(x, y)
-	await get_tree().create_timer(1.0).timeout
+	var bpmMod: float = AudioSystem.get_current_bpm() / 60.0
+	await get_tree().create_timer(bpmMod).timeout
 	SignalBus.explodeTile.emit(x, y)

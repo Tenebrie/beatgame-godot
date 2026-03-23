@@ -21,6 +21,7 @@ SignalBus="*uid://btol3vxkbkr5h"
 GlobalControls="*uid://bi15qsxoajxh"
 GlobalContext="*uid://cwb0exh7by3tb"
 Asset="*uid://cq40h3admt4dg"
+AudioSystem="*uid://bbjai1yktt2c5"
 
 [debug]
 
@@ -35,6 +36,10 @@ window/size/viewport_height=1440
 [dotnet]
 
 project/assembly_name="beatstep"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/FilesystemGenerator/plugin.cfg")
 
 [physics]
 
