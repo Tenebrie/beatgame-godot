@@ -2,7 +2,10 @@ class_name Pattern extends Node
 
 var tiles: Array[String]
 var explodeTimer: SceneTreeTimer
-var telegraphTimer: SceneTreeTimer
+#var telegraphTimer: SceneTreeTimer
+var telegraphDelayTimer: SceneTreeTimer
+
+signal resolved
 
 const letters = 'abcdefghijklmnopqrstuvwxyz'
 
@@ -17,17 +20,35 @@ func _init(newTiles: Array[String]) -> void:
 				var x := letters.find(tile[0])
 				var y := int(tile[1]) - 1
 				SignalBus.explodeTile.emit(x, y)
+			resolved.emit()
 	)
 		
 func Telegraph(delay: float) -> Pattern:
 	var danceFloor := GlobalContext.GetDanceFloor()
-	for tile in tiles:
-		var x := letters.find(tile[0])
-		var y := int(tile[1]) - 1
-		SignalBus.telegraphTile.emit(Vector2i(x, y), delay)
+	
+	telegraphDelayTimer = danceFloor.get_tree().create_timer(0.0)
+	telegraphDelayTimer.timeout.connect(
+		func() -> void:
+			for tile in tiles:
+				var x := letters.find(tile[0])
+				var y := int(tile[1]) - 1
+				SignalBus.telegraphTile.emit(Vector2i(x, y), delay)
+	)
 	explodeTimer.time_left += delay
-	telegraphTimer = danceFloor.get_tree().create_timer(delay)
+	#telegraphTimer = danceFloor.get_tree().create_timer(delay)
 	return self
+	
+func Delay(delay: float) -> Pattern:
+	explodeTimer.time_left += delay
+	if is_instance_valid(telegraphDelayTimer):
+		telegraphDelayTimer.time_left += delay
+	return self
+	
+func Done() -> void:
+	await resolved
+
+static func Void() -> Pattern:
+	return Pattern.new([])
 
 static func Single(tile: String) -> Pattern:
 	assert(tile.length() == 2 && letters.contains(tile[0]) && !letters.contains(tile[1]), "Tile string must be defined as 'a1'. Received: " + tile)

@@ -9,7 +9,7 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	for child in get_children():
-		if child is DanceTile:
+		if child is DanceTile or child is DanceLabel:
 			remove_child(child)
 			child.queue_free()
 		

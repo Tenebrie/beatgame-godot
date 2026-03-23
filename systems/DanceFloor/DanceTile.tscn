@@ -1,13 +1,21 @@
 [gd_scene format=3 uid="uid://d06eira2uwqu"]
 
 [ext_resource type="Script" uid="uid://dsoo5ha66s1m5" path="res://systems/DanceFloor/DanceTile.gd" id="1_16s2e"]
+[ext_resource type="Shader" uid="uid://qbpr5hmbtnks" path="res://systems/DanceFloor/DanceTile.gdshader" id="2_374bk"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_16s2e"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ncvhq"]
 resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("2_374bk")
+shader_parameter/ImpactProgress = 0.40800001938
+shader_parameter/TelegraphProgress = 0.4890000232275
+shader_parameter/BaseColor = Color(0.8, 0.8, 0.8, 1)
+shader_parameter/TelegraphColor = Color(0.5, 0.3, 0.1, 1)
+shader_parameter/ImpactColor = Color(0.4, 0.05, 0.05, 1)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_bh5hv"]
 resource_local_to_scene = true
-material = SubResource("StandardMaterial3D_16s2e")
+material = SubResource("ShaderMaterial_ncvhq")
 size = Vector2(0.75, 0.75)
 
 [node name="DanceTile" type="Node3D" unique_id=1066141023]

@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://d4j2cb5kamym0" path="res://systems/DanceFloor/DanceFloor.gd" id="1_qc67m"]
 [ext_resource type="PackedScene" uid="uid://d06eira2uwqu" path="res://systems/DanceFloor/DanceTile.tscn" id="2_o2idr"]
+[ext_resource type="PackedScene" uid="uid://nqn3bht4aqdv" path="res://systems/DanceFloor/DanceLabel.tscn" id="3_8etji"]
 
 [node name="DanceFloor" type="Node3D" unique_id=796054563]
 script = ExtResource("1_qc67m")
@@ -18,3 +19,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, -0.5)
 
 [node name="DanceTile4" parent="." unique_id=957410089 instance=ExtResource("2_o2idr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0.5)
+
+[node name="DanceLabel" parent="." unique_id=1896230539 instance=ExtResource("3_8etji")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 1)

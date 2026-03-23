@@ -18,9 +18,6 @@ func on_telegraph(pos: Vector2i, delay: float) -> void:
 	var driver := TileDriver.new()
 	driver.Start(Vector2i(gridX, gridY), delay)
 	add_child(driver)
-	#isTelegraphing = true
-	#telegraphSpeed = 1.0 / delay
-	
 
 func on_explode(x: int, y: int) -> void:
 	if x != gridX or y != gridY:
@@ -37,6 +34,6 @@ func _process(delta: float) -> void:
 	
 	explode -= min(explode, delta)
 	
-	var mat := $MeshInstance3D.get_active_material(0) as StandardMaterial3D
-	mat.albedo_color = Color(explode, 0.0, telegraph)
-	pass
+	var mat := $MeshInstance3D.get_active_material(0) as ShaderMaterial
+	mat.set_shader_parameter("TelegraphProgress", telegraph)
+	mat.set_shader_parameter("ImpactProgress", explode)
