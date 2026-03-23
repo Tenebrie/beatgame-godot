@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://dhaxe1mwsrudn"]
+
+[ext_resource type="PackedScene" uid="uid://cs7xdnc23k4he" path="res://systems/DanceFloor/DanceFloor.tscn" id="1_auhpn"]
+[ext_resource type="Script" uid="uid://j0xa7fe7oxv8" path="res://scenes/TutorialArena.gd" id="1_w5bc6"]
+[ext_resource type="PackedScene" uid="uid://bbvr3ouw6tjd7" path="res://systems/DanceFloor/Player.tscn" id="2_auhpn"]
+[ext_resource type="PackedScene" uid="uid://bmc8tfti12rqu" path="res://systems/Boss/Boss.tscn" id="4_adxne"]
+
+[node name="TutorialArena" type="Node" unique_id=1546456810]
+script = ExtResource("1_w5bc6")
+
+[node name="DanceFloor" parent="." unique_id=796054563 instance=ExtResource("1_auhpn")]
+
+[node name="Player" parent="DanceFloor" unique_id=1090225112 instance=ExtResource("2_auhpn")]
+
+[node name="Boss" parent="DanceFloor" unique_id=679576008 instance=ExtResource("4_adxne")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=310658524]
+transform = Transform3D(0.99999994, 0, 0, 0, 0.17364822, 0.9848077, 0, -0.9848077, 0.17364822, 0, 4, 1)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=711198869]
+transform = Transform3D(1, 0, 0, 0, 0.74301636, 0.66927326, 0, -0.66927326, 0.74301636, 0, 2.491136, 1.1915557)

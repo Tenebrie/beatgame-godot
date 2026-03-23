@@ -1,0 +1,13 @@
+class_name TileDriver extends Node
+
+var telegraph: float = 0.0
+var telegraphSpeed: float = 0.0
+
+func Start(pos: Vector2i, delay: float) -> void:
+	telegraphSpeed = 1.0 / delay
+
+func _process(delta: float) -> void:
+	telegraph += delta * telegraphSpeed
+	telegraph = min(telegraph, 1.0)
+	if telegraph >= 1.0:
+		queue_free()

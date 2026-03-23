@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://d06eira2uwqu"]
+
+[ext_resource type="Script" uid="uid://dsoo5ha66s1m5" path="res://systems/DanceFloor/DanceTile.gd" id="1_16s2e"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_16s2e"]
+resource_local_to_scene = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_bh5hv"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_16s2e")
+size = Vector2(0.75, 0.75)
+
+[node name="DanceTile" type="Node3D" unique_id=1066141023]
+script = ExtResource("1_16s2e")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=22024555]
+mesh = SubResource("PlaneMesh_bh5hv")

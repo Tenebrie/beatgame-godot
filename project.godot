@@ -1,0 +1,46 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="beatstep"
+run/main_scene="uid://dhaxe1mwsrudn"
+config/features=PackedStringArray("4.6", "Forward Plus")
+config/icon="res://icon.svg"
+
+[autoload]
+
+SignalBus="*uid://btol3vxkbkr5h"
+GlobalControls="*uid://bi15qsxoajxh"
+GlobalContext="*uid://cwb0exh7by3tb"
+Asset="*uid://cq40h3admt4dg"
+
+[debug]
+
+gdscript/warnings/unused_signal=0
+gdscript/warnings/untyped_declaration=2
+
+[display]
+
+window/size/viewport_width=2560
+window/size/viewport_height=1440
+
+[dotnet]
+
+project/assembly_name="beatstep"
+
+[physics]
+
+3d/physics_engine="Jolt Physics"
+
+[rendering]
+
+rendering_device/driver.windows="d3d12"
+anti_aliasing/quality/msaa_3d=2

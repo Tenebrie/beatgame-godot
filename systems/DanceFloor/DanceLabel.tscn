@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://nqn3bht4aqdv"]
+
+[ext_resource type="Script" uid="uid://diaf6iwahassq" path="res://systems/DanceFloor/DanceLabel.gd" id="1_yqcwb"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cvwsv"]
+billboard_mode = 1
+
+[sub_resource type="TextMesh" id="TextMesh_yqcwb"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_cvwsv")
+text = "Test"
+depth = 0.01
+
+[node name="DanceLabel" type="Node3D" unique_id=1896230539]
+script = ExtResource("1_yqcwb")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1967382543]
+mesh = SubResource("TextMesh_yqcwb")
