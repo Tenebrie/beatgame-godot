@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bmc8tfti12rqu" path="res://boss/Boss.tscn" id="4_adxne"]
 [ext_resource type="PackedScene" uid="uid://3qpw055ur5dl" path="res://systems/AudioSystem/AudioAgent.tscn" id="5_vxy8m"]
 [ext_resource type="PackedScene" uid="uid://ceiwb524wex1j" path="res://ui/Playhead/PlayheadWidget.tscn" id="6_3elwe"]
+[ext_resource type="PackedScene" uid="uid://o3b0w6c0ai85" path="res://scenes/environment/SurpriseParticles.tscn" id="7_el274"]
 
 [node name="TutorialArena" type="Node" unique_id=1546456810]
 script = ExtResource("1_w5bc6")
@@ -26,3 +27,7 @@ transform = Transform3D(1, 0, 0, 0, 0.74301636, 0.66927326, 0, -0.66927326, 0.74
 [node name="AudioAgent" parent="." unique_id=1144407143 instance=ExtResource("5_vxy8m")]
 
 [node name="PlayheadWidget" parent="." unique_id=137896877 instance=ExtResource("6_3elwe")]
+
+[node name="SurpriseParticles" parent="." unique_id=1566747555 instance=ExtResource("7_el274")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, -1, 0)
+visible = false
