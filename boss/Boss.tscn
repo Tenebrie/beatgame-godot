@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://bmc8tfti12rqu"]
+
+[ext_resource type="Script" uid="uid://ctwlmau14u7kg" path="res://boss/Boss.gd" id="1_lsp41"]
+[ext_resource type="PackedScene" uid="uid://c1ee553clspyf" path="res://boss/abilities/LineBurst/LineBurst.tscn" id="2_i7h4p"]
+[ext_resource type="PackedScene" uid="uid://c2m5ehw2qsgr5" path="res://boss/abilities/WingSwipe/WingSwipe.tscn" id="2_yyxsp"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lsp41"]
+albedo_color = Color(1, 0.29411766, 0.1254902, 1)
+emission_enabled = true
+emission = Color(0.89411765, 0, 0, 1)
+billboard_mode = 1
+
+[sub_resource type="TextMesh" id="TextMesh_yyxsp"]
+material = SubResource("StandardMaterial3D_lsp41")
+text = "Scary Boss"
+depth = 0.01
+
+[node name="Boss" type="Node3D" unique_id=679576008]
+script = ExtResource("1_lsp41")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=151855532]
+mesh = SubResource("TextMesh_yyxsp")
+
+[node name="LineBurst" parent="." unique_id=381804580 instance=ExtResource("2_i7h4p")]
+
+[node name="WingSwipe" parent="." unique_id=15120941 instance=ExtResource("2_yyxsp")]

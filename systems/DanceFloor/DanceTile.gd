@@ -8,11 +8,15 @@ var explode: float = 0.0
 
 var beatTimer: MusicTimer
 var beatCounter: int = 0
+var isAlive := true
+var beatTween: Tween
 
 func _ready() -> void:
 	SignalBus.telegraphTile.connect(on_telegraph)
 	SignalBus.explodeTile.connect(on_explode)
 	SignalBus.clearAllTiles.connect(on_clear_all_tiles)
+	SignalBus.OnRestoreTile.connect(on_restore_tile)
+	SignalBus.OnDestroyTile.connect(on_destroy_tile)
 	
 	beatTimer = MusicTimer.new()
 	add_child(beatTimer)
@@ -21,15 +25,18 @@ func _ready() -> void:
 
 	
 func on_beat(triggerBeat: int) -> void:
+	if not isAlive:
+		return
+		
 	beatCounter += 1
 	beatTimer.start_repeatable(triggerBeat + 1)
-	var tween := create_tween()
+	beatTween = create_tween()
 	if beatCounter % 2 == 0:
-		tween.tween_property($MeshInstance3D, "scale", Vector3(1.05, 1.0, 1.0), 0.05)
-		tween.tween_property($MeshInstance3D, "scale", Vector3(1.0, 1.0, 1.0), 0.3)
+		beatTween.tween_property($MeshInstance3D, "scale", Vector3(1.05, 1.0, 1.0), 0.05)
+		beatTween.tween_property($MeshInstance3D, "scale", Vector3(1.0, 1.0, 1.0), 0.3)
 	else:
-		tween.tween_property($MeshInstance3D, "scale", Vector3(1.0, 1.0, 1.05), 0.05)
-		tween.tween_property($MeshInstance3D, "scale", Vector3(1.0, 1.0, 1.0), 0.3)
+		beatTween.tween_property($MeshInstance3D, "scale", Vector3(1.0, 1.0, 1.05), 0.05)
+		beatTween.tween_property($MeshInstance3D, "scale", Vector3(1.0, 1.0, 1.0), 0.3)
 
 func on_telegraph(pos: Vector2i, delay: float) -> void:
 	if pos.x != gridX or pos.y != gridY:
@@ -51,6 +58,22 @@ func on_clear_all_tiles() -> void:
 		if child is TileDriver:
 			remove_child(child)
 			child.queue_free()
+			
+func on_restore_tile(x: int, y: int) -> void:
+	if x != gridX or y != gridY:
+		return
+	
+	beatTimer.start_repeatable(roundi(GlobalContext.GetAudioAgent().get_position_beats()) + 1)
+	isAlive = true
+	create_tween().tween_property($MeshInstance3D, ^"scale", Vector3(1, 1, 1), 0.2)
+	
+func on_destroy_tile(x: int, y: int) -> void:
+	if x != gridX or y != gridY:
+		return
+		
+	beatTween.stop()
+	isAlive = false
+	create_tween().tween_property($MeshInstance3D, ^"scale", Vector3(0, 0, 0), 0.2)
 
 func _process(delta: float) -> void:
 	var telegraph := 0.0

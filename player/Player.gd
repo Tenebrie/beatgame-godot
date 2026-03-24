@@ -2,7 +2,7 @@ class_name Player extends CharacterBody3D
 
 const GRID_SIZE := 1.0
 var GRID_MIN := Vector2(0, 0)
-var GRID_MAX := Vector2(3, 3)  # 4x4 grid (0-3)
+#var GRID_MAX := Vector2(3, 3)  # 4x4 grid (0-3)
 const MOVE_REPEAT_DELAY := 0.3
 const MOVE_SPEED := 30.0  # lerp speed — higher = snappier
 
@@ -22,8 +22,8 @@ func _ready() -> void:
 	target_position = _grid_to_world(grid_pos)
 	position = target_position
 
-func set_grid_size(size: Vector2i) -> void:
-	GRID_MAX = Vector2i(size.x - 1, size.y - 1)
+#func set_grid_size(size: Vector2i) -> void:
+	#GRID_MAX = Vector2i(size.x - 1, size.y - 1)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey:
@@ -51,9 +51,12 @@ func _process(delta: float) -> void:
 	position = position.lerp(target_position, MOVE_SPEED * delta)
 
 func _move(dir: Vector2i) -> void:
+	var danceFloor := GlobalContext.GetDanceFloor()
 	var new_pos := grid_pos + dir
-	new_pos.x = clampi(new_pos.x, int(GRID_MIN.x), int(GRID_MAX.x))
-	new_pos.y = clampi(new_pos.y, int(GRID_MIN.y), int(GRID_MAX.y))
+	var targetTile := danceFloor.get_tile_at_position(new_pos)
+	if not targetTile or not targetTile.isAlive:
+		return
+	
 	grid_pos = new_pos
 	target_position = _grid_to_world(grid_pos)
 

@@ -8,6 +8,8 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	await get_tree().create_timer(0.5).timeout
 	$AudioStreamPlayer.play()
+	fast_forward(starting_time)
+	#fast_forward(128)
 
 func get_bpm() -> float:
 	return 130.0
@@ -32,6 +34,8 @@ func fast_forward(beats: float) -> void:
 	var current := get_position_beats()
 	var target := current + beats - 4
 	var targetSeconds := target * 60.0 / get_bpm()
+	
+	SignalBus.clearTimersBefore.emit(target + 4)
 	var player := $AudioStreamPlayer as AudioStreamPlayer
 	player.seek(targetSeconds)
 	
@@ -42,3 +46,7 @@ func set_speed(speed: float) -> void:
 func set_volume(volume: float) -> void:
 	var player := $AudioStreamPlayer as AudioStreamPlayer
 	player.volume_linear = volume
+	
+var starting_time: float = 0.0
+func set_starting_time(beats: float) -> void:
+	starting_time = beats

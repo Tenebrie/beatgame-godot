@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://o3b0w6c0ai85"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ytund"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_na5hi"]
+material = SubResource("StandardMaterial3D_ytund")
+
+[node name="SurpriseParticles" type="Node3D" unique_id=1566747555]
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="." unique_id=1524211872]
+draw_pass_1 = SubResource("QuadMesh_na5hi")

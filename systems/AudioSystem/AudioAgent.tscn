@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://3qpw055ur5dl"]
 
 [ext_resource type="Script" uid="uid://xjxxdq6yewps" path="res://systems/AudioSystem/AudioAgent.gd" id="1_cuqf1"]
-[ext_resource type="AudioStream" uid="uid://bser2mkxru78d" path="res://audio/SecretSong.ogg" id="2_lnw2k"]
+[ext_resource type="AudioStream" uid="uid://dg8flfg16trk8" path="res://audio/SecretSongShort.ogg" id="2_cuqf1"]
 
 [node name="AudioAgent" type="Node" unique_id=1144407143]
 script = ExtResource("1_cuqf1")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1484197358]
-stream = ExtResource("2_lnw2k")
+stream = ExtResource("2_cuqf1")
