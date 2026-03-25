@@ -36,34 +36,38 @@ static func Execute(callback: Callable) -> Trigger:
 	
 static func EnemyMoveToColumnTop(column: String) -> Trigger:
 	var columnIndex := Pattern.letters.find(column)
+	var builderOffset := Pattern.BuilderOffset
 	var trigger := new()
 	trigger.triggerTimer.timeout.connect(
 		func(_beat: int) -> void:
-			GlobalContext.GetBoss().move_to_column_top(columnIndex)
+			GlobalContext.GetBoss().move_to_column_top(columnIndex + builderOffset.x)
 	)
 	return trigger
 	
 static func EnemyMove(pos: Vector2) -> Trigger:
 	var trigger := new()
+	var builderOffset := Pattern.BuilderOffset
 	trigger.triggerTimer.timeout.connect(
 		func(_beat: int) -> void:
-			GlobalContext.GetBoss().move_to(pos)
+			GlobalContext.GetBoss().move_to(Vector2(pos.x + builderOffset.x, pos.y + builderOffset.y))
 	)
 	return trigger
 
 static func EnemyMoveToRowLeft(row: float) -> Trigger:
 	var trigger := new()
+	var builderOffset := Pattern.BuilderOffset
 	trigger.triggerTimer.timeout.connect(
 		func(_beat: int) -> void:
-			GlobalContext.GetBoss().move_to_row_left(row)
+			GlobalContext.GetBoss().move_to_row_left(row + builderOffset.y)
 	)
 	return trigger
 
 static func EnemyMoveToRowRight(row: float) -> Trigger:
 	var trigger := new()
+	var builderOffset := Pattern.BuilderOffset
 	trigger.triggerTimer.timeout.connect(
 		func(_beat: int) -> void:
-			GlobalContext.GetBoss().move_to_row_right(row)
+			GlobalContext.GetBoss().move_to_row_right(row + builderOffset.y)
 	)
 	return trigger
 

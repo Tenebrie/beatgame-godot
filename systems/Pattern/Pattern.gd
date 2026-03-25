@@ -95,8 +95,9 @@ static func Void() -> Pattern:
 	
 static func PlayerPosition(offset := Vector2i(0, 0)) -> Pattern:
 	var pattern := Pattern.new([])
+	var builderOffset := BuilderOffset
 	pattern.before_telegraph.connect(func () -> void:
-		var pos := GlobalContext.GetPlayer().grid_pos + offset
+		var pos := GlobalContext.GetPlayer().grid_pos + offset - builderOffset
 		var tile := letters[pos.x] + str(pos.y + 1)
 		pattern.tiles = [tile]
 	)

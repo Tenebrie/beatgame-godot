@@ -9,8 +9,37 @@ var maximumHealth := 500.0
 func _enter_tree() -> void:
 	GlobalContext.Register(self)
 	
+var hit_tween: Tween
+var color_tween: Tween
+
 func DealDamage(damage: float) -> void:
 	damageTaken += damage
+
+	if hit_tween and hit_tween.is_valid():
+		hit_tween.kill()
+	if color_tween and color_tween.is_valid():
+		color_tween.kill()
+
+	var sprite := $Sprite3D
+	sprite.modulate = Color.WHITE
+	sprite.position = Vector3.ZERO
+
+	hit_tween = create_tween()
+	color_tween = create_tween()
+
+	color_tween.tween_property(sprite, "modulate", Color.RED, 0.05)
+	color_tween.tween_property(sprite, "modulate", Color.WHITE, 0.15).set_trans(Tween.TRANS_ELASTIC)
+
+	# Shake - multiple back-and-forth snaps
+	var shake_strength := 0.1
+	var shake_count := 4
+	var shake_duration := 0.03
+	hit_tween.tween_property(sprite, "position", Vector3.ZERO, 0.0)
+	for i in shake_count:
+		var offset := Vector3(randf_range(-1, 1), randf_range(-1, 1), 0.0).normalized() * shake_strength
+		hit_tween.tween_property(sprite, "position", offset, shake_duration)
+		shake_strength *= 0.7  # decay each shake
+	hit_tween.tween_property(sprite, "position", Vector3.ZERO, shake_duration)
 
 func set_grid_size(size: Vector2i) -> void:
 	gridSize = size
@@ -64,9 +93,12 @@ func move_to(targetPos: Vector2) -> void:
 	create_tween().tween_property(self, ^"position", Vector3(row, 0.0, column), 0.2)
 
 func prep_patterns() -> void:
-	Pattern.Rect("e1", "Z4").DestroyTile()
+	Pattern.Rect("i1", "Z4").DestroyTile()
+	Pattern.Rect("b1", "d2").DestroyTile()
+	Pattern.Rect("a4", "d4").DestroyTile()
 	SignalBus.OnFlushAllTimers.emit()
 	Trigger.EnemyMoveToRowRight(2.5)
+	Pattern.Translate(Vector2i(4, 0))
 
 func queue_patterns() -> void:
 	# Beat 0

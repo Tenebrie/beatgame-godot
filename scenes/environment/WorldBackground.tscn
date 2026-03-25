@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://dr3g7x13y4bcn"]
+
+[ext_resource type="Shader" uid="uid://dpcger6kb1imy" path="res://scenes/environment/WorldBackground.gdshader" id="1_qmijk"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ydvc3"]
+render_priority = 0
+shader = ExtResource("1_qmijk")
+shader_parameter/time_scale = 0.08900000352898
+shader_parameter/zoom = 10.97200047367
+shader_parameter/warp_intensity = 2.3690001125275
+shader_parameter/star_density = 143.5070068165825
+shader_parameter/star_brightness = 0.0
+shader_parameter/color_deep = Color(0.02, 0, 0.06, 1)
+shader_parameter/color_purple = Color(0.20850658, 0.0362091, 0.2929642, 1)
+shader_parameter/color_accent = Color(0.24759993, 0.0816, 0.48, 1)
+shader_parameter/color_highlight = Color(0.15, 0.05, 0.4, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_y5gcb"]
+size = Vector2(100, 100)
+
+[node name="WorldBackground" type="Node3D" unique_id=1907618401]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=881716682]
+material_override = SubResource("ShaderMaterial_ydvc3")
+mesh = SubResource("PlaneMesh_y5gcb")

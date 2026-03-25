@@ -50,7 +50,7 @@ func _ready() -> void:
 	print("Maximum theoretical boss damage: " + str(Stats.CalculateOptimalDamage()))
 				
 	position -= Vector3(gridSize.x / 2.0 - 0.5, 0.0, gridSize.y / 2.0 - 0.5)
-		
+
 func _on_telegraph_tile(x: int, y: int) -> void:
 	SignalBus.telegraphTile.emit(x, y)
 	var bpmMod: float = AudioSystem.get_current_bpm() / 60.0

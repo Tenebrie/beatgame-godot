@@ -57,8 +57,10 @@ func _move(dir: Vector2i) -> void:
 	if not targetTile or not targetTile.isAlive:
 		return
 	
+	var old_pos := grid_pos
 	grid_pos = new_pos
 	target_position = _grid_to_world(grid_pos)
+	SignalBus.OnPlayerMove.emit(grid_pos, old_pos)
 
 func _key_to_direction(keycode: Key) -> Vector2i:
 	match keycode:

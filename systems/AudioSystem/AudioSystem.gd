@@ -1,5 +1,16 @@
 extends Node
 
+var isFightTriggered := false
+func _ready() -> void:
+	SignalBus.OnPlayerMove.connect(_trigger_fight)
+	
+func _trigger_fight(gridPos: Vector2i, _oldPos: Vector2i) -> void:
+	if isFightTriggered or gridPos.x < 4:
+		return
+
+	isFightTriggered = true
+	GlobalContext.GetAudioAgent().StartPlaying()
+
 func get_current_beat() -> float:
 	return GlobalContext.GetAudioAgent().get_position_beats()
 
@@ -15,6 +26,9 @@ func set_playback_speed(speed: float) -> void:
 		GlobalContext.GetAudioAgent().set_volume(0.2)
 	else:
 		GlobalContext.GetAudioAgent().set_volume(1.0)
+	
+func IsSongStarted() -> bool:
+	return GlobalContext.GetAudioAgent().IsPlaying()
 
 func RegisterOneShotTimer(timer: MusicTimer) -> void:
 	$OneShotTimers.add_child(timer)

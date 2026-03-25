@@ -7,6 +7,7 @@ signal OnDestroyTile(x: int, y: int)
 signal clearAllTiles()
 signal clearTimersBefore(beat: int)
 
+signal OnPlayerMove(to: Vector2i, from: Vector2i)
 signal OnFlushAllTimers()
 signal OnBasicBeat()
 signal OnMinorBeat()

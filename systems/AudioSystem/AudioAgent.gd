@@ -5,12 +5,10 @@ const positionOffset := 0.0
 func _enter_tree() -> void:
 	GlobalContext.Register(self)
 
-func _ready() -> void:
-	await get_tree().create_timer(0.5).timeout
-	$AudioStreamPlayer.play()
-	if starting_time > 0:
-		fast_forward(starting_time)
-	#fast_forward(128)
+var isStarting := false
+#func _ready() -> void:
+
+	
 
 func get_bpm() -> float:
 	return 130.0
@@ -51,3 +49,15 @@ func set_volume(volume: float) -> void:
 var starting_time: float = 0.0
 func set_starting_time(beats: float) -> void:
 	starting_time = beats
+
+func StartPlaying() -> void:
+	isStarting = true
+	await get_tree().create_timer(0.5).timeout
+	isStarting = false
+	$AudioStreamPlayer.play()
+	if starting_time > 0:
+		fast_forward(starting_time)
+
+func IsPlaying() -> bool:
+	var player := $AudioStreamPlayer as AudioStreamPlayer
+	return player.playing || isStarting

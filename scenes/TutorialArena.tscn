@@ -4,10 +4,205 @@
 [ext_resource type="Script" uid="uid://j0xa7fe7oxv8" path="res://scenes/TutorialArena.gd" id="1_w5bc6"]
 [ext_resource type="PackedScene" uid="uid://bbvr3ouw6tjd7" path="res://player/Player.tscn" id="2_auhpn"]
 [ext_resource type="PackedScene" uid="uid://bmc8tfti12rqu" path="res://boss/Boss.tscn" id="4_adxne"]
+[ext_resource type="Script" uid="uid://b754hdhv5ohci" path="res://scenes/environment/LobbyTileHandler.gd" id="5_eqoqj"]
+[ext_resource type="Script" uid="uid://cihqnnkwn6s0v" path="res://scenes/MainCamera.gd" id="5_h48qv"]
 [ext_resource type="PackedScene" uid="uid://3qpw055ur5dl" path="res://systems/AudioSystem/AudioAgent.tscn" id="5_vxy8m"]
 [ext_resource type="PackedScene" uid="uid://ceiwb524wex1j" path="res://ui/Playhead/PlayheadWidget.tscn" id="6_3elwe"]
 [ext_resource type="PackedScene" uid="uid://bfh1xks4dsghv" path="res://ui/PerformanceStats/PerformanceStats.tscn" id="7_el274"]
 [ext_resource type="PackedScene" uid="uid://ss1rowstjojq" path="res://ui/BossStatus/BossStatus.tscn" id="8_m7stk"]
+[ext_resource type="PackedScene" uid="uid://dr3g7x13y4bcn" path="res://scenes/environment/WorldBackground.tscn" id="11_t4p3w"]
+
+[sub_resource type="Shader" id="Shader_eqoqj"]
+code = "shader_type sky;
+
+// Trippy dark purple space background — sky shader
+// Usage: WorldEnvironment → Sky → ShaderMaterial → assign this shader
+
+uniform float time_scale : hint_range(0.01, 1.0) = 0.15;
+uniform float warp_intensity : hint_range(0.0, 5.0) = 2.0;
+uniform float nebula_density : hint_range(0.0, 5.0) = 2.5;
+uniform float nebula_scale : hint_range(0.5, 5.0) = 1.5;
+uniform float star_density : hint_range(0.0, 200.0) = 80.0;
+uniform float star_brightness : hint_range(0.0, 2.0) = 0.8;
+uniform vec3 color_deep : source_color = vec3(0.02, 0.0, 0.06);
+uniform vec3 color_purple : source_color = vec3(0.25, 0.05, 0.35);
+uniform vec3 color_accent : source_color = vec3(0.4, 0.1, 0.55);
+uniform vec3 color_highlight : source_color = vec3(0.15, 0.05, 0.4);
+
+// --- Noise helpers ---
+
+float hash21(vec2 p) {
+	vec3 p3 = fract(vec3(p.xyx) * 0.1031);
+	p3 += dot(p3, p3.yzx + 33.33);
+	return fract((p3.x + p3.y) * p3.z);
+}
+
+float hash(vec2 p) {
+	return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+}
+
+float noise(vec2 p) {
+	vec2 i = floor(p);
+	vec2 f = fract(p);
+	f = f * f * (3.0 - 2.0 * f);
+	float a = hash(i);
+	float b = hash(i + vec2(1.0, 0.0));
+	float c = hash(i + vec2(0.0, 1.0));
+	float d = hash(i + vec2(1.0, 1.0));
+	return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+}
+
+float fbm(vec2 p, int octaves) {
+	float val = 0.0;
+	float amp = 0.5;
+	float freq = 1.0;
+	for (int i = 0; i < octaves; i++) {
+		val += amp * noise(p * freq);
+		freq *= 2.0;
+		amp *= 0.5;
+		p += vec2(1.7, 9.2);
+	}
+	return val;
+}
+
+// --- Warped domain FBM for the trippy morphing ---
+
+float warped_fbm(vec2 p, float t) {
+	vec2 q = vec2(
+		fbm(p + vec2(0.0, 0.0), 5),
+		fbm(p + vec2(5.2, 1.3), 5)
+	);
+
+	vec2 r = vec2(
+		fbm(p + warp_intensity * q + vec2(1.7, 9.2) + 0.15 * t, 5),
+		fbm(p + warp_intensity * q + vec2(8.3, 2.8) + 0.126 * t, 5)
+	);
+
+	return fbm(p + warp_intensity * r, 5);
+}
+
+// --- Stars ---
+
+float stars(vec2 uv, float t) {
+	float result = 0.0;
+
+	// Fine star layer
+	vec2 grid = floor(uv * star_density);
+	vec2 grid_uv = fract(uv * star_density);
+
+	float h = hash21(grid);
+	if (h > 0.92) {
+		vec2 center = vec2(hash21(grid + 10.0), hash21(grid + 20.0));
+		float d = length(grid_uv - center);
+		float twinkle = sin(t * (2.0 + h * 4.0) + h * 6.283) * 0.5 + 0.5;
+		twinkle = mix(0.4, 1.0, twinkle);
+		result += smoothstep(0.05, 0.0, d) * twinkle * star_brightness;
+	}
+
+	// Sparse bright star layer
+	float density2 = star_density * 0.3;
+	vec2 grid2 = floor(uv * density2);
+	vec2 grid_uv2 = fract(uv * density2);
+
+	float h2 = hash21(grid2 + 100.0);
+	if (h2 > 0.95) {
+		vec2 center2 = vec2(hash21(grid2 + 110.0), hash21(grid2 + 120.0));
+		float d2 = length(grid_uv2 - center2);
+		float twinkle2 = sin(t * (1.0 + h2 * 2.0) + h2 * 6.283) * 0.5 + 0.5;
+		twinkle2 = mix(0.5, 1.0, twinkle2);
+		float glow = smoothstep(0.12, 0.0, d2) * 0.3;
+		float core = smoothstep(0.03, 0.0, d2);
+		result += (glow + core) * twinkle2 * star_brightness * 1.5;
+	}
+
+	return result;
+}
+
+// --- Slow swirling tendrils ---
+
+float tendrils(vec2 uv, float t) {
+	float val = 0.0;
+	for (int i = 0; i < 3; i++) {
+		float fi = float(i);
+		float angle = t * 0.07 * (1.0 + fi * 0.3) + fi * 2.094;
+		vec2 offset = vec2(cos(angle), sin(angle)) * (0.3 + fi * 0.15);
+		vec2 p = uv + offset;
+		float n = fbm(p * (2.0 + fi * 0.5) + t * 0.05, 4);
+		float tendril = smoothstep(0.35, 0.55, n) * smoothstep(0.75, 0.55, n);
+		val += tendril * (0.3 - fi * 0.08);
+	}
+	return val;
+}
+
+void sky() {
+	float t = TIME * time_scale;
+
+	// Convert sky direction to a 2D coordinate for the noise
+	// Using equirectangular-ish projection from EYEDIR
+	vec3 dir = EYEDIR;
+	vec2 sky_uv = vec2(
+		atan(dir.x, dir.z) / TAU + 0.5,
+		asin(clamp(dir.y, -1.0, 1.0)) / PI + 0.5
+	);
+
+	// Slow global rotation in the projection
+	float rot_angle = t * 0.08;
+	vec2 centered = sky_uv - 0.5;
+	float ca = cos(rot_angle);
+	float sa = sin(rot_angle);
+	vec2 rotated = vec2(
+		centered.x * ca - centered.y * sa,
+		centered.x * sa + centered.y * ca
+	);
+
+	// Breathing scale
+	float breath = 1.0 + sin(t * 0.4) * 0.05;
+	vec2 warped_uv = rotated * breath * nebula_scale;
+
+	// Main nebula
+	float nebula = warped_fbm(warped_uv * nebula_density, t);
+
+	// Color mapping
+	vec3 col = color_deep;
+	col = mix(col, color_purple, smoothstep(0.2, 0.5, nebula));
+	col = mix(col, color_accent, smoothstep(0.5, 0.7, nebula));
+	col = mix(col, color_highlight, smoothstep(0.65, 0.85, nebula) * 0.6);
+
+	// Tendrils
+	float t_val = tendrils(warped_uv, t);
+	col += color_accent * t_val * 0.7;
+
+	// Subtle color cycling
+	float cycle = sin(t * 0.3) * 0.5 + 0.5;
+	vec3 cycle_color = mix(color_purple, color_highlight, cycle);
+	col = mix(col, cycle_color, nebula * 0.15);
+
+	// Stars — use the un-rotated sky_uv so they feel fixed in space
+	float star_val = stars(sky_uv, TIME * 0.8);
+	float nebula_mask = 1.0 - smoothstep(0.3, 0.7, nebula);
+	vec3 star_color = mix(vec3(0.7, 0.6, 1.0), vec3(1.0, 0.9, 1.0), hash21(floor(sky_uv * star_density)));
+	col += star_val * star_color * nebula_mask;
+
+	// Subtle film grain
+	float grain = hash21(sky_uv * 500.0 + fract(TIME) * 100.0) * 0.03;
+	col += grain;
+
+	// Keep it dark
+	col = min(col, vec3(0.6, 0.3, 0.7));
+
+	COLOR = vec4(col, 1.0);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_575om"]
+shader = SubResource("Shader_eqoqj")
+
+[sub_resource type="Sky" id="Sky_7af6x"]
+sky_material = SubResource("ShaderMaterial_575om")
+
+[sub_resource type="Environment" id="Environment_eqoqj"]
+sky = SubResource("Sky_7af6x")
+glow_enabled = true
 
 [node name="TutorialArena" type="Node" unique_id=1546456810]
 script = ExtResource("1_w5bc6")
@@ -19,8 +214,12 @@ script = ExtResource("1_w5bc6")
 [node name="Boss" parent="DanceFloor" unique_id=679576008 instance=ExtResource("4_adxne")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
 
-[node name="Camera3D" type="Camera3D" parent="." unique_id=310658524]
+[node name="LobbyTileHandler" type="Node" parent="DanceFloor" unique_id=1642492947]
+script = ExtResource("5_eqoqj")
+
+[node name="MainCamera" type="Camera3D" parent="." unique_id=310658524]
 transform = Transform3D(0.99999994, 0, 0, 0, 0.17364822, 0.9848077, 0, -0.9848077, 0.17364822, 0, 4, 1)
+script = ExtResource("5_h48qv")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=711198869]
 transform = Transform3D(1, 0, 0, 0, 0.74301636, 0.66927326, 0, -0.66927326, 0.74301636, 0, 2.491136, 1.1915557)
@@ -45,3 +244,9 @@ offset_left = -300.0
 offset_right = 300.0
 offset_bottom = 196.56
 grow_vertical = 1
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=971237939]
+environment = SubResource("Environment_eqoqj")
+
+[node name="WorldBackground" parent="." unique_id=1907618401 instance=ExtResource("11_t4p3w")]
+transform = Transform3D(5.9605556, 0, 0, 0, 1, 0, 0, 0, 5.9605556, 0, -108.23712, 0)
