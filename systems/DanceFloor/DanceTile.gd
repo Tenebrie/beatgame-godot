@@ -74,6 +74,7 @@ func on_destroy_tile(x: int, y: int) -> void:
 	beatTween.stop()
 	isAlive = false
 	create_tween().tween_property($MeshInstance3D, ^"scale", Vector3(0, 0, 0), 0.2)
+	await get_tree().create_timer(0.2).timeout
 	set_process(false)
 
 func _process(delta: float) -> void:

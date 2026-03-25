@@ -72,3 +72,9 @@ func _key_to_direction(keycode: Key) -> Vector2i:
 			return Vector2i(1, 0)
 		_:
 			return Vector2i.ZERO
+
+func SetBasicAttackEffectEmitting(emitting: bool) -> void:
+	$PlayerFireEffect/GPUParticles3D.emitting = emitting
+
+func SetBasicAttackTargetingBoss(value: bool) -> void:
+	$AbilityController.basicAttack.SetAutoAim(value)

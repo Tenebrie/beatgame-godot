@@ -24,3 +24,8 @@ mesh = SubResource("TextMesh_yyxsp")
 [node name="LineBurst" parent="." unique_id=381804580 instance=ExtResource("2_i7h4p")]
 
 [node name="WingSwipe" parent="." unique_id=15120941 instance=ExtResource("2_yyxsp")]
+
+[node name="WingSwipeLeft" parent="." unique_id=1661270373 instance=ExtResource("2_yyxsp")]
+
+[node name="WingSwipeRight" parent="." unique_id=1054706673 instance=ExtResource("2_yyxsp")]
+direction = 1

@@ -57,6 +57,8 @@ func _on_telegraph_tile(x: int, y: int) -> void:
 	SignalBus.explodeTile.emit(x, y)
 	
 func get_tile_at_position(pos: Vector2i) -> DanceTile:
+	if pos.x < 0 or pos.x >= maximumGridSize.x or pos.y < 0 or pos.y >= maximumGridSize.y:
+		return null
 	return tilemap[pos.x][pos.y]
 	
 func _process(delta: float) -> void:
@@ -64,8 +66,8 @@ func _process(delta: float) -> void:
 	var positionSum := Vector2(0.0, 0.0)
 	for x in range(maximumGridSize.x):
 		for y in range(maximumGridSize.y):
-			var tile := get_tile_at_position(Vector2(x, y))
-			if not tile or not tile.isAlive:
+			var tileAtPos := get_tile_at_position(Vector2(x, y))
+			if not tileAtPos or not tileAtPos.isAlive:
 				continue
 			
 			livingTiles += 1

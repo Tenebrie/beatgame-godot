@@ -6,7 +6,6 @@ signal resolved
 
 func _init() -> void:
 	name = "Trigger"
-	var danceFloor := GlobalContext.GetDanceFloor()
 	triggerTimer = MusicTimer.Create()
 	triggerTimer.start(Pattern.BuilderTime)
 	triggerTimer.timeout.connect(
@@ -26,7 +25,40 @@ static func BasicAttack() -> Trigger:
 	)
 	return trigger
 	
-static func EnemyMove(row: float) -> Trigger:
+static func Execute(callback: Callable) -> Trigger:
+	var trigger := new()
+	trigger.triggerTimer.timeout.connect(
+		func(_beat: int) -> void:
+			callback.call()
+	)
+	return trigger
+	
+static func EnemyMoveToColumnTop(column: String) -> Trigger:
+	var columnIndex := Pattern.letters.find(column)
+	var trigger := new()
+	trigger.triggerTimer.timeout.connect(
+		func(_beat: int) -> void:
+			GlobalContext.GetBoss().move_to_column_top(columnIndex)
+	)
+	return trigger
+	
+static func EnemyMove(pos: Vector2) -> Trigger:
+	var trigger := new()
+	trigger.triggerTimer.timeout.connect(
+		func(_beat: int) -> void:
+			GlobalContext.GetBoss().move_to(pos)
+	)
+	return trigger
+
+static func EnemyMoveToRowLeft(row: float) -> Trigger:
+	var trigger := new()
+	trigger.triggerTimer.timeout.connect(
+		func(_beat: int) -> void:
+			GlobalContext.GetBoss().move_to_row_left(row)
+	)
+	return trigger
+
+static func EnemyMoveToRowRight(row: float) -> Trigger:
 	var trigger := new()
 	trigger.triggerTimer.timeout.connect(
 		func(_beat: int) -> void:

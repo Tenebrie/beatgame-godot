@@ -1,8 +1,11 @@
 class_name WingSwipe extends BossCast
 
+@export var direction: int = 0
+
 func _ready() -> void:
 	$TriggerParticles.emitting = false
 	$TelegraphParticles.emitting = false
+	set_direction(direction)
 
 func start_telegraph() -> void:
 	$TelegraphParticles.emitting = true

@@ -7,25 +7,64 @@ func _enter_tree() -> void:
 	GlobalContext.Register(self)
 
 func set_grid_size(size: Vector2i) -> void:
-	gridPosition = Vector2(gridPosition.x * (size.x - gridSize.x), gridPosition.y * (size.y - gridSize.y) / 2.0)
 	gridSize = size
-	update_position()
+	var targetPosition := Vector2(gridPosition.x * (size.x - gridSize.x), gridPosition.y * (size.y - gridSize.y) / 2.0)
+	move_to(targetPosition)
+	
+func move_to_column_top(targetColumn: float) -> void:
+	var topMostActiveTile := INF
+	var tiles := GlobalContext.GetDanceFloor().tilemap
+	for column in tiles:
+		for tile: DanceTile in column:
+			if tile.isAlive and tile.gridY < topMostActiveTile and absf(targetColumn - tile.gridX) <= 0.5:
+				topMostActiveTile = tile.gridY
+			
+	move_to(Vector2(targetColumn, topMostActiveTile - 1))
+	
+func move_to_column_bottom(targetColumn: float) -> void:
+	var bottomMostActiveTile := 0
+	var tiles := GlobalContext.GetDanceFloor().tilemap
+	for column in tiles:
+		for tile: DanceTile in column:
+			if tile.isAlive and tile.gridY > bottomMostActiveTile and absf(targetColumn - tile.gridX) <= 0.5:
+				bottomMostActiveTile = tile.gridY
+			
+	move_to(Vector2(targetColumn, bottomMostActiveTile + 1))
+	
+func move_to_row_left(row: float) -> void:
+	var leftMostActiveTile := INF
+	var tiles := GlobalContext.GetDanceFloor().tilemap
+	for column in tiles:
+		for tile: DanceTile in column:
+			if tile.isAlive and tile.gridX < leftMostActiveTile and absf(row - tile.gridY) - 1 <= 0.5:
+				leftMostActiveTile = tile.gridX
+			
+	move_to(Vector2(leftMostActiveTile - 1, row - 1))
 	
 func move_to_row_right(row: float) -> void:
-	gridPosition = Vector2(gridSize.x, row - 1)
-	update_position()
+	var rightMostActiveTile := 0
+	var tiles := GlobalContext.GetDanceFloor().tilemap
+	for column in tiles:
+		for tile: DanceTile in column:
+			if tile.isAlive and tile.gridX > rightMostActiveTile and absf(row - tile.gridY) - 1 <= 0.5:
+				rightMostActiveTile = tile.gridX
+			
+	move_to(Vector2(rightMostActiveTile + 1, row - 1))
 	
-func update_position() -> void:
+func move_to(targetPos: Vector2) -> void:
+	gridPosition = targetPos
 	var row := gridPosition.x
 	var column := gridPosition.y
 	create_tween().tween_property(self, ^"position", Vector3(row, 0.0, column), 0.2)
 
 func prep_patterns() -> void:
-	Trigger.EnemyMove(1)
 	Pattern.Rect("e1", "Z4").DestroyTile()
+	SignalBus.OnFlushAllTimers.emit()
+	Trigger.EnemyMoveToRowRight(2.5)
 
 func queue_patterns() -> void:
 	# Beat 0
+	Trigger.EnemyMoveToRowRight(1).Delay(1.0)
 	queue_intro_basic_attacks()
 	Pattern.Advance(2)
 	Pattern.Row(1).Telegraph(2).Delay(2.125)
@@ -34,7 +73,7 @@ func queue_patterns() -> void:
 	Pattern.Row(4).Telegraph(2).Delay(4.75)
 	Pattern.Advance(6.0)
 	queue_intro_basic_attacks()
-	Trigger.EnemyMove(4)
+	Trigger.EnemyMoveToRowRight(4)
 	Pattern.Advance(2.0)
 	Pattern.Row(4).Telegraph(2).Delay(2.125)
 	Pattern.Row(3).Telegraph(2).Delay(2.75)
@@ -42,7 +81,7 @@ func queue_patterns() -> void:
 	Pattern.Row(1).Telegraph(2).Delay(4.75)
 	Pattern.Advance(6.0)
 	queue_intro_basic_attacks()
-	Trigger.EnemyMove(1)
+	Trigger.EnemyMoveToRowRight(1)
 	Pattern.Advance(2.0)
 	Pattern.Row(1).Telegraph(2).Delay(2.125)
 	Pattern.Row(2).Telegraph(2).Delay(2.75)
@@ -50,7 +89,7 @@ func queue_patterns() -> void:
 	Pattern.Row(4).Telegraph(2).Delay(4.75)
 	Pattern.Advance(6.0)
 	queue_intro_basic_attacks()
-	Trigger.EnemyMove(4)
+	Trigger.EnemyMoveToRowRight(4)
 	Pattern.Advance(2.0)
 	Pattern.Row(4).Telegraph(2).Delay(2.125)
 	Pattern.Row(3).Telegraph(2).Delay(2.75)
@@ -60,7 +99,7 @@ func queue_patterns() -> void:
 	
 	# Beat 32
 	queue_intro_basic_attacks()
-	Trigger.EnemyMove(2)
+	Trigger.EnemyMoveToRowRight(2)
 	Pattern.Advance(2.0)
 	Pattern.Column("a").Telegraph(2).Delay(2.125)
 	Pattern.Column("b").Telegraph(2).Delay(2.75)
@@ -68,7 +107,7 @@ func queue_patterns() -> void:
 	Pattern.Column("d").Telegraph(2).Delay(4.75)
 	Pattern.Advance(6.0)
 	queue_intro_basic_attacks()
-	Trigger.EnemyMove(3)
+	Trigger.EnemyMoveToRowRight(3)
 	Pattern.Advance(2.0)
 	Pattern.Column("d").Telegraph(2).Delay(2.125)
 	Pattern.Column("c").Telegraph(2).Delay(2.75)
@@ -76,22 +115,22 @@ func queue_patterns() -> void:
 	Pattern.Column("a").Telegraph(2).Delay(4.75)
 	Pattern.Advance(6.0)
 	queue_intro_basic_attacks()
-	Trigger.EnemyMove(2)
+	Trigger.EnemyMoveToRowRight(2)
 	Pattern.Advance(2.0)
 	Pattern.Column("a").Telegraph(2).Delay(2.125)
 	Pattern.Column("b").Telegraph(2).Delay(2.75)
 	Pattern.Column("c").Telegraph(2).Delay(3.625)
 	Pattern.Column("d").Telegraph(2).Delay(4.75)
 	Pattern.Advance(6.0)
-	queue_intro_basic_attacks(true)
-	Trigger.EnemyMove(3)
+	queue_intro_basic_attacks(0.0, true)
+	Trigger.EnemyMoveToRowRight(3)
 	Pattern.Advance(2.0)
 	Pattern.Column("d").Telegraph(2).Delay(2.125)
 	Pattern.Column("c").Telegraph(2).Delay(2.75)
 	Pattern.Column("b").Telegraph(2).Delay(3.625)
 	# Last beat skipped
 	
-	Trigger.EnemyMove(2).Delay(2)
+	Trigger.EnemyMoveToRowRight(2).Delay(2)
 	Pattern.Advance(6.0)
 	
 	# Beat 64
@@ -99,41 +138,27 @@ func queue_patterns() -> void:
 	
 	full_boombox_pattern()
 	
-	Trigger.EnemyMove(3)
-	Trigger.EnemyMove(2).Delay(2)
-	Trigger.EnemyMove(3).Delay(4)
+	Trigger.EnemyMoveToRowRight(3)
+	Trigger.EnemyMoveToRowRight(2).Delay(2)
+	Trigger.EnemyMoveToRowRight(3).Delay(4)
 	Pattern.Advance(6.0)
 	
-	Trigger.EnemyMove(2)
+	Trigger.EnemyMoveToRowRight(2)
 	Pattern.Single("a2").Telegraph(2).Delay(2.125)
 	Pattern.Single("b2").Telegraph(2).Delay(2.75)
 	Pattern.Single("c2").Telegraph(2).Delay(3.625)
 	Pattern.Single("d2").Telegraph(2).Delay(4.75)
 	Pattern.Advance(2.0)
-	Trigger.EnemyMove(3)
+	Trigger.EnemyMoveToRowRight(3)
 	queue_basic_attacks()
 	Pattern.Advance(2.0)
-	Trigger.EnemyMove(2)
+	Trigger.EnemyMoveToRowRight(2)
 	Pattern.Single("d3").Telegraph(2).Delay(2.125)
 	Pattern.Single("c3").Telegraph(2).Delay(2.75)
 	Pattern.Single("b3").Telegraph(2).Delay(3.625)
 	Pattern.Single("a3").Telegraph(2).Delay(4.75)
 	Pattern.Advance(4.0)
-	Trigger.EnemyMove(3)
-	Pattern.Single("a2").Telegraph(2).Delay(2.125)
-	Pattern.Single("b2").Telegraph(2).Delay(2.75)
-	Pattern.Single("c2").Telegraph(2).Delay(3.625)
-	Pattern.Single("d2").Telegraph(2).Delay(4.75)
-	Pattern.Advance(2.0)
-	queue_basic_attacks()
-	Pattern.Advance(2.0)
-	Trigger.EnemyMove(2)
-	Pattern.Single("d3").Telegraph(2).Delay(2.125)
-	Pattern.Single("c3").Telegraph(2).Delay(2.75)
-	Pattern.Single("b3").Telegraph(2).Delay(3.625)
-	Pattern.Single("a3").Telegraph(2).Delay(4.75)
-	Pattern.Advance(4.0)
-	Trigger.EnemyMove(3)
+	Trigger.EnemyMoveToRowRight(3)
 	Pattern.Single("a2").Telegraph(2).Delay(2.125)
 	Pattern.Single("b2").Telegraph(2).Delay(2.75)
 	Pattern.Single("c2").Telegraph(2).Delay(3.625)
@@ -141,13 +166,27 @@ func queue_patterns() -> void:
 	Pattern.Advance(2.0)
 	queue_basic_attacks()
 	Pattern.Advance(2.0)
-	Trigger.EnemyMove(2)
+	Trigger.EnemyMoveToRowRight(2)
 	Pattern.Single("d3").Telegraph(2).Delay(2.125)
 	Pattern.Single("c3").Telegraph(2).Delay(2.75)
 	Pattern.Single("b3").Telegraph(2).Delay(3.625)
 	Pattern.Single("a3").Telegraph(2).Delay(4.75)
 	Pattern.Advance(4.0)
-	Trigger.EnemyMove(3)
+	Trigger.EnemyMoveToRowRight(3)
+	Pattern.Single("a2").Telegraph(2).Delay(2.125)
+	Pattern.Single("b2").Telegraph(2).Delay(2.75)
+	Pattern.Single("c2").Telegraph(2).Delay(3.625)
+	Pattern.Single("d2").Telegraph(2).Delay(4.75)
+	Pattern.Advance(2.0)
+	queue_basic_attacks()
+	Pattern.Advance(2.0)
+	Trigger.EnemyMoveToRowRight(2)
+	Pattern.Single("d3").Telegraph(2).Delay(2.125)
+	Pattern.Single("c3").Telegraph(2).Delay(2.75)
+	Pattern.Single("b3").Telegraph(2).Delay(3.625)
+	Pattern.Single("a3").Telegraph(2).Delay(4.75)
+	Pattern.Advance(4.0)
+	Trigger.EnemyMoveToRowRight(3)
 	Pattern.Single("d2").Telegraph(2.0).Delay(2.0)
 	Pattern.Single("d3").Telegraph(2.0).Delay(2.0)
 	Pattern.Single("b2").Telegraph(2.0).Delay(3.0)
@@ -155,7 +194,7 @@ func queue_patterns() -> void:
 	Pattern.Advance(2.0)
 	
 	# Beat 96
-	Trigger.EnemyMove(2.5)
+	Trigger.EnemyMoveToRowRight(2.5)
 	
 	var startingWingDirection := randi() % 2
 	Pattern.Cast($WingSwipe).Telegraph(6.0).Delay(8.0).BeforeTelegraph(
@@ -191,7 +230,6 @@ func queue_patterns() -> void:
 	Pattern.Single("a2").Telegraph(2.0).Delay(3.0)
 	Pattern.Single("a3").Telegraph(2.0).Delay(3.0)
 	Pattern.Advance(2.0)
-	
 	Pattern.Single("d2").Telegraph(2.0).Delay(2.0)
 	Pattern.Single("d3").Telegraph(2.0).Delay(2.0)
 	Pattern.Single("b2").Telegraph(2.0).Delay(3.0)
@@ -278,10 +316,24 @@ func queue_patterns() -> void:
 		
 	Pattern.Advance(4)
 	
-	# Beat 196
-	Trigger.EnemyMove(2.5)
+	# Beat 192 -> Arena swap
+	#Pattern.StartHere()
+	Trigger.Execute(func() -> void: GlobalContext.GetPlayer().SetBasicAttackEffectEmitting(false))
 	
+	Trigger.EnemyMoveToRowRight(2.5)
 	Pattern.Advance(6.0)
+	var firstWing := $WingSwipeLeft
+	var secondWing := $WingSwipeRight
+	var tileOffset := -0.5
+	if randi() % 2 == 0:
+		firstWing = $WingSwipeRight
+		secondWing = $WingSwipeLeft
+		tileOffset = 0.5
+		
+	Pattern.Cast($LineBurst).Telegraph(23.5).Delay(23.5).BeforeTelegraph(func() -> void: $LineBurst.position = Vector3(0, 0, tileOffset))
+		
+	Pattern.Cast(firstWing).Telegraph(16.5).Delay(24.5)
+	Pattern.Cast(secondWing).Telegraph(10.0).Delay(25.5)
 	
 	Pattern.Single("a1").Telegraph(6.0).DestroyTile()
 	Pattern.Single("a4").Telegraph(6.0).DestroyTile()
@@ -301,7 +353,12 @@ func queue_patterns() -> void:
 	Pattern.Single("d1").Telegraph(6.0).Delay(24).DestroyTile()
 	Pattern.Single("d4").Telegraph(6.0).Delay(24).DestroyTile()
 	
-	Pattern.Advance(32.0)
+	Pattern.Advance(8.0)
+	
+	Pattern.Advance(18.0)
+	Trigger.EnemyMoveToRowRight(3)
+	Pattern.Cast($LineBurst).Telegraph(4).Delay(5).BeforeTelegraph(func() -> void: $LineBurst.position = Vector3(0, 0, 0))
+	Pattern.Advance(6.0)
 	
 	Pattern.Single("e2").RestoreTile()
 	Pattern.Single("f2").RestoreTile()
@@ -316,9 +373,38 @@ func queue_patterns() -> void:
 	Pattern.Single("i1").RestoreTile().Delay(24.0)
 	Pattern.Single("j1").RestoreTile().Delay(24.0)
 	
+	Trigger.EnemyMoveToColumnTop("d")
+	Pattern.Cast($LineBurst).Telegraph(6).Delay(8).BeforeTelegraph(func() -> void: 
+		$LineBurst.rotation_degrees = Vector3(0.0, 90, 0.0)
+		$LineBurst.position = Vector3(0, 0, 0)
+	)
+	Trigger.EnemyMoveToRowLeft(2).Delay(8.0)
+	Pattern.Cast($LineBurst).Telegraph(6).Delay(16).BeforeTelegraph(func() -> void: 
+		$LineBurst.rotation_degrees = Vector3(0.0, 180, 0.0)
+	)
+	Trigger.EnemyMoveToRowRight(3).Delay(16)
+	Pattern.Cast($LineBurst).Telegraph(6).Delay(24).BeforeTelegraph(func() -> void: 
+		$LineBurst.rotation_degrees = Vector3(0.0, 0, 0.0)
+	)
+	Trigger.EnemyMove(Vector2(8.5, 1.5)).Delay(25.0)
+	
 	Pattern.Advance(24.0)
 	for i in range(8):
 		queue_basic_attacks(i * 8 + 2)
+		
+	Trigger.Execute(func() -> void:
+		var player := GlobalContext.GetPlayer()
+		player.SetBasicAttackEffectEmitting(true)
+		player.SetBasicAttackTargetingBoss(true)
+	)
+	
+	Trigger.EnemyMove(Vector2(8.5, 1)).Delay(5.0)
+	Trigger.EnemyMove(Vector2(7.5, 1)).Delay(9.0)
+	Trigger.EnemyMove(Vector2(7.5, 1.5)).Delay(13.0)
+	Trigger.EnemyMove(Vector2(8, 2)).Delay(62.0)
+	Trigger.EnemyMove(Vector2(8, 1)).Delay(64.0)
+	Trigger.EnemyMoveToRowRight(2.5).Delay(65.0)
+	Trigger.EnemyMoveToRowRight(1).Delay(66.0)
 	
 	Pattern.Single("d3").DestroyTile().Delay(2).Telegraph(4.0)
 	Pattern.Single("d2").DestroyTile().Delay(3).Telegraph(4.0)
@@ -407,9 +493,13 @@ func queue_patterns() -> void:
 	Pattern.Single("i2").RestoreTile().Delay(12)
 	
 	Pattern.Advance(13)
-	#Pattern.Translate(Vector2i(6, 0))
+	Pattern.Translate(Vector2i(6, 0))
 	
 	# Beat 320 -> Repeat intro
+	Trigger.Execute(func() -> void:
+		var player := GlobalContext.GetPlayer()
+		player.SetBasicAttackTargetingBoss(false)
+	)
 	queue_intro_basic_attacks()
 	Pattern.Advance(2)
 	Pattern.Row(1).Telegraph(4).Delay(2.125)
@@ -418,7 +508,7 @@ func queue_patterns() -> void:
 	Pattern.Row(4).Telegraph(4).Delay(4.75)
 	Pattern.Advance(6.0)
 	queue_intro_basic_attacks()
-	Trigger.EnemyMove(4)
+	Trigger.EnemyMoveToRowRight(4).Delay(-1)
 	Pattern.Advance(2.0)
 	Pattern.Row(4).Telegraph(4).Delay(2.125)
 	Pattern.Row(3).Telegraph(4).Delay(2.75)
@@ -426,7 +516,7 @@ func queue_patterns() -> void:
 	Pattern.Row(1).Telegraph(4).Delay(4.75)
 	Pattern.Advance(6.0)
 	queue_intro_basic_attacks()
-	Trigger.EnemyMove(1)
+	Trigger.EnemyMoveToRowRight(1).Delay(-1)
 	Pattern.Advance(2.0)
 	Pattern.Row(1).Telegraph(4).Delay(2.125)
 	Pattern.Row(2).Telegraph(4).Delay(2.75)
@@ -434,7 +524,7 @@ func queue_patterns() -> void:
 	Pattern.Row(4).Telegraph(4).Delay(4.75)
 	Pattern.Advance(6.0)
 	queue_intro_basic_attacks()
-	Trigger.EnemyMove(4)
+	Trigger.EnemyMoveToRowRight(4).Delay(-1)
 	Pattern.Advance(2.0)
 	Pattern.Row(4).Telegraph(4).Delay(2.125)
 	Pattern.Row(3).Telegraph(4).Delay(2.75)
@@ -444,7 +534,7 @@ func queue_patterns() -> void:
 	
 	# Beat 352
 	queue_intro_basic_attacks()
-	Trigger.EnemyMove(2)
+	Trigger.EnemyMoveToRowRight(2)
 	Pattern.Advance(2.0)
 	Pattern.Column("a").Telegraph(4).Delay(2.125)
 	Pattern.Column("b").Telegraph(4).Delay(2.75)
@@ -452,7 +542,7 @@ func queue_patterns() -> void:
 	Pattern.Column("d").Telegraph(4).Delay(4.75)
 	Pattern.Advance(6.0)
 	queue_intro_basic_attacks()
-	Trigger.EnemyMove(3)
+	Trigger.EnemyMoveToRowRight(3)
 	Pattern.Advance(2.0)
 	Pattern.Column("d").Telegraph(4).Delay(2.125)
 	Pattern.Column("c").Telegraph(4).Delay(2.75)
@@ -460,15 +550,15 @@ func queue_patterns() -> void:
 	Pattern.Column("a").Telegraph(4).Delay(4.75)
 	Pattern.Advance(6.0)
 	queue_intro_basic_attacks()
-	Trigger.EnemyMove(2)
+	Trigger.EnemyMoveToRowRight(2)
 	Pattern.Advance(2.0)
 	Pattern.Column("a").Telegraph(4).Delay(2.125)
 	Pattern.Column("b").Telegraph(4).Delay(2.75)
 	Pattern.Column("c").Telegraph(4).Delay(3.625)
 	Pattern.Column("d").Telegraph(4).Delay(4.75)
 	Pattern.Advance(6.0)
-	queue_intro_basic_attacks(true)
-	Trigger.EnemyMove(3)
+	queue_intro_basic_attacks(0.0, true)
+	Trigger.EnemyMoveToRowRight(3)
 	Pattern.Advance(2.0)
 	Pattern.Column("d").Telegraph(4).Delay(2.125)
 	Pattern.Column("c").Telegraph(4).Delay(2.75)
@@ -482,8 +572,28 @@ func queue_patterns() -> void:
 		boombox_pattern_eight_beats(i * 16)
 		central_boombox_pattern_eight_beats(i * 16 + 8)
 		
-	Pattern.Advance(128)
+	
+	for i in range(4):
+		Trigger.EnemyMoveToRowRight(2).Delay(0.0)
+		Pattern.Cast($WingSwipeLeft).Delay(8.0).Telegraph(7.0)
+		Trigger.EnemyMoveToRowRight(2.5).Delay(8.0)
+		Pattern.Cast($WingSwipeRight).Delay(16.0).Telegraph(6.0)
+		Trigger.EnemyMoveToRowRight(2.5).Delay(16.0)
+		Pattern.Cast($LineBurst).Delay(24.0).Telegraph(7.0)
+		var wing := $WingSwipeLeft if randi() % 2 == 0 else $WingSwipeRight
+		Pattern.Cast($WingSwipe).Delay(32.0).Telegraph(7.0).BeforeTelegraph(
+			func() -> void:
+				if GlobalContext.GetPlayer().grid_pos.y <= 1:
+					$WingSwipe.set_direction(1)
+				else:
+					$WingSwipe.set_direction(0)
+		)
+		Pattern.Advance(32)
+	
 	# Beat 512
+	
+	for i in range(8):
+		queue_intro_basic_attacks(i * 8)
 	
 	for outerLoop in range(2):
 		var rainTiles: Array[String]
@@ -502,10 +612,140 @@ func queue_patterns() -> void:
 			
 	for i in range(7):
 		boombox_pattern_eight_beats(i * 8)
-	Pattern.Advance(56)
 	
-	# Beat 630
-	#Pattern.StartHere()
+	for i in range(7):
+		queue_basic_attacks(i * 8)
+		
+	# Repeat earlier part
+	Trigger.EnemyMoveToRowRight(3)
+	Trigger.EnemyMoveToRowRight(2).Delay(2)
+	Trigger.EnemyMoveToRowRight(3).Delay(4)
+	Pattern.Advance(6.0)
+	Trigger.EnemyMoveToRowRight(2)
+	Pattern.Single("a2").Telegraph(2).Delay(2.125)
+	Pattern.Single("b2").Telegraph(2).Delay(2.75)
+	Pattern.Single("c2").Telegraph(2).Delay(3.625)
+	Pattern.Single("d2").Telegraph(2).Delay(4.75)
+	Pattern.Advance(2.0)
+	Trigger.EnemyMoveToRowRight(3)
+	Pattern.Advance(2.0)
+	Trigger.EnemyMoveToRowRight(2)
+	Pattern.Single("d3").Telegraph(2).Delay(2.125)
+	Pattern.Single("c3").Telegraph(2).Delay(2.75)
+	Pattern.Single("b3").Telegraph(2).Delay(3.625)
+	Pattern.Single("a3").Telegraph(2).Delay(4.75)
+	Pattern.Advance(4.0)
+	Trigger.EnemyMoveToRowRight(3)
+	Pattern.Single("a2").Telegraph(2).Delay(2.125)
+	Pattern.Single("b2").Telegraph(2).Delay(2.75)
+	Pattern.Single("c2").Telegraph(2).Delay(3.625)
+	Pattern.Single("d2").Telegraph(2).Delay(4.75)
+	Pattern.Advance(2.0)
+	Pattern.Advance(2.0)
+	Trigger.EnemyMoveToRowRight(2)
+	Pattern.Single("d3").Telegraph(2).Delay(2.125)
+	Pattern.Single("c3").Telegraph(2).Delay(2.75)
+	Pattern.Single("b3").Telegraph(2).Delay(3.625)
+	Pattern.Single("a3").Telegraph(2).Delay(4.75)
+	Pattern.Advance(4.0)
+	Trigger.EnemyMoveToRowRight(3)
+	Pattern.Single("a2").Telegraph(2).Delay(2.125)
+	Pattern.Single("b2").Telegraph(2).Delay(2.75)
+	Pattern.Single("c2").Telegraph(2).Delay(3.625)
+	Pattern.Single("d2").Telegraph(2).Delay(4.75)
+	Pattern.Advance(2.0)
+	Pattern.Advance(2.0)
+	Trigger.EnemyMoveToRowRight(2)
+	Pattern.Single("d3").Telegraph(2).Delay(2.125)
+	Pattern.Single("c3").Telegraph(2).Delay(2.75)
+	Pattern.Single("b3").Telegraph(2).Delay(3.625)
+	Pattern.Single("a3").Telegraph(2).Delay(4.75)
+	Pattern.Advance(4.0)
+	Trigger.EnemyMoveToRowRight(3)
+	Pattern.Single("d2").Telegraph(2.0).Delay(2.0)
+	Pattern.Single("d3").Telegraph(2.0).Delay(2.0)
+	Pattern.Single("b2").Telegraph(2.0).Delay(3.0)
+	Pattern.Single("b3").Telegraph(2.0).Delay(3.0)
+	Pattern.Advance(2.0)
+	Trigger.EnemyMoveToRowRight(2.5)
+	
+	startingWingDirection = randi() % 2
+	Pattern.Cast($WingSwipe).Telegraph(6.0).Delay(8.0).BeforeTelegraph(
+		func(val := startingWingDirection) -> void:
+			$WingSwipe.set_direction(val)
+	)
+	Pattern.Cast($WingSwipe).Telegraph(6.0).Delay(16.0).BeforeTelegraph(
+		func(val := startingWingDirection) -> void:
+			$WingSwipe.set_direction(1 - val)
+	)
+	Pattern.Cast($WingSwipe).Telegraph(6.0).Delay(24.0).BeforeTelegraph(
+		func(val := startingWingDirection) -> void:
+			$WingSwipe.set_direction(val)
+	)
+	Pattern.Cast($WingSwipe).Telegraph(6.0).Delay(32.0).BeforeTelegraph(
+		func(val := startingWingDirection) -> void:
+			$WingSwipe.set_direction(1 - val)
+	)
+	
+	Pattern.Single("c2").Telegraph(2.0).Delay(2.0)
+	Pattern.Single("c3").Telegraph(2.0).Delay(2.0)
+	Pattern.Single("a2").Telegraph(2.0).Delay(3.0)
+	Pattern.Single("a3").Telegraph(2.0).Delay(3.0)
+	Pattern.Advance(2.0)
+	Pattern.Single("d2").Telegraph(2.0).Delay(2.0)
+	Pattern.Single("d3").Telegraph(2.0).Delay(2.0)
+	Pattern.Single("b2").Telegraph(2.0).Delay(3.0)
+	Pattern.Single("b3").Telegraph(2.0).Delay(3.0)
+	Pattern.Advance(2.0)
+	Pattern.Single("c2").Telegraph(2.0).Delay(2.0)
+	Pattern.Single("c3").Telegraph(2.0).Delay(2.0)
+	Pattern.Single("a2").Telegraph(2.0).Delay(3.0)
+	Pattern.Single("a3").Telegraph(2.0).Delay(3.0)
+	Pattern.Advance(2.0)
+	Pattern.Single("d2").Telegraph(2.0).Delay(2.0)
+	Pattern.Single("d3").Telegraph(2.0).Delay(2.0)
+	Pattern.Single("b2").Telegraph(2.0).Delay(3.0)
+	Pattern.Single("b3").Telegraph(2.0).Delay(3.0)
+	Pattern.Advance(2.0)
+	Pattern.Single("c2").Telegraph(2.0).Delay(2.0)
+	Pattern.Single("c3").Telegraph(2.0).Delay(2.0)
+	Pattern.Single("a2").Telegraph(2.0).Delay(3.0)
+	Pattern.Single("a3").Telegraph(2.0).Delay(3.0)
+	Pattern.Advance(2.0)
+	Pattern.Single("d2").Telegraph(2.0).Delay(2.0)
+	Pattern.Single("d3").Telegraph(2.0).Delay(2.0)
+	Pattern.Single("b2").Telegraph(2.0).Delay(3.0)
+	Pattern.Single("b3").Telegraph(2.0).Delay(3.0)
+	Pattern.Advance(2.0)
+	Pattern.Single("c2").Telegraph(2.0).Delay(2.0)
+	Pattern.Single("c3").Telegraph(2.0).Delay(2.0)
+	Pattern.Single("a2").Telegraph(2.0).Delay(3.0)
+	Pattern.Single("a3").Telegraph(2.0).Delay(3.0)
+	Pattern.Advance(2.0)
+	Pattern.Single("d2").Telegraph(2.0).Delay(2.0)
+	Pattern.Single("d3").Telegraph(2.0).Delay(2.0)
+	Pattern.Single("b2").Telegraph(2.0).Delay(3.0)
+	Pattern.Single("b3").Telegraph(2.0).Delay(3.0)
+	Pattern.Advance(2.0)
+	Pattern.Single("c2").Telegraph(2.0).Delay(2.0)
+	Pattern.Single("c3").Telegraph(2.0).Delay(2.0)
+	Pattern.Single("a2").Telegraph(2.0).Delay(3.0)
+	Pattern.Single("a3").Telegraph(2.0).Delay(3.0)
+	Pattern.Advance(2.0)
+	Pattern.Single("d2").Telegraph(2.0).Delay(2.0)
+	Pattern.Single("d3").Telegraph(2.0).Delay(2.0)
+	Pattern.Single("b2").Telegraph(2.0).Delay(3.0)
+	Pattern.Single("b3").Telegraph(2.0).Delay(3.0)
+	Pattern.Advance(2.0)
+	Pattern.Single("c2").Telegraph(2.0).Delay(2.0)
+	Pattern.Single("c3").Telegraph(2.0).Delay(2.0)
+	Pattern.Single("a2").Telegraph(2.0).Delay(3.0)
+	Pattern.Single("a3").Telegraph(2.0).Delay(3.0)
+	Pattern.Advance(2.0)
+	
+	Pattern.Advance(2.0)
+	
+	# Beat 632
 	Pattern.Single("a2").Telegraph(2.0).Delay(0.125)
 	Pattern.Single("a3").Telegraph(2.0).Delay(0.125)
 	Pattern.Single("d2").Telegraph(2.0).Delay(0.125)
@@ -534,6 +774,14 @@ func queue_patterns() -> void:
 	Pattern.Advance(4)
 	for i in range(7):
 		boombox_pattern_eight_beats(i * 8)
+		
+	for i in range(7):
+		queue_basic_attacks(i * 8)
+		
+	Trigger.EnemyMoveToRowRight(2.5).Delay(-1)
+	for i in range(7):
+		Pattern.Cast($LineBurst).Delay(i * 8 + 6).Telegraph(6.0)
+	
 	Pattern.Advance(56)
 	
 	Pattern.Column("d").Telegraph(2).Delay(0.125)
@@ -541,32 +789,33 @@ func queue_patterns() -> void:
 	Pattern.Column("b").Telegraph(2).Delay(1.625)
 	Pattern.Column("a").Telegraph(2).Delay(2.75)
 	Pattern.Advance(4.0)
-	queue_intro_basic_attacks()
 	Pattern.Column("a").Telegraph(2).Delay(-0.125)
 	Pattern.Column("b").Telegraph(2).Delay(0.125)
 	Pattern.Column("c").Telegraph(2).Delay(0.75)
 	Pattern.Column("d").Telegraph(2).Delay(1.625)
 	
-	Trigger.EnemyMove(2.5)
+	Trigger.EnemyMoveToRowRight(2.5)
 	
 	Pattern.Advance(4)
-	for i in range(16):
-		Pattern.Cast($LineBurst).Delay(i * 2).Telegraph(2.0)
+	for i in range(4):
+		queue_basic_attacks(i * 8.0)
+	for i in range(8):
+		Pattern.Cast($LineBurst).Delay(i * 4)
 	for i in range(4):
 		boombox_pattern_eight_beats(i * 8)
 	
-func queue_intro_basic_attacks(skip_last: bool = false) -> void:
-	Trigger.BasicAttack().Delay(0.125)
-	Trigger.BasicAttack().Delay(0.75)
-	Trigger.BasicAttack().Delay(1.625)
-	Trigger.BasicAttack().Delay(2.75)
-	Trigger.BasicAttack().Delay(3.625)
-	Trigger.BasicAttack().Delay(4.25)
-	Trigger.BasicAttack().Delay(5.0)
-	Trigger.BasicAttack().Delay(5.625)
+func queue_intro_basic_attacks(delay: float = 0.0, skip_last: bool = false) -> void:
+	Trigger.BasicAttack().Delay(0.125 + delay)
+	Trigger.BasicAttack().Delay(0.75 + delay)
+	Trigger.BasicAttack().Delay(1.625 + delay)
+	Trigger.BasicAttack().Delay(2.75 + delay)
+	Trigger.BasicAttack().Delay(3.625 + delay)
+	Trigger.BasicAttack().Delay(4.25 + delay)
+	Trigger.BasicAttack().Delay(5.0 + delay)
+	Trigger.BasicAttack().Delay(5.625 + delay)
 	if not skip_last:
-		Trigger.BasicAttack().Delay(6.75)
-		Trigger.BasicAttack().Delay(7.75)
+		Trigger.BasicAttack().Delay(6.75 + delay)
+		Trigger.BasicAttack().Delay(7.75 + delay)
 		
 func queue_basic_attacks(delay: float = 0.0) -> void:
 	for i in range(8):
