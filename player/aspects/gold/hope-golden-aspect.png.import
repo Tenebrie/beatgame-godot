@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bbslhmg4aggsk"
-path.s3tc="res://.godot/imported/hope-golden-aspect.png-cc39af6f011a4e98be68e2e1bb500b1b.s3tc.ctex"
+path.s3tc="res://.godot/imported/hope-golden-aspect.png-dc9dde3fc352033a2b8c6acb2eb0eb55.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://player/hope-golden-aspect.png"
-dest_files=["res://.godot/imported/hope-golden-aspect.png-cc39af6f011a4e98be68e2e1bb500b1b.s3tc.ctex"]
+source_file="res://player/aspects/gold/hope-golden-aspect.png"
+dest_files=["res://.godot/imported/hope-golden-aspect.png-dc9dde3fc352033a2b8c6acb2eb0eb55.s3tc.ctex"]
 
 [params]
 

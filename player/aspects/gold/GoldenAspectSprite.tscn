@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://i40vqvhvbt8t"]
+
+[ext_resource type="Texture2D" uid="uid://bbslhmg4aggsk" path="res://player/aspects/gold/hope-golden-aspect.png" id="3_ct3xk"]
+
+[node name="GoldenAspectSprite" type="Node3D" unique_id=1106510460]
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=1517067322]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+billboard = 1
+shaded = true
+texture_filter = 5
+texture = ExtResource("3_ct3xk")

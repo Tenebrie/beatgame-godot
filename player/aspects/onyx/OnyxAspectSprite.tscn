@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://dbb5s1t0e30wa"]
+
+[ext_resource type="Texture2D" uid="uid://bjfc2a5q47l8u" path="res://player/aspects/onyx/sewer-3.png" id="1_brvuu"]
+
+[node name="OnyxAspectSprite" type="Node3D" unique_id=857837674]
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=900379654]
+transform = Transform3D(0.08, 0, 0, 0, 0.08, 0, 0, 0, 0.08, 0, 0, 0)
+billboard = 1
+shaded = true
+texture_filter = 5
+texture = ExtResource("1_brvuu")

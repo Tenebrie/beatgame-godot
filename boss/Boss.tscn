@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://ctwlmau14u7kg" path="res://boss/Boss.gd" id="1_lsp41"]
 [ext_resource type="PackedScene" uid="uid://c1ee553clspyf" path="res://boss/abilities/LineBurst/LineBurst.tscn" id="2_i7h4p"]
 [ext_resource type="PackedScene" uid="uid://c2m5ehw2qsgr5" path="res://boss/abilities/WingSwipe/WingSwipe.tscn" id="2_yyxsp"]
+[ext_resource type="Texture2D" uid="uid://bjfc2a5q47l8u" path="res://player/aspects/onyx/sewer-3.png" id="4_wiblv"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lsp41"]
 albedo_color = Color(1, 0.29411766, 0.1254902, 1)
@@ -22,6 +23,7 @@ height = 4.0
 script = ExtResource("1_lsp41")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=151855532]
+visible = false
 mesh = SubResource("TextMesh_yyxsp")
 
 [node name="LineBurst" parent="." unique_id=381804580 instance=ExtResource("2_i7h4p")]
@@ -39,3 +41,9 @@ direction = 1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1738117506]
 shape = SubResource("CapsuleShape3D_i7h4p")
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=1342947737]
+transform = Transform3D(0.17, 0, 0, 0, 0.17, 0, 0, 0, 0.17, 0, 0, 0)
+flip_h = true
+billboard = 1
+texture = ExtResource("4_wiblv")
