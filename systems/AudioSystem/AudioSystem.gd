@@ -15,3 +15,31 @@ func set_playback_speed(speed: float) -> void:
 		GlobalContext.GetAudioAgent().set_volume(0.2)
 	else:
 		GlobalContext.GetAudioAgent().set_volume(1.0)
+
+func RegisterOneShotTimer(timer: MusicTimer) -> void:
+	$OneShotTimers.add_child(timer)
+	
+func RegisterRepeatableTimer(timer: MusicTimer) -> void:
+	if timer.get_parent() == null:
+		$RepeatableTimers.add_child(timer)
+		
+func SortTimers() -> void:
+	var children := $OneShotTimers.get_children()
+	children.sort_custom(func(a: MusicTimer, b: MusicTimer) -> bool:
+		return a.triggerBeat < b.triggerBeat
+	)
+	for i in range(children.size()):
+		$OneShotTimers.move_child(children[i], i)
+
+func _process(_delta: float) -> void:
+	var currentTime: float = roundf(GlobalContext.GetAudioAgent().get_position_beats() * 8.0) / 8.0
+	
+	for timer in $RepeatableTimers.get_children():
+		if currentTime >= timer.triggerBeat:
+			timer.trigger()
+	
+	for timer in $OneShotTimers.get_children():
+		if currentTime >= timer.triggerBeat:
+			timer.trigger()
+		else:
+			return

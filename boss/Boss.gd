@@ -505,7 +505,7 @@ func queue_patterns() -> void:
 	Pattern.Advance(56)
 	
 	# Beat 630
-	Pattern.StartHere()
+	#Pattern.StartHere()
 	Pattern.Single("a2").Telegraph(2.0).Delay(0.125)
 	Pattern.Single("a3").Telegraph(2.0).Delay(0.125)
 	Pattern.Single("d2").Telegraph(2.0).Delay(0.125)

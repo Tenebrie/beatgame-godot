@@ -5,6 +5,8 @@ class_name DanceFloor extends Node3D
 var gridSize := Vector2i(4, 4)
 var maximumGridSize := Vector2i(32, 4)
 
+var tilemap: Array[Array] # Array[Array[DanceTile]]
+
 func _enter_tree() -> void:
 	GlobalContext.Register(self)
 
@@ -18,6 +20,7 @@ func _ready() -> void:
 	GlobalContext.GetBoss().set_grid_size(gridSize)
 	
 	for x in range(maximumGridSize.x):
+		tilemap.append([])
 		for y in range(maximumGridSize.y):
 			var scene := tile.instantiate() as DanceTile
 			scene.name = "DanceTile-" + str(x) + "-" + str(y)
@@ -25,6 +28,7 @@ func _ready() -> void:
 			scene.gridX = x
 			scene.gridY = y
 			add_child(scene)
+			tilemap[x].append(scene)
 			
 	const letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 	for x in range(maximumGridSize.x):
@@ -42,6 +46,7 @@ func _ready() -> void:
 	GlobalContext.GetBoss().prep_patterns()
 	SignalBus.OnFlushAllTimers.emit()
 	GlobalContext.GetBoss().queue_patterns()
+	AudioSystem.SortTimers()
 				
 	position -= Vector3(gridSize.x / 2.0 - 0.5, 0.0, gridSize.y / 2.0 - 0.5)
 		
@@ -52,11 +57,7 @@ func _on_telegraph_tile(x: int, y: int) -> void:
 	SignalBus.explodeTile.emit(x, y)
 	
 func get_tile_at_position(pos: Vector2i) -> DanceTile:
-	for child in get_children():
-		if child is DanceTile and child.gridX == pos.x and child.gridY == pos.y:
-			return child
-			
-	return null
+	return tilemap[pos.x][pos.y]
 	
 func _process(delta: float) -> void:
 	var livingTiles := 0

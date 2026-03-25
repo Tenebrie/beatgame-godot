@@ -7,8 +7,7 @@ signal resolved
 func _init() -> void:
 	name = "Trigger"
 	var danceFloor := GlobalContext.GetDanceFloor()
-	triggerTimer = MusicTimer.new()
-	danceFloor.add_child(triggerTimer)
+	triggerTimer = MusicTimer.Create()
 	triggerTimer.start(Pattern.BuilderTime)
 	triggerTimer.timeout.connect(
 		func(_beat: int) -> void:

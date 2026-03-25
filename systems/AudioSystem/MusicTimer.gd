@@ -15,11 +15,13 @@ func start(trigger_beat: float, duration: float = 0.0) -> void:
 	triggerBeat = trigger_beat
 	boundToBeat = trigger_beat + duration
 	selfDestruct = true
+	AudioSystem.RegisterOneShotTimer(self)
 	
 func start_repeatable(trigger_beat: float) -> void:
 	triggerBeat = trigger_beat
 	boundToBeat = trigger_beat
 	selfDestruct = false
+	AudioSystem.RegisterRepeatableTimer(self)
 
 func stop() -> void:
 	triggerBeat = INF
@@ -40,11 +42,6 @@ func move_trigger(beats: float) -> void:
 	triggerBeat += beats
 	boundToBeat += beats
 
-func _process(_delta: float) -> void:
-	var currentTime: float = roundf(AudioSystem.get_current_beat() * 8.0) / 8.0
-	if currentTime >= triggerBeat:
-		trigger()
-
 func trigger() -> void:
 	var previousTriggerBeat := triggerBeat
 	triggerBeat = INF
@@ -56,3 +53,7 @@ func trigger() -> void:
 func is_passed() -> bool:
 	var currentTime: float = roundf(AudioSystem.get_current_beat() * 8.0) / 8.0
 	return currentTime >= triggerBeat
+	
+static func Create() -> MusicTimer:
+	var timer := MusicTimer.new()
+	return timer

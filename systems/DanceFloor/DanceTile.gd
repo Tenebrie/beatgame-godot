@@ -18,8 +18,7 @@ func _ready() -> void:
 	SignalBus.OnRestoreTile.connect(on_restore_tile)
 	SignalBus.OnDestroyTile.connect(on_destroy_tile)
 	
-	beatTimer = MusicTimer.new()
-	add_child(beatTimer)
+	beatTimer = MusicTimer.Create()
 	beatTimer.timeout.connect(on_beat)
 	beatTimer.start_repeatable(0.0)
 
@@ -66,6 +65,7 @@ func on_restore_tile(x: int, y: int) -> void:
 	beatTimer.start_repeatable(roundi(GlobalContext.GetAudioAgent().get_position_beats()) + 1)
 	isAlive = true
 	create_tween().tween_property($MeshInstance3D, ^"scale", Vector3(1, 1, 1), 0.2)
+	set_process(true)
 	
 func on_destroy_tile(x: int, y: int) -> void:
 	if x != gridX or y != gridY:
@@ -74,6 +74,7 @@ func on_destroy_tile(x: int, y: int) -> void:
 	beatTween.stop()
 	isAlive = false
 	create_tween().tween_property($MeshInstance3D, ^"scale", Vector3(0, 0, 0), 0.2)
+	set_process(false)
 
 func _process(delta: float) -> void:
 	var telegraph := 0.0

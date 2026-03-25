@@ -8,7 +8,8 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	await get_tree().create_timer(0.5).timeout
 	$AudioStreamPlayer.play()
-	fast_forward(starting_time)
+	if starting_time > 0:
+		fast_forward(starting_time)
 	#fast_forward(128)
 
 func get_bpm() -> float:

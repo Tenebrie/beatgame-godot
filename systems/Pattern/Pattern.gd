@@ -19,9 +19,7 @@ static var BuilderOffset: Vector2i = Vector2i.ZERO
 func _init(newTiles: Array[String]) -> void:
 	self.tiles = newTiles
 	name = "AttackPatternTile"
-	var danceFloor := GlobalContext.GetDanceFloor()
-	explodeTimer = MusicTimer.new()
-	danceFloor.add_child(explodeTimer)
+	explodeTimer = MusicTimer.Create()
 	var offset := BuilderOffset
 	explodeTimer.start(BuilderTime)
 	explodeTimer.timeout.connect(
@@ -36,10 +34,7 @@ func _init(newTiles: Array[String]) -> void:
 	)
 		
 func Telegraph(delay: float) -> Pattern:
-	var danceFloor := GlobalContext.GetDanceFloor()
-	
-	telegraphDelayTimer = MusicTimer.new()
-	danceFloor.add_child(telegraphDelayTimer)
+	telegraphDelayTimer = MusicTimer.Create()
 	telegraphDelayTimer.start(BuilderTime - delay + startDelay, delay)
 	var offset := BuilderOffset
 	telegraphDelayTimer.timeout.connect(

@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://btp3esy2cnex2"]
+
+[ext_resource type="Script" uid="uid://bbjai1yktt2c5" path="res://systems/AudioSystem/AudioSystem.gd" id="1_iaxu5"]
+
+[node name="AudioSystem" type="Node" unique_id=1244304516]
+script = ExtResource("1_iaxu5")
+
+[node name="OneShotTimers" type="Node" parent="." unique_id=1973597463]
+
+[node name="RepeatableTimers" type="Node" parent="." unique_id=199209790]
