@@ -56,6 +56,9 @@ particles_anim_loop = false
 material = SubResource("StandardMaterial3D_rsj54")
 size = Vector2(0.05, 0.05)
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_tet52"]
+radius = 0.25
+
 [node name="BasicAttackProjectile" type="Node3D" unique_id=1103849895]
 script = ExtResource("1_8hgou")
 
@@ -73,3 +76,8 @@ draw_pass_1 = SubResource("QuadMesh_tmqe5")
 [node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=469655673]
 light_color = Color(1, 0.3764706, 0, 1)
 omni_range = 0.25
+
+[node name="Area3D" type="Area3D" parent="." unique_id=2005926259]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=401098746]
+shape = SubResource("SphereShape3D_tet52")

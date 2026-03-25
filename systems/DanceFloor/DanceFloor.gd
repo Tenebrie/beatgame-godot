@@ -30,23 +30,24 @@ func _ready() -> void:
 			add_child(scene)
 			tilemap[x].append(scene)
 			
-	const letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-	for x in range(maximumGridSize.x):
-		var scene := Asset.Instantiate(DanceLabel) as DanceLabel
-		scene.set_text(letters[x])
-		scene.position = Vector3(x, 0, gridSize.y - 0.5)
-		add_child(scene)
-		
-	for y in range(maximumGridSize.y):
-		var scene := Asset.Instantiate(DanceLabel) as DanceLabel
-		scene.set_text(str(y + 1))
-		scene.position = Vector3(-0.5, 0, y)
-		add_child(scene)
+	#const letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+	#for x in range(maximumGridSize.x):
+		#var scene := Asset.Instantiate(DanceLabel) as DanceLabel
+		#scene.set_text(letters[x])
+		#scene.position = Vector3(x, 0, gridSize.y - 0.5)
+		#add_child(scene)
+		#
+	#for y in range(maximumGridSize.y):
+		#var scene := Asset.Instantiate(DanceLabel) as DanceLabel
+		#scene.set_text(str(y + 1))
+		#scene.position = Vector3(-0.5, 0, y)
+		#add_child(scene)
 		
 	GlobalContext.GetBoss().prep_patterns()
 	SignalBus.OnFlushAllTimers.emit()
 	GlobalContext.GetBoss().queue_patterns()
 	AudioSystem.SortTimers()
+	print("Maximum theoretical boss damage: " + str(Stats.CalculateOptimalDamage()))
 				
 	position -= Vector3(gridSize.x / 2.0 - 0.5, 0.0, gridSize.y / 2.0 - 0.5)
 		

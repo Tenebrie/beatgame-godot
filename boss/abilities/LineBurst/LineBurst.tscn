@@ -60,9 +60,9 @@ size = Vector2(0.15, 0.15)
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_p3ueh"]
 lifetime_randomness = 0.59
-emission_shape_offset = Vector3(-40, 0, 0)
+emission_shape_offset = Vector3(-50, 0, 0)
 emission_shape = 3
-emission_box_extents = Vector3(40, 1, 6)
+emission_box_extents = Vector3(50, 1, 6)
 angle_min = 5.000011
 angle_max = 5.000011
 direction = Vector3(-5, 0, 0)

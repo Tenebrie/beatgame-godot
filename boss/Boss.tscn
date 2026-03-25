@@ -15,6 +15,9 @@ material = SubResource("StandardMaterial3D_lsp41")
 text = "Scary Boss"
 depth = 0.01
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_i7h4p"]
+height = 4.0
+
 [node name="Boss" type="Node3D" unique_id=679576008]
 script = ExtResource("1_lsp41")
 
@@ -26,6 +29,13 @@ mesh = SubResource("TextMesh_yyxsp")
 [node name="WingSwipe" parent="." unique_id=15120941 instance=ExtResource("2_yyxsp")]
 
 [node name="WingSwipeLeft" parent="." unique_id=1661270373 instance=ExtResource("2_yyxsp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.25)
 
 [node name="WingSwipeRight" parent="." unique_id=1054706673 instance=ExtResource("2_yyxsp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.25)
 direction = 1
+
+[node name="Area3D" type="Area3D" parent="." unique_id=592476495]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1738117506]
+shape = SubResource("CapsuleShape3D_i7h4p")

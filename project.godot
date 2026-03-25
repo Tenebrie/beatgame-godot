@@ -22,6 +22,7 @@ GlobalControls="*uid://bi15qsxoajxh"
 GlobalContext="*uid://cwb0exh7by3tb"
 Asset="*uid://cq40h3admt4dg"
 AudioSystem="*uid://btp3esy2cnex2"
+Stats="*uid://ns5rqbyukt0v"
 
 [debug]
 

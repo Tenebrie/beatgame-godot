@@ -3,8 +3,14 @@ class_name Boss extends Node3D
 var gridSize := Vector2i(1, 1)
 var gridPosition := Vector2(1, 1)
 
+var damageTaken := 0.0
+var maximumHealth := 500.0
+
 func _enter_tree() -> void:
 	GlobalContext.Register(self)
+	
+func DealDamage(damage: float) -> void:
+	damageTaken += damage
 
 func set_grid_size(size: Vector2i) -> void:
 	gridSize = size

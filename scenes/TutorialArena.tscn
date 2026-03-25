@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://3qpw055ur5dl" path="res://systems/AudioSystem/AudioAgent.tscn" id="5_vxy8m"]
 [ext_resource type="PackedScene" uid="uid://ceiwb524wex1j" path="res://ui/Playhead/PlayheadWidget.tscn" id="6_3elwe"]
 [ext_resource type="PackedScene" uid="uid://bfh1xks4dsghv" path="res://ui/PerformanceStats/PerformanceStats.tscn" id="7_el274"]
+[ext_resource type="PackedScene" uid="uid://ss1rowstjojq" path="res://ui/BossStatus/BossStatus.tscn" id="8_m7stk"]
 
 [node name="TutorialArena" type="Node" unique_id=1546456810]
 script = ExtResource("1_w5bc6")
@@ -35,3 +36,12 @@ anchor_bottom = 0.0
 offset_left = -75.0
 offset_right = 0.0
 offset_bottom = 35.0
+
+[node name="BossStatus" parent="." unique_id=1668244000 instance=ExtResource("8_m7stk")]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -300.0
+offset_right = 300.0
+offset_bottom = 196.56
+grow_vertical = 1

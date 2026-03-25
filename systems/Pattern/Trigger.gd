@@ -23,6 +23,7 @@ static func BasicAttack() -> Trigger:
 		func(_beat: int) -> void:
 			SignalBus.OnBasicBeat.emit()
 	)
+	Stats.RecordBasicAttackTrigger()
 	return trigger
 	
 static func Execute(callback: Callable) -> Trigger:
