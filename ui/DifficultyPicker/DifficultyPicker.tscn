@@ -1,0 +1,136 @@
+[gd_scene format=3 uid="uid://da6hy37jpltbb"]
+
+[ext_resource type="Script" uid="uid://cpsk1xh3aqdnu" path="res://ui/DifficultyPicker/DifficultyPicker.gd" id="1_r8al2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r8al2"]
+bg_color = Color(0.09330342, 0.0088151805, 0.1196753, 0.91764706)
+
+[node name="DifficultyPicker" type="CanvasLayer" unique_id=1956702526]
+script = ExtResource("1_r8al2")
+
+[node name="Panel" type="Panel" parent="." unique_id=1518999721]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 425.32703
+offset_top = -363.0
+offset_right = 871.0
+offset_bottom = 449.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_r8al2")
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel" unique_id=256752137]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer" unique_id=1561107928]
+layout_mode = 2
+theme_override_constants/separation = 32
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer" unique_id=1168229972]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Difficulty"
+horizontal_alignment = 1
+
+[node name="PracticeDifficulty" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer" unique_id=6815748]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/PracticeDifficulty" unique_id=212451936]
+layout_mode = 2
+
+[node name="DifficultyCheckbox" type="CheckBox" parent="Panel/MarginContainer/VBoxContainer/PracticeDifficulty/HBoxContainer" unique_id=594144500]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Practice"
+
+[node name="DifficultyLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/PracticeDifficulty/HBoxContainer" unique_id=1653251855]
+visible = false
+layout_mode = 2
+text = "Practice"
+
+[node name="DifficultyHint" type="Label" parent="Panel/MarginContainer/VBoxContainer/PracticeDifficulty" unique_id=1731667285]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5106012, 0.5106013, 0.5106012, 1)
+theme_override_font_sizes/font_size = 24
+text = "Damage won't kill you"
+
+[node name="NormalDifficulty" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer" unique_id=1604988942]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/NormalDifficulty" unique_id=921028095]
+layout_mode = 2
+
+[node name="DifficultyCheckbox" type="CheckBox" parent="Panel/MarginContainer/VBoxContainer/NormalDifficulty/HBoxContainer" unique_id=1209059342]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Normal"
+
+[node name="DifficultyLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/NormalDifficulty/HBoxContainer" unique_id=246614324]
+visible = false
+layout_mode = 2
+text = "Normal"
+
+[node name="DifficultyHint" type="Label" parent="Panel/MarginContainer/VBoxContainer/NormalDifficulty" unique_id=603889142]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5106012, 0.5106013, 0.5106012, 1)
+theme_override_font_sizes/font_size = 24
+text = "As she intended"
+
+[node name="HarderDifficulty" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer" unique_id=1959601427]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/HarderDifficulty" unique_id=548451920]
+layout_mode = 2
+
+[node name="DifficultyCheckbox" type="CheckBox" parent="Panel/MarginContainer/VBoxContainer/HarderDifficulty/HBoxContainer" unique_id=39660066]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Harder"
+
+[node name="DifficultyLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/HarderDifficulty/HBoxContainer" unique_id=741439818]
+visible = false
+layout_mode = 2
+text = "Harder"
+
+[node name="DifficultyHint" type="Label" parent="Panel/MarginContainer/VBoxContainer/HarderDifficulty" unique_id=1810366993]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5106012, 0.5106013, 0.5106012, 1)
+theme_override_font_sizes/font_size = 24
+text = "More adversary health
+Less player health"
+
+[node name="ExtraHardDifficulty" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer" unique_id=364768397]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/ExtraHardDifficulty" unique_id=594440417]
+layout_mode = 2
+
+[node name="DifficultyCheckbox" type="CheckBox" parent="Panel/MarginContainer/VBoxContainer/ExtraHardDifficulty/HBoxContainer" unique_id=62486743]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Vibe Souls"
+
+[node name="DifficultyLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/ExtraHardDifficulty/HBoxContainer" unique_id=593288303]
+visible = false
+layout_mode = 2
+text = "Vibe Souls"
+
+[node name="DifficultyHint" type="Label" parent="Panel/MarginContainer/VBoxContainer/ExtraHardDifficulty" unique_id=1035318918]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5106012, 0.5106013, 0.5106012, 1)
+theme_override_font_sizes/font_size = 24
+text = "Even more adversary health
+Less player health
+No regeneration"

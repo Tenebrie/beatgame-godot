@@ -7,7 +7,6 @@ var gridY: int
 var explode: float = 0.0
 
 var beatTimer: MusicTimer
-var beatCounter: int = 0
 var isAlive := true
 var beatTween: Tween
 
@@ -27,10 +26,9 @@ func on_beat(triggerBeat: int) -> void:
 	if not isAlive:
 		return
 		
-	beatCounter += 1
 	beatTimer.start_repeatable(triggerBeat + 1)
 	beatTween = create_tween()
-	if beatCounter % 2 == 0:
+	if triggerBeat % 2 == 0:
 		beatTween.tween_property($MeshInstance3D, "scale", Vector3(1.05, 1.0, 1.0), 0.05)
 		beatTween.tween_property($MeshInstance3D, "scale", Vector3(1.0, 1.0, 1.0), 0.3)
 	else:

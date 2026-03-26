@@ -1,6 +1,26 @@
 class_name VictoryScreen extends Control
 
 func _ready() -> void:
+	# Difficulty
+	var difficultyString := ""
+	var difficultyColor := Color.WHITE
+	if DifficultyPicker.LastPlayedDifficulty == 0:
+		difficultyString = "Practice Mode"
+		difficultyColor = Color.GREEN
+	elif DifficultyPicker.LastPlayedDifficulty == 1:
+		difficultyString = "Normal Mode"
+		difficultyColor = Color.YELLOW
+	elif DifficultyPicker.LastPlayedDifficulty == 2:
+		difficultyString = "Harder Mode"
+		difficultyColor = Color.ORANGE
+	elif DifficultyPicker.LastPlayedDifficulty == 3:
+		difficultyString = "Vibe Souls Mode"
+		difficultyColor = Color.ORANGE_RED
+	
+	$CanvasLayer/Panel/Control/VBoxContainer/HBoxContainer2/CurrentDifficultyLabel.text = difficultyString
+	$CanvasLayer/Panel/Control/VBoxContainer/HBoxContainer2/CurrentDifficultyLabel.add_theme_color_override("font_color", difficultyColor)
+	
+	# Stars
 	var boss := GlobalContext.GetBoss()
 	var score := boss.damageTaken
 	var isBossDead := boss.damageTaken >= boss.maximumHealth
@@ -71,6 +91,21 @@ func _ready() -> void:
 		highUptimeStar.text = "★"
 	else:
 		highUptimeStar.text = "☆"
+	
+	# Unlocks
+	var unlocks: String = ""
+	var harderUnlocked: bool = Achievements.LoadValue("harder_unlocked", false)
+	var extraHardUnlocked: bool = Achievements.LoadValue("extra_hard_unlocked", false)
+	if not harderUnlocked and DifficultyPicker.LastPlayedDifficulty == 1:
+		unlocks += "\n- Harder difficulty unlocked!"
+		Achievements.SaveValue("harder_unlocked", true)
+	if not extraHardUnlocked and DifficultyPicker.LastPlayedDifficulty == 2:
+		unlocks += "\n- Vibe Souls difficulty unlocked!"
+		Achievements.SaveValue("extra_hard_unlocked", true)
+	if unlocks.length() > 0:
+		unlocks = "New content!" + unlocks
+		$CanvasLayer/Panel/Control/VBoxContainer/UnlocksLabel.visible = true
+		$CanvasLayer/Panel/Control/VBoxContainer/UnlocksLabel.text = unlocks
 		
 	$CanvasLayer/Panel/Control/VBoxContainer/RestartButton.pressed.connect(
 		func() -> void: 

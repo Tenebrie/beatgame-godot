@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://ss1rowstjojq" path="res://ui/BossStatus/BossStatus.tscn" id="8_m7stk"]
 [ext_resource type="PackedScene" uid="uid://tagdgbiaqop6" path="res://ui/PlayerStatus/PlayerStatus.tscn" id="10_575om"]
 [ext_resource type="PackedScene" uid="uid://dr3g7x13y4bcn" path="res://scenes/environment/WorldBackground.tscn" id="11_t4p3w"]
+[ext_resource type="PackedScene" uid="uid://da6hy37jpltbb" path="res://ui/DifficultyPicker/DifficultyPicker.tscn" id="13_7af6x"]
 
 [sub_resource type="Environment" id="Environment_eqoqj"]
 glow_enabled = true
@@ -49,12 +50,16 @@ offset_right = 0.0
 offset_bottom = 35.0
 
 [node name="PlayerStatus" parent="." unique_id=1668244000 instance=ExtResource("10_575om")]
-offset_left = 1054.0
-offset_top = 1317.0
-offset_right = 1525.0
-offset_bottom = 1430.0
-grow_horizontal = 1
-grow_vertical = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -235.5
+offset_top = -113.0
+offset_right = 235.5
+offset_bottom = 0.0
+grow_vertical = 0
 
 [node name="BossStatus" parent="." unique_id=367278817 instance=ExtResource("8_m7stk")]
 anchors_preset = 5
@@ -71,3 +76,5 @@ environment = SubResource("Environment_eqoqj")
 
 [node name="WorldBackground" parent="." unique_id=1907618401 instance=ExtResource("11_t4p3w")]
 transform = Transform3D(5.9605556, 0, 0, 0, 1, 0, 0, 0, 5.9605556, 0, -108.23712, 0)
+
+[node name="DifficultyPicker" parent="." unique_id=1956702526 instance=ExtResource("13_7af6x")]

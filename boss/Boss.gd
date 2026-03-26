@@ -45,6 +45,9 @@ func DealDamage(damage: float) -> void:
 		shake_strength *= 0.7  # decay each shake
 	hit_tween.tween_property(sprite, "position", Vector3.ZERO, shake_duration)
 
+func SetMaximumHealth(value: float) -> void:
+	maximumHealth = value
+
 func set_grid_size(size: Vector2i) -> void:
 	gridSize = size
 	var targetPosition := Vector2(gridPosition.x * (size.x - gridSize.x), gridPosition.y * (size.y - gridSize.y) / 2.0)
@@ -840,7 +843,9 @@ func queue_patterns() -> void:
 	for i in range(4):
 		queue_basic_attacks(i * 8.0)
 	for i in range(8):
-		Pattern.Cast($LineBurst).Delay(i * 4)
+		Pattern.Cast($LineBurst).Delay(i * 4).BeforeTrigger(func() -> void:
+			GlobalContext.GetPlayer().MakeImmortal()
+		)
 	for i in range(4):
 		boombox_pattern_eight_beats(i * 8)
 		
@@ -849,7 +854,7 @@ func queue_patterns() -> void:
 		if damageTaken >= maximumHealth:
 			SignalBus.OnAdversaryDeath.emit()
 		else:
-			GlobalContext.GetPlayer().DealDamage(999.0)
+			SignalBus.OnPlayerDeath.emit()
 	)
 	
 func queue_intro_basic_attacks(delay: float = 0.0, skip_last: bool = false) -> void:

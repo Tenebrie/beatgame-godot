@@ -16,6 +16,20 @@ func _grid_to_world(gp: Vector2i) -> Vector3:
 var isAlive := false
 var damageTaken := 0.0
 var maximumHealth := 5.0
+var regeneration := 1.0 / 16.0 # 1 hp per 16 seconds
+
+var playerDeathEnabled := true
+func MakeImmortal() -> void:
+	playerDeathEnabled = false
+	
+func ForfeitImmortality() -> void:
+	playerDeathEnabled = true
+	
+func SetMaximumHealth(value: float) -> void:
+	maximumHealth = value
+	
+func SetRegeneration(value: float) -> void:
+	regeneration = value
 
 var hit_tween: Tween
 var color_tween: Tween
@@ -24,10 +38,10 @@ func DealDamage(damage: float) -> void:
 	if not isAlive:
 		return
 	
-	damageTaken += damage
+	damageTaken = minf(damageTaken + damage, maximumHealth)
 	Stats.RecordDamageTaken(damage)
 	
-	if damageTaken >= maximumHealth:
+	if playerDeathEnabled and damageTaken >= maximumHealth:
 		isAlive = false
 		SignalBus.OnPlayerDeath.emit()
 
@@ -101,7 +115,7 @@ func _process(delta: float) -> void:
 			_move(held_direction)
 
 	position = position.lerp(target_position, MOVE_SPEED * delta)
-	damageTaken = maxf(0.0, damageTaken - delta / 16.0)
+	damageTaken = maxf(0.0, damageTaken - delta * regeneration)
 
 func _move(dir: Vector2i) -> void:
 	var danceFloor := GlobalContext.GetDanceFloor()

@@ -2,6 +2,9 @@
 
 [ext_resource type="Script" uid="uid://bgojjso07mvqc" path="res://ui/VictoryScreen/VictoryScreen.gd" id="1_fqiwl"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fqiwl"]
+bg_color = Color(0.13725491, 0.019607844, 0.15294118, 0.9647059)
+
 [sub_resource type="LabelSettings" id="LabelSettings_fqiwl"]
 font_size = 90
 
@@ -26,6 +29,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_fqiwl")
 
 [node name="Control" type="Control" parent="CanvasLayer/Panel" unique_id=1433467990]
 layout_mode = 1
@@ -41,17 +45,26 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -400.0
-offset_top = 144.0
+offset_top = 64.0
 offset_right = 400.0
-offset_bottom = 448.0
+offset_bottom = 1147.0
 grow_horizontal = 2
 theme_override_constants/separation = 32
 alignment = 1
 
-[node name="StatusLabel" type="Label" parent="CanvasLayer/Panel/Control/VBoxContainer" unique_id=983167869]
+[node name="HBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Panel/Control/VBoxContainer" unique_id=1272266559]
+layout_mode = 2
+
+[node name="StatusLabel" type="Label" parent="CanvasLayer/Panel/Control/VBoxContainer/HBoxContainer2" unique_id=983167869]
 layout_mode = 2
 text = "Victory!"
 label_settings = SubResource("LabelSettings_fqiwl")
+horizontal_alignment = 1
+
+[node name="CurrentDifficultyLabel" type="Label" parent="CanvasLayer/Panel/Control/VBoxContainer/HBoxContainer2" unique_id=1581051400]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Current Difficulty"
 horizontal_alignment = 1
 
 [node name="ScoreVBoxContainer" type="VBoxContainer" parent="CanvasLayer/Panel/Control/VBoxContainer" unique_id=1136730091]
@@ -139,6 +152,12 @@ label_settings = SubResource("LabelSettings_egvsy")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Panel/Control/VBoxContainer" unique_id=467852136]
 layout_mode = 2
+
+[node name="UnlocksLabel" type="Label" parent="CanvasLayer/Panel/Control/VBoxContainer" unique_id=364904310]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "- Stuff unlocked!"
 
 [node name="RestartButton" type="Button" parent="CanvasLayer/Panel/Control/VBoxContainer" unique_id=653929889]
 layout_mode = 2

@@ -64,3 +64,11 @@ func IsPlaying() -> bool:
 
 func StopPlaying() -> void:
 	$AudioStreamPlayer.stop()
+	
+func Pause() -> void:
+	var player := $AudioStreamPlayer as AudioStreamPlayer
+	player.stream_paused = true
+	
+func Resume() -> void:
+	var player := $AudioStreamPlayer as AudioStreamPlayer
+	player.stream_paused = false
