@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://cs7xdnc23k4he" path="res://systems/DanceFloor/DanceFloor.tscn" id="1_auhpn"]
 [ext_resource type="Script" uid="uid://j0xa7fe7oxv8" path="res://scenes/TutorialArena.gd" id="1_w5bc6"]
+[ext_resource type="PackedScene" uid="uid://o3b0w6c0ai85" path="res://scenes/environment/SurpriseParticles.tscn" id="2_4wjo6"]
 [ext_resource type="PackedScene" uid="uid://bbvr3ouw6tjd7" path="res://player/Player.tscn" id="2_auhpn"]
 [ext_resource type="PackedScene" uid="uid://bmc8tfti12rqu" path="res://boss/Boss.tscn" id="4_adxne"]
 [ext_resource type="Script" uid="uid://b754hdhv5ohci" path="res://scenes/environment/LobbyTileHandler.gd" id="5_eqoqj"]
@@ -19,6 +20,9 @@ glow_enabled = true
 
 [node name="TutorialArena" type="Node" unique_id=1546456810]
 script = ExtResource("1_w5bc6")
+
+[node name="SurpriseParticles" parent="." unique_id=1566747555 instance=ExtResource("2_4wjo6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.454512, -1.4922266, 0)
 
 [node name="DanceFloor" parent="." unique_id=796054563 instance=ExtResource("1_auhpn")]
 

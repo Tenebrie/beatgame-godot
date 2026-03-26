@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://o3b0w6c0ai85"]
 
-[ext_resource type="Texture2D" uid="uid://bwf5e2gb4g2ef" path="res://assets/textures/gif-2.gif" id="1_na5hi"]
+[ext_resource type="Script" uid="uid://x3v1h31bpcec" path="res://scenes/environment/SurpriseParticles.gd" id="1_p3bxv"]
+[ext_resource type="Texture2D" uid="uid://ulfkx881uit3" path="res://assets/textures/gif-2.png" id="2_p3bxv"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_na5hi"]
 emission_shape_scale = Vector3(1, 1, 5)
@@ -12,23 +13,26 @@ flatness = 1.0
 initial_velocity_min = 3.0
 initial_velocity_max = 5.0
 gravity = Vector3(0, 0, 0)
+anim_speed_min = 2.5
+anim_speed_max = 2.5
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ytund"]
 shading_mode = 0
-albedo_texture = ExtResource("1_na5hi")
+albedo_texture = ExtResource("2_p3bxv")
 billboard_mode = 3
-particles_anim_h_frames = 1
-particles_anim_v_frames = 1
-particles_anim_loop = false
+particles_anim_h_frames = 6
+particles_anim_v_frames = 6
+particles_anim_loop = true
 
 [sub_resource type="QuadMesh" id="QuadMesh_na5hi"]
 material = SubResource("StandardMaterial3D_ytund")
 size = Vector2(0.5, 0.5)
 
 [node name="SurpriseParticles" type="Node3D" unique_id=1566747555]
+script = ExtResource("1_p3bxv")
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="." unique_id=1524211872]
 amount = 100
-lifetime = 4.0
+lifetime = 8.0
 process_material = SubResource("ParticleProcessMaterial_na5hi")
 draw_pass_1 = SubResource("QuadMesh_na5hi")

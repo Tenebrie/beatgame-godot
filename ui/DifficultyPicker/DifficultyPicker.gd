@@ -20,8 +20,19 @@ func _ready() -> void:
 			difficulty = 2
 		if button == extraHardCheckbox:
 			difficulty = 3
+		Achievements.SaveValue("preferred_difficulty", difficulty)
 	)
-	normalCheckbox.button_pressed = true
+	
+	var preferredDifficulty: int = Achievements.LoadValue("preferred_difficulty", 1)
+	if preferredDifficulty == 0:
+		practiceCheckbox.button_pressed = true
+	elif preferredDifficulty == 1:
+		normalCheckbox.button_pressed = true
+	elif preferredDifficulty == 2:
+		harderCheckbox.button_pressed = true
+	elif preferredDifficulty == 3:
+		extraHardCheckbox.button_pressed = true
+	#normalCheckbox.button_pressed = true
 	
 	var harderUnlocked: bool = Achievements.LoadValue("harder_unlocked", false)
 	var extraHardUnlocked: bool = Achievements.LoadValue("extra_hard_unlocked", false)

@@ -23,4 +23,9 @@ func apply_damage_to_all() -> void:
 			apply_damage_to_target(area.get_parent())
 			
 func apply_damage_to_target(target: Player) -> void:
-	target.DealDamage(2.0)
+	if dealsDamage:
+		target.DealDamage(2.0)
+
+var dealsDamage := true
+func DisableDamage() -> void:
+	dealsDamage = false

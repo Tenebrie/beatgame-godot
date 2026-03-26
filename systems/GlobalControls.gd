@@ -8,14 +8,17 @@ func _unhandled_input(rawEvent: InputEvent) -> void:
 		return
 		
 	if event.pressed and event.keycode == KEY_ESCAPE:
-		isPaused = !isPaused
-		var audioAgent := GlobalContext.GetAudioAgent()
-		if isPaused:
-			Engine.time_scale = 0.0
-			audioAgent.Pause()
+		if OS.has_feature("editor"):
+			get_tree().quit()
 		else:
-			Engine.time_scale = 1.0
-			audioAgent.Resume()
+			isPaused = !isPaused
+			var audioAgent := GlobalContext.GetAudioAgent()
+			if isPaused:
+				Engine.time_scale = 0.0
+				audioAgent.Pause()
+			else:
+				Engine.time_scale = 1.0
+				audioAgent.Resume()
 		
 	if event.echo:
 		return

@@ -16,3 +16,5 @@ signal OnMajorBeat()
 signal OnBeat(beat: float)
 signal OnPlayerDeath()
 signal OnAdversaryDeath()
+
+signal StartEmittingSurpriseParticles()

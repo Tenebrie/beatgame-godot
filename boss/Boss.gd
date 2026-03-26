@@ -109,7 +109,41 @@ func prep_patterns() -> void:
 
 func queue_patterns() -> void:
 	# Beat 0
-	Trigger.EnemyMoveToRowRight(1).Delay(1.0)
+	queue_intro_basic_attacks()
+	Trigger.EnemyMoveToRowRight(3)
+	Pattern.Advance(2.0)
+	Pattern.Column("a").Telegraph(2).Delay(2.125)
+	Pattern.Column("b").Telegraph(2).Delay(2.75)
+	Pattern.Column("c").Telegraph(2).Delay(3.625)
+	Pattern.Column("d").Telegraph(2).Delay(4.75)
+	Pattern.Advance(6.0)
+	queue_intro_basic_attacks()
+	Trigger.EnemyMoveToRowRight(2)
+	Pattern.Advance(2.0)
+	Pattern.Column("d").Telegraph(2).Delay(2.125)
+	Pattern.Column("c").Telegraph(2).Delay(2.75)
+	Pattern.Column("b").Telegraph(2).Delay(3.625)
+	Pattern.Column("a").Telegraph(2).Delay(4.75)
+	Pattern.Advance(6.0)
+	queue_intro_basic_attacks()
+	Trigger.EnemyMoveToRowRight(3)
+	Pattern.Advance(2.0)
+	Pattern.Column("a").Telegraph(2).Delay(2.125)
+	Pattern.Column("b").Telegraph(2).Delay(2.75)
+	Pattern.Column("c").Telegraph(2).Delay(3.625)
+	Pattern.Column("d").Telegraph(2).Delay(4.75)
+	Pattern.Advance(6.0)
+	queue_intro_basic_attacks()
+	Trigger.EnemyMoveToRowRight(2)
+	Pattern.Advance(2.0)
+	Pattern.Column("d").Telegraph(2).Delay(2.125)
+	Pattern.Column("c").Telegraph(2).Delay(2.75)
+	Pattern.Column("b").Telegraph(2).Delay(3.625)
+	Pattern.Column("a").Telegraph(2).Delay(4.75)
+	Pattern.Advance(6.0)
+	
+	# Beat 32
+	Trigger.EnemyMoveToRowRight(1)
 	queue_intro_basic_attacks()
 	Pattern.Advance(2)
 	Pattern.Row(1).Telegraph(2).Delay(2.125)
@@ -133,49 +167,15 @@ func queue_patterns() -> void:
 	Pattern.Row(3).Telegraph(2).Delay(3.625)
 	Pattern.Row(4).Telegraph(2).Delay(4.75)
 	Pattern.Advance(6.0)
-	queue_intro_basic_attacks()
+	queue_intro_basic_attacks(0.0, true)
 	Trigger.EnemyMoveToRowRight(4)
 	Pattern.Advance(2.0)
 	Pattern.Row(4).Telegraph(2).Delay(2.125)
 	Pattern.Row(3).Telegraph(2).Delay(2.75)
 	Pattern.Row(2).Telegraph(2).Delay(3.625)
-	Pattern.Row(1).Telegraph(2).Delay(4.75)
-	Pattern.Advance(6.0)
-	
-	# Beat 32
-	queue_intro_basic_attacks()
-	Trigger.EnemyMoveToRowRight(2)
-	Pattern.Advance(2.0)
-	Pattern.Column("a").Telegraph(2).Delay(2.125)
-	Pattern.Column("b").Telegraph(2).Delay(2.75)
-	Pattern.Column("c").Telegraph(2).Delay(3.625)
-	Pattern.Column("d").Telegraph(2).Delay(4.75)
-	Pattern.Advance(6.0)
-	queue_intro_basic_attacks()
-	Trigger.EnemyMoveToRowRight(3)
-	Pattern.Advance(2.0)
-	Pattern.Column("d").Telegraph(2).Delay(2.125)
-	Pattern.Column("c").Telegraph(2).Delay(2.75)
-	Pattern.Column("b").Telegraph(2).Delay(3.625)
-	Pattern.Column("a").Telegraph(2).Delay(4.75)
-	Pattern.Advance(6.0)
-	queue_intro_basic_attacks()
-	Trigger.EnemyMoveToRowRight(2)
-	Pattern.Advance(2.0)
-	Pattern.Column("a").Telegraph(2).Delay(2.125)
-	Pattern.Column("b").Telegraph(2).Delay(2.75)
-	Pattern.Column("c").Telegraph(2).Delay(3.625)
-	Pattern.Column("d").Telegraph(2).Delay(4.75)
-	Pattern.Advance(6.0)
-	queue_intro_basic_attacks(0.0, true)
-	Trigger.EnemyMoveToRowRight(3)
-	Pattern.Advance(2.0)
-	Pattern.Column("d").Telegraph(2).Delay(2.125)
-	Pattern.Column("c").Telegraph(2).Delay(2.75)
-	Pattern.Column("b").Telegraph(2).Delay(3.625)
 	# Last beat skipped
 	
-	Trigger.EnemyMoveToRowRight(2).Delay(2)
+	Trigger.EnemyMoveToRowRight(2).Delay(3)
 	Pattern.Advance(6.0)
 	
 	# Beat 64
@@ -240,7 +240,6 @@ func queue_patterns() -> void:
 	
 	# Beat 96
 	Trigger.EnemyMoveToRowRight(2.5)
-	Pattern.StartHere()
 	
 	var startingWingDirection := randi() % 2
 	Pattern.Cast($WingSwipe).Telegraph(6.0).Delay(8.0).BeforeTelegraph(
@@ -484,6 +483,15 @@ func queue_patterns() -> void:
 	Pattern.Single("j2").RestoreTile().Delay(16)
 	
 	Pattern.Advance(17)
+		
+	for i in range(3):
+		firstWing = $WingSwipeLeft
+		secondWing = $WingSwipeRight
+		if randi() % 2 == 0:
+			firstWing = $WingSwipeRight
+			secondWing = $WingSwipeLeft
+		Pattern.Cast(firstWing).Delay(5.0 + i * 16).Telegraph(4.0)
+		Pattern.Cast(secondWing).Delay(13.0 + i * 16).Telegraph(4.0)
 	
 	for i in range(3):
 		Pattern.Single("j4").DestroyTile().Delay(i * 12).Telegraph(4.0).Push(Vector2i.LEFT)
@@ -659,7 +667,12 @@ func queue_patterns() -> void:
 	for i in range(7):
 		queue_basic_attacks(i * 8)
 		
-	# Repeat earlier part
+	# Beat 576 - Release the gifs
+	Trigger.Execute(func() -> void:
+		SignalBus.StartEmittingSurpriseParticles.emit()
+	)
+		
+	# Beat 576 - Repeat earlier part
 	Trigger.EnemyMoveToRowRight(3)
 	Trigger.EnemyMoveToRowRight(2).Delay(2)
 	Trigger.EnemyMoveToRowRight(3).Delay(4)
@@ -845,6 +858,7 @@ func queue_patterns() -> void:
 	for i in range(8):
 		Pattern.Cast($LineBurst).Delay(i * 4).BeforeTrigger(func() -> void:
 			GlobalContext.GetPlayer().MakeImmortal()
+			$LineBurst.DisableDamage()
 		)
 	for i in range(4):
 		boombox_pattern_eight_beats(i * 8)

@@ -126,7 +126,7 @@ text = "☆"
 
 [node name="HighUptimeLabel" type="Label" parent="CanvasLayer/Panel/Control/VBoxContainer/VBoxContainer/HBoxContainer4" unique_id=19107953]
 layout_mode = 2
-text = "High accuracy (95%+)"
+text = "High accuracy (85%+)"
 label_settings = SubResource("LabelSettings_egvsy")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Panel/Control/VBoxContainer" unique_id=467852136]
