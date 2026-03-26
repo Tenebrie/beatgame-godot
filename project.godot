@@ -24,6 +24,7 @@ Asset="*uid://cq40h3admt4dg"
 AudioSystem="*uid://btp3esy2cnex2"
 Stats="*uid://ns5rqbyukt0v"
 Achievements="*uid://d20npobpwav7b"
+GameEndSystem="*uid://ca7ltc6tmkmlw"
 
 [debug]
 

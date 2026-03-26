@@ -51,6 +51,14 @@ func on_explode(x: int, y: int) -> void:
 	
 	explode = 1.0
 	
+	var player := GlobalContext.GetPlayer()
+	if player.GridPosition.x != gridX or player.GridPosition.y != gridY:
+		return
+		
+	await get_tree().create_timer(0.02).timeout
+	if player.GridPosition.x == gridX and player.GridPosition.y == gridY:
+		player.DealDamage(1.0)
+	
 func on_clear_all_tiles() -> void:
 	explode = 0.0
 	for child in get_children():

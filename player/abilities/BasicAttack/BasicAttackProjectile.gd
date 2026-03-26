@@ -2,6 +2,8 @@ class_name BasicAttackProjectile extends Node3D
 
 func _ready() -> void:
 	$Area3D.area_entered.connect(OnCollision)
+	await get_tree().create_timer(2.5).timeout
+	queue_free()
 	
 func OnCollision(other: Area3D) -> void:
 	if other.get_parent() is not Boss:

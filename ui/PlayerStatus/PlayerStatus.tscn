@@ -1,6 +1,6 @@
-[gd_scene format=3 uid="uid://ss1rowstjojq"]
+[gd_scene format=3 uid="uid://tagdgbiaqop6"]
 
-[ext_resource type="Script" uid="uid://lqvrx4gmpw48" path="res://ui/BossStatus/BossStatus.gd" id="1_ipx8o"]
+[ext_resource type="Script" uid="uid://bxg16fwria5dr" path="res://ui/PlayerStatus/PlayerStatus.gd" id="1_oanjt"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7opxa"]
 
@@ -12,18 +12,20 @@ corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ipx8o"]
-bg_color = Color(0.6156863, 0.019607844, 1, 1)
+bg_color = Color(1, 0.6928304, 0.27268007, 1)
 corner_radius_top_left = 4
 corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 4
 
-[node name="BossStatus" type="Control" unique_id=1668244000]
+[node name="PlayerStatus" type="Control" unique_id=1668244000]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 471.0
 offset_bottom = 166.0
-script = ExtResource("1_ipx8o")
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_oanjt")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=629823701]
 layout_mode = 1
@@ -39,34 +41,15 @@ layout_mode = 2
 
 [node name="ProgressBar" type="ProgressBar" parent="PanelContainer/Control" unique_id=113637760]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = 52.0
+anchors_preset = -1
+anchor_left = 0.135
+anchor_right = 0.83800006
+offset_left = -0.12000275
+offset_top = 12.0
+offset_right = -0.056030273
+offset_bottom = 49.0
 grow_horizontal = 2
-grow_vertical = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_7opxa")
 theme_override_styles/fill = SubResource("StyleBoxFlat_ipx8o")
 value = 50.0
 show_percentage = false
-
-[node name="NameLabel" type="Label" parent="PanelContainer/Control/ProgressBar" unique_id=25784533]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_top = -51.0
-offset_bottom = -6.0
-grow_horizontal = 2
-theme_override_font_sizes/font_size = 32
-text = "Drainage Courtesan"
-
-[node name="OverdriveLabel" type="Label" parent="PanelContainer/Control/ProgressBar" unique_id=1556422305]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 32
-horizontal_alignment = 1
-vertical_alignment = 1

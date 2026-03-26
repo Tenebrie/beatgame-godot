@@ -57,13 +57,16 @@ material = SubResource("StandardMaterial3D_rsj54")
 size = Vector2(0.15, 0.15)
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_mb6v1"]
+emission_shape_offset = Vector3(0, 0, 20)
+emission_shape = 3
+emission_box_extents = Vector3(80, 0.1, 20)
 angle_min = 5.000011
 angle_max = 5.000011
 direction = Vector3(0, 0, 1)
 spread = 90.0
 flatness = 1.0
-initial_velocity_min = 80.0
-initial_velocity_max = 80.0
+initial_velocity_min = 2.0
+initial_velocity_max = 4.0
 gravity = Vector3(0, 0, 0)
 scale_min = 0.14999999
 scale_max = 0.14999999
@@ -74,6 +77,9 @@ emission_curve = SubResource("CurveTexture_ockrc")
 [sub_resource type="QuadMesh" id="QuadMesh_1bcol"]
 material = SubResource("StandardMaterial3D_rsj54")
 size = Vector2(0.3, 0.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1bcol"]
+size = Vector3(10, 2, 2.5)
 
 [node name="WingSwipe" type="Node3D" unique_id=15120941]
 script = ExtResource("1_jmb0p")
@@ -87,8 +93,14 @@ draw_pass_1 = SubResource("QuadMesh_7p858")
 
 [node name="TriggerParticles" type="GPUParticles3D" parent="." unique_id=2145288394]
 transform = Transform3D(0.0625, 0, 0, 0, 0.0625, 0, 0, 0, 0.0625, 0, 0.514375, 0)
-amount = 1000
-explosiveness = 1.0
+amount = 1500
+explosiveness = 0.94
 fixed_fps = 120
 process_material = SubResource("ParticleProcessMaterial_mb6v1")
 draw_pass_1 = SubResource("QuadMesh_1bcol")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=470272637]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1359344088]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.25)
+shape = SubResource("BoxShape3D_1bcol")

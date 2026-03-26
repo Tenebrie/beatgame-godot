@@ -81,6 +81,9 @@ emission_curve = SubResource("CurveTexture_ockrc")
 material = SubResource("StandardMaterial3D_rsj54")
 size = Vector2(0.3, 0.3)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_tn24t"]
+size = Vector3(7, 1.674, 1)
+
 [node name="LineBurst" type="Node3D" unique_id=381804580]
 script = ExtResource("1_dumou")
 
@@ -99,3 +102,9 @@ explosiveness = 1.0
 fixed_fps = 120
 process_material = SubResource("ParticleProcessMaterial_p3ueh")
 draw_pass_1 = SubResource("QuadMesh_iek1m")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=396010559]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1324627267]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5067382, 0.33685303, 0)
+shape = SubResource("BoxShape3D_tn24t")

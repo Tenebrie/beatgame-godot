@@ -48,6 +48,19 @@ func Telegraph(delay: float) -> Pattern:
 	)
 	return self
 	
+func Push(direction: Vector2i) -> Pattern:
+	var offset := BuilderOffset
+	before_trigger.connect(func() -> void:
+		var player := GlobalContext.GetPlayer()
+		for tile in tiles:
+			var x := letters.find(tile[0]) + offset.x
+			var y := int(tile[1]) - 1 + offset.y
+			if player.GridPosition.x == x and player.GridPosition.y == y:
+				player.ForceMoveOnGrid(direction)
+				player.DealDamage(1.0)
+	)
+	return self
+	
 func BeforeTelegraph(function: Callable) -> Pattern:
 	before_telegraph.connect(function)
 	return self
@@ -97,7 +110,7 @@ static func PlayerPosition(offset := Vector2i(0, 0)) -> Pattern:
 	var pattern := Pattern.new([])
 	var builderOffset := BuilderOffset
 	pattern.before_telegraph.connect(func () -> void:
-		var pos := GlobalContext.GetPlayer().grid_pos + offset - builderOffset
+		var pos := GlobalContext.GetPlayer().GridPosition + offset - builderOffset
 		var tile := letters[pos.x] + str(pos.y + 1)
 		pattern.tiles = [tile]
 	)
@@ -160,3 +173,7 @@ static func Translate(offset: Vector2i) -> void:
 	
 static func StartHere() -> void:
 	GlobalContext.GetAudioAgent().set_starting_time(BuilderTime)
+
+static func ResetState() -> void:
+	BuilderTime = 0.0
+	BuilderOffset = Vector2i.ZERO

@@ -11,3 +11,7 @@ func CalculateOptimalDamage() -> float:
 	
 func RecordDamageTaken(damage: float) -> void:
 	totalDamageTaken += damage
+
+func ResetState() -> void:
+	maxBasicAttacks = 0
+	totalDamageTaken = 0.0

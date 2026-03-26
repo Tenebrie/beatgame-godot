@@ -1,6 +1,6 @@
-[gd_scene format=3 uid="uid://r810yfyvj2do"]
+[gd_scene format=3 uid="uid://b6lc4katcv5tp"]
 
-[ext_resource type="Script" uid="uid://bgojjso07mvqc" path="res://ui/VictoryScreen/VictoryScreen.gd" id="1_fqiwl"]
+[ext_resource type="Script" uid="uid://cpt4fn2vnmabt" path="res://ui/VictoryScreen/DefeatScreen.gd" id="1_vi0j2"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_fqiwl"]
 font_size = 90
@@ -8,7 +8,7 @@ font_size = 90
 [sub_resource type="LabelSettings" id="LabelSettings_egvsy"]
 font_size = 50
 
-[node name="VictoryScreen" type="Control" unique_id=297759036]
+[node name="DefeatScreen" type="Control" unique_id=297759036]
 z_index = 1
 layout_mode = 3
 anchors_preset = 15
@@ -16,9 +16,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_fqiwl")
+mouse_filter = 1
+script = ExtResource("1_vi0j2")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1462662943]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1115197160]
 
 [node name="Panel" type="Panel" parent="CanvasLayer" unique_id=1245589519]
 anchors_preset = 15
@@ -26,6 +27,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 
 [node name="Control" type="Control" parent="CanvasLayer/Panel" unique_id=1433467990]
 layout_mode = 1
@@ -34,6 +36,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Panel/Control" unique_id=7382307]
 layout_mode = 1
@@ -50,23 +53,8 @@ alignment = 1
 
 [node name="StatusLabel" type="Label" parent="CanvasLayer/Panel/Control/VBoxContainer" unique_id=983167869]
 layout_mode = 2
-text = "Victory!"
+text = "Defeat"
 label_settings = SubResource("LabelSettings_fqiwl")
-horizontal_alignment = 1
-
-[node name="ScoreVBoxContainer" type="VBoxContainer" parent="CanvasLayer/Panel/Control/VBoxContainer" unique_id=1136730091]
-layout_mode = 2
-
-[node name="ScoreLabel" type="Label" parent="CanvasLayer/Panel/Control/VBoxContainer/ScoreVBoxContainer" unique_id=1575796681]
-layout_mode = 2
-theme_override_font_sizes/font_size = 60
-text = "Score: ???"
-horizontal_alignment = 1
-
-[node name="HighScoreLabel" type="Label" parent="CanvasLayer/Panel/Control/VBoxContainer/ScoreVBoxContainer" unique_id=1480453965]
-layout_mode = 2
-theme_override_font_sizes/font_size = 60
-text = "Best Score: ???"
 horizontal_alignment = 1
 
 [node name="HSeparator" type="HSeparator" parent="CanvasLayer/Panel/Control/VBoxContainer" unique_id=90653614]
@@ -75,7 +63,7 @@ layout_mode = 2
 [node name="StarCountLabel" type="Label" parent="CanvasLayer/Panel/Control/VBoxContainer" unique_id=1868238688]
 layout_mode = 2
 theme_override_font_sizes/font_size = 108
-text = "★★★★"
+text = "☆☆☆☆"
 horizontal_alignment = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Panel/Control/VBoxContainer" unique_id=1854934121]
@@ -88,7 +76,7 @@ theme_override_constants/separation = 64
 [node name="SurvivedStar" type="Label" parent="CanvasLayer/Panel/Control/VBoxContainer/VBoxContainer/HBoxContainer" unique_id=556382042]
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
-text = "★"
+text = "☆"
 
 [node name="SurvivedLabel" type="Label" parent="CanvasLayer/Panel/Control/VBoxContainer/VBoxContainer/HBoxContainer" unique_id=190133874]
 layout_mode = 2
@@ -102,7 +90,7 @@ theme_override_constants/separation = 64
 [node name="KilledBossStar" type="Label" parent="CanvasLayer/Panel/Control/VBoxContainer/VBoxContainer/HBoxContainer2" unique_id=1300767481]
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
-text = "★"
+text = "☆"
 
 [node name="KilledBossLabel" type="Label" parent="CanvasLayer/Panel/Control/VBoxContainer/VBoxContainer/HBoxContainer2" unique_id=1774187280]
 layout_mode = 2
@@ -116,7 +104,7 @@ theme_override_constants/separation = 64
 [node name="HitlessStar" type="Label" parent="CanvasLayer/Panel/Control/VBoxContainer/VBoxContainer/HBoxContainer3" unique_id=1951759554]
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
-text = "★"
+text = "☆"
 
 [node name="HitlessLabel" type="Label" parent="CanvasLayer/Panel/Control/VBoxContainer/VBoxContainer/HBoxContainer3" unique_id=899662575]
 layout_mode = 2
@@ -130,17 +118,17 @@ theme_override_constants/separation = 64
 [node name="HighUptimeStar" type="Label" parent="CanvasLayer/Panel/Control/VBoxContainer/VBoxContainer/HBoxContainer4" unique_id=1456110798]
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
-text = "★"
+text = "☆"
 
 [node name="HighUptimeLabel" type="Label" parent="CanvasLayer/Panel/Control/VBoxContainer/VBoxContainer/HBoxContainer4" unique_id=19107953]
 layout_mode = 2
-text = "High accuracy (85%+)"
+text = "High accuracy (95%+)"
 label_settings = SubResource("LabelSettings_egvsy")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Panel/Control/VBoxContainer" unique_id=467852136]
 layout_mode = 2
 
-[node name="RestartButton" type="Button" parent="CanvasLayer/Panel/Control/VBoxContainer" unique_id=653929889]
+[node name="RestartButton" type="Button" parent="CanvasLayer/Panel/Control/VBoxContainer" unique_id=232114009]
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
-text = "Again!"
+text = "Restart"

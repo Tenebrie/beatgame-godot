@@ -10,6 +10,7 @@ func _trigger_fight(gridPos: Vector2i, _oldPos: Vector2i) -> void:
 
 	isFightTriggered = true
 	GlobalContext.GetAudioAgent().StartPlaying()
+	SignalBus.OnFightBegin.emit()
 
 func get_current_beat() -> float:
 	return GlobalContext.GetAudioAgent().get_position_beats()
@@ -44,6 +45,17 @@ func SortTimers() -> void:
 	)
 	for i in range(children.size()):
 		$OneShotTimers.move_child(children[i], i)
+		
+func ClearAllTimers() -> void:
+	isFightTriggered = false
+	while $OneShotTimers.get_child_count() > 0:
+		var child := $OneShotTimers.get_child(0)
+		$OneShotTimers.remove_child(child)
+		child.queue_free()
+	while $RepeatableTimers.get_child_count() > 0:
+		var child := $RepeatableTimers.get_child(0)
+		$RepeatableTimers.remove_child(child)
+		child.queue_free()
 
 func _process(_delta: float) -> void:
 	var currentTime: float = roundf(GlobalContext.GetAudioAgent().get_position_beats() * 8.0) / 8.0

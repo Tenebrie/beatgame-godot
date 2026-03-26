@@ -75,7 +75,7 @@ static func EnemyMoveToPlayerRow() -> Trigger:
 	var trigger := new()
 	trigger.triggerTimer.timeout.connect(
 		func(_beat: int) -> void:
-			var playerRow := GlobalContext.GetPlayer().grid_pos.y + 1
+			var playerRow := GlobalContext.GetPlayer().GridPosition.y + 1
 			GlobalContext.GetBoss().move_to_row_right(playerRow)
 	)
 	return trigger

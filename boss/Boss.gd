@@ -3,16 +3,20 @@ class_name Boss extends Node3D
 var gridSize := Vector2i(1, 1)
 var gridPosition := Vector2(1, 1)
 
-var damageTaken := 0.0
-var maximumHealth := 500.0
-
 func _enter_tree() -> void:
 	GlobalContext.Register(self)
+
+var isAlive := true
+var damageTaken := 0.0
+var maximumHealth := 500.0
 	
 var hit_tween: Tween
 var color_tween: Tween
 
 func DealDamage(damage: float) -> void:
+	if not isAlive:
+		return
+		
 	damageTaken += damage
 
 	if hit_tween and hit_tween.is_valid():
@@ -233,6 +237,7 @@ func queue_patterns() -> void:
 	
 	# Beat 96
 	Trigger.EnemyMoveToRowRight(2.5)
+	Pattern.StartHere()
 	
 	var startingWingDirection := randi() % 2
 	Pattern.Cast($WingSwipe).Telegraph(6.0).Delay(8.0).BeforeTelegraph(
@@ -355,7 +360,6 @@ func queue_patterns() -> void:
 	Pattern.Advance(4)
 	
 	# Beat 192 -> Arena swap
-	#Pattern.StartHere()
 	Trigger.Execute(func() -> void: GlobalContext.GetPlayer().SetBasicAttackEffectEmitting(false))
 	
 	Trigger.EnemyMoveToRowRight(2.5)
@@ -373,23 +377,23 @@ func queue_patterns() -> void:
 	Pattern.Cast(firstWing).Telegraph(16.5).Delay(24.5)
 	Pattern.Cast(secondWing).Telegraph(10.0).Delay(25.5)
 	
-	Pattern.Single("a1").Telegraph(6.0).DestroyTile()
-	Pattern.Single("a4").Telegraph(6.0).DestroyTile()
+	Pattern.Single("a1").Telegraph(6.0).DestroyTile().Push(Vector2i.RIGHT)
+	Pattern.Single("a4").Telegraph(6.0).DestroyTile().Push(Vector2i.RIGHT)
 	
-	Pattern.Single("a2").Telegraph(6.0).Delay(8).DestroyTile()
-	Pattern.Single("a3").Telegraph(6.0).Delay(8).DestroyTile()
-	Pattern.Single("b1").Telegraph(6.0).Delay(8).DestroyTile()
-	Pattern.Single("b4").Telegraph(6.0).Delay(8).DestroyTile()
+	Pattern.Single("a2").Telegraph(6.0).Delay(8).DestroyTile().Push(Vector2i.RIGHT)
+	Pattern.Single("a3").Telegraph(6.0).Delay(8).DestroyTile().Push(Vector2i.RIGHT)
+	Pattern.Single("b1").Telegraph(6.0).Delay(8).DestroyTile().Push(Vector2i.RIGHT)
+	Pattern.Single("b4").Telegraph(6.0).Delay(8).DestroyTile().Push(Vector2i.RIGHT)
 	
-	Pattern.Single("b2").Telegraph(6.0).Delay(16).DestroyTile()
-	Pattern.Single("b3").Telegraph(6.0).Delay(16).DestroyTile()
-	Pattern.Single("c1").Telegraph(6.0).Delay(16).DestroyTile()
-	Pattern.Single("c4").Telegraph(6.0).Delay(16).DestroyTile()
+	Pattern.Single("b2").Telegraph(6.0).Delay(16).DestroyTile().Push(Vector2i.RIGHT)
+	Pattern.Single("b3").Telegraph(6.0).Delay(16).DestroyTile().Push(Vector2i.RIGHT)
+	Pattern.Single("c1").Telegraph(6.0).Delay(16).DestroyTile().Push(Vector2i.RIGHT)
+	Pattern.Single("c4").Telegraph(6.0).Delay(16).DestroyTile().Push(Vector2i.RIGHT)
 	
-	Pattern.Single("c2").Telegraph(6.0).Delay(24).DestroyTile()
-	Pattern.Single("c3").Telegraph(6.0).Delay(24).DestroyTile()
-	Pattern.Single("d1").Telegraph(6.0).Delay(24).DestroyTile()
-	Pattern.Single("d4").Telegraph(6.0).Delay(24).DestroyTile()
+	Pattern.Single("c2").Telegraph(6.0).Delay(24).DestroyTile().Push(Vector2i.RIGHT)
+	Pattern.Single("c3").Telegraph(6.0).Delay(24).DestroyTile().Push(Vector2i.RIGHT)
+	Pattern.Single("d1").Telegraph(6.0).Delay(24).DestroyTile().Push(Vector2i.DOWN)
+	Pattern.Single("d4").Telegraph(6.0).Delay(24).DestroyTile().Push(Vector2i.UP)
 	
 	Pattern.Advance(8.0)
 	
@@ -444,21 +448,21 @@ func queue_patterns() -> void:
 	Trigger.EnemyMoveToRowRight(2.5).Delay(65.0)
 	Trigger.EnemyMoveToRowRight(1).Delay(66.0)
 	
-	Pattern.Single("d3").DestroyTile().Delay(2).Telegraph(4.0)
-	Pattern.Single("d2").DestroyTile().Delay(3).Telegraph(4.0)
-	Pattern.Single("e2").DestroyTile().Delay(4).Telegraph(4.0)
-	Pattern.Single("f2").DestroyTile().Delay(5).Telegraph(4.0)
-	Pattern.Single("f3").DestroyTile().Delay(6).Telegraph(4.0)
-	Pattern.Single("g3").DestroyTile().Delay(7).Telegraph(4.0)
-	Pattern.Single("h3").DestroyTile().Delay(8).Telegraph(4.0)
-	Pattern.Single("h2").DestroyTile().Delay(9).Telegraph(4.0)
-	Pattern.Single("h1").DestroyTile().Delay(10).Telegraph(4.0)
-	Pattern.Single("i1").DestroyTile().Delay(11).Telegraph(4.0)
-	Pattern.Single("j1").DestroyTile().Delay(12).Telegraph(4.0)
-	Pattern.Single("k1").DestroyTile().Delay(13).Telegraph(4.0)
-	Pattern.Single("k2").DestroyTile().Delay(14).Telegraph(4.0)
-	Pattern.Single("k3").DestroyTile().Delay(15).Telegraph(4.0)
-	Pattern.Single("j3").DestroyTile().Delay(16).Telegraph(4.0)
+	Pattern.Single("d3").DestroyTile().Delay(2).Telegraph(4.0).Push(Vector2i.UP)
+	Pattern.Single("d2").DestroyTile().Delay(3).Telegraph(4.0).Push(Vector2i.RIGHT)
+	Pattern.Single("e2").DestroyTile().Delay(4).Telegraph(4.0).Push(Vector2i.RIGHT)
+	Pattern.Single("f2").DestroyTile().Delay(5).Telegraph(4.0).Push(Vector2i.DOWN)
+	Pattern.Single("f3").DestroyTile().Delay(6).Telegraph(4.0).Push(Vector2i.RIGHT)
+	Pattern.Single("g3").DestroyTile().Delay(7).Telegraph(4.0).Push(Vector2i.RIGHT)
+	Pattern.Single("h3").DestroyTile().Delay(8).Telegraph(4.0).Push(Vector2i.UP)
+	Pattern.Single("h2").DestroyTile().Delay(9).Telegraph(4.0).Push(Vector2i.UP)
+	Pattern.Single("h1").DestroyTile().Delay(10).Telegraph(4.0).Push(Vector2i.RIGHT)
+	Pattern.Single("i1").DestroyTile().Delay(11).Telegraph(4.0).Push(Vector2i.RIGHT)
+	Pattern.Single("j1").DestroyTile().Delay(12).Telegraph(4.0).Push(Vector2i.RIGHT)
+	Pattern.Single("k1").DestroyTile().Delay(13).Telegraph(4.0).Push(Vector2i.DOWN)
+	Pattern.Single("k2").DestroyTile().Delay(14).Telegraph(4.0).Push(Vector2i.DOWN)
+	Pattern.Single("k3").DestroyTile().Delay(15).Telegraph(4.0).Push(Vector2i.LEFT)
+	Pattern.Single("j3").DestroyTile().Delay(16).Telegraph(4.0).Push(Vector2i.DOWN)
 	
 	Pattern.Single("k1").RestoreTile().Delay(2)
 	Pattern.Single("k2").RestoreTile().Delay(3)
@@ -479,18 +483,18 @@ func queue_patterns() -> void:
 	Pattern.Advance(17)
 	
 	for i in range(3):
-		Pattern.Single("j4").DestroyTile().Delay(i * 12).Telegraph(4.0)
-		Pattern.Single("i4").DestroyTile().Delay(i * 12 + 1).Telegraph(4.0)
-		Pattern.Single("h4").DestroyTile().Delay(i * 12 + 2).Telegraph(4.0)
-		Pattern.Single("g4").DestroyTile().Delay(i * 12 + 3).Telegraph(4.0)
-		Pattern.Single("g3").DestroyTile().Delay(i * 12 + 4).Telegraph(4.0)
-		Pattern.Single("g2").DestroyTile().Delay(i * 12 + 5).Telegraph(4.0)
-		Pattern.Single("g1").DestroyTile().Delay(i * 12 + 6).Telegraph(4.0)
-		Pattern.Single("h1").DestroyTile().Delay(i * 12 + 7).Telegraph(4.0)
-		Pattern.Single("i1").DestroyTile().Delay(i * 12 + 8).Telegraph(4.0)
-		Pattern.Single("j1").DestroyTile().Delay(i * 12 + 9).Telegraph(4.0)
-		Pattern.Single("j2").DestroyTile().Delay(i * 12 + 10).Telegraph(4.0)
-		Pattern.Single("j3").DestroyTile().Delay(i * 12 + 11).Telegraph(4.0)
+		Pattern.Single("j4").DestroyTile().Delay(i * 12).Telegraph(4.0).Push(Vector2i.LEFT)
+		Pattern.Single("i4").DestroyTile().Delay(i * 12 + 1).Telegraph(4.0).Push(Vector2i.LEFT)
+		Pattern.Single("h4").DestroyTile().Delay(i * 12 + 2).Telegraph(4.0).Push(Vector2i.LEFT)
+		Pattern.Single("g4").DestroyTile().Delay(i * 12 + 3).Telegraph(4.0).Push(Vector2i.UP)
+		Pattern.Single("g3").DestroyTile().Delay(i * 12 + 4).Telegraph(4.0).Push(Vector2i.UP)
+		Pattern.Single("g2").DestroyTile().Delay(i * 12 + 5).Telegraph(4.0).Push(Vector2i.UP)
+		Pattern.Single("g1").DestroyTile().Delay(i * 12 + 6).Telegraph(4.0).Push(Vector2i.RIGHT)
+		Pattern.Single("h1").DestroyTile().Delay(i * 12 + 7).Telegraph(4.0).Push(Vector2i.RIGHT)
+		Pattern.Single("i1").DestroyTile().Delay(i * 12 + 8).Telegraph(4.0).Push(Vector2i.RIGHT)
+		Pattern.Single("j1").DestroyTile().Delay(i * 12 + 9).Telegraph(4.0).Push(Vector2i.DOWN)
+		Pattern.Single("j2").DestroyTile().Delay(i * 12 + 10).Telegraph(4.0).Push(Vector2i.DOWN)
+		Pattern.Single("j3").DestroyTile().Delay(i * 12 + 11).Telegraph(4.0).Push(Vector2i.DOWN)
 		
 		Pattern.Single("j3").RestoreTile().Delay(i * 12)
 		Pattern.Single("j4").RestoreTile().Delay(i * 12 + 1)
@@ -507,14 +511,14 @@ func queue_patterns() -> void:
 		
 	Pattern.Advance(36)
 	
-	Pattern.Single("j4").DestroyTile().Delay(0).Telegraph(4.0)
-	Pattern.Single("i4").DestroyTile().Delay(1).Telegraph(4.0)
-	Pattern.Single("h4").DestroyTile().Delay(2).Telegraph(4.0)
-	Pattern.Single("g4").DestroyTile().Delay(3).Telegraph(4.0)
-	Pattern.Single("g3").DestroyTile().Delay(4).Telegraph(4.0)
-	Pattern.Single("g2").DestroyTile().Delay(5).Telegraph(4.0)
-	Pattern.Single("g1").DestroyTile().Delay(6).Telegraph(4.0)
-	Pattern.Single("h1").DestroyTile().Delay(7).Telegraph(4.0)
+	Pattern.Single("j4").DestroyTile().Delay(0).Telegraph(4.0).Push(Vector2i.LEFT)
+	Pattern.Single("i4").DestroyTile().Delay(1).Telegraph(4.0).Push(Vector2i.LEFT)
+	Pattern.Single("h4").DestroyTile().Delay(2).Telegraph(4.0).Push(Vector2i.LEFT)
+	Pattern.Single("g4").DestroyTile().Delay(3).Telegraph(4.0).Push(Vector2i.UP)
+	Pattern.Single("g3").DestroyTile().Delay(4).Telegraph(4.0).Push(Vector2i.UP)
+	Pattern.Single("g2").DestroyTile().Delay(5).Telegraph(4.0).Push(Vector2i.UP)
+	Pattern.Single("g1").DestroyTile().Delay(6).Telegraph(4.0).Push(Vector2i.RIGHT)
+	Pattern.Single("h1").DestroyTile().Delay(7).Telegraph(4.0).Push(Vector2i.RIGHT)
 	
 	Pattern.Single("j3").RestoreTile()
 	Pattern.Single("j4").RestoreTile().Delay(1)
@@ -609,7 +613,6 @@ func queue_patterns() -> void:
 		queue_basic_attacks(i * 16 + 8)
 		boombox_pattern_eight_beats(i * 16)
 		central_boombox_pattern_eight_beats(i * 16 + 8)
-		
 	
 	for i in range(4):
 		Trigger.EnemyMoveToRowRight(2).Delay(0.0)
@@ -618,10 +621,9 @@ func queue_patterns() -> void:
 		Pattern.Cast($WingSwipeRight).Delay(16.0).Telegraph(6.0)
 		Trigger.EnemyMoveToRowRight(2.5).Delay(16.0)
 		Pattern.Cast($LineBurst).Delay(24.0).Telegraph(7.0)
-		var wing := $WingSwipeLeft if randi() % 2 == 0 else $WingSwipeRight
 		Pattern.Cast($WingSwipe).Delay(32.0).Telegraph(7.0).BeforeTelegraph(
 			func() -> void:
-				if GlobalContext.GetPlayer().grid_pos.y <= 1:
+				if GlobalContext.GetPlayer().GridPosition.y <= 1:
 					$WingSwipe.set_direction(1)
 				else:
 					$WingSwipe.set_direction(0)
@@ -841,6 +843,14 @@ func queue_patterns() -> void:
 		Pattern.Cast($LineBurst).Delay(i * 4)
 	for i in range(4):
 		boombox_pattern_eight_beats(i * 8)
+		
+	Pattern.Advance(32)
+	Trigger.Execute(func() -> void:
+		if damageTaken >= maximumHealth:
+			SignalBus.OnAdversaryDeath.emit()
+		else:
+			GlobalContext.GetPlayer().DealDamage(999.0)
+	)
 	
 func queue_intro_basic_attacks(delay: float = 0.0, skip_last: bool = false) -> void:
 	Trigger.BasicAttack().Delay(0.125 + delay)

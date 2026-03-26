@@ -4,7 +4,7 @@ const positionOffset := 0.0
 
 func _enter_tree() -> void:
 	GlobalContext.Register(self)
-
+	
 var isStarting := false
 #func _ready() -> void:
 
@@ -61,3 +61,6 @@ func StartPlaying() -> void:
 func IsPlaying() -> bool:
 	var player := $AudioStreamPlayer as AudioStreamPlayer
 	return player.playing || isStarting
+
+func StopPlaying() -> void:
+	$AudioStreamPlayer.stop()
