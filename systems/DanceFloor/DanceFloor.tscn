@@ -6,7 +6,6 @@
 
 [node name="DanceFloor" type="Node3D" unique_id=796054563]
 script = ExtResource("1_qc67m")
-tile = ExtResource("2_o2idr")
 
 [node name="DanceTile" parent="." unique_id=1066141023 instance=ExtResource("2_o2idr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.5)

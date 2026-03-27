@@ -8,6 +8,7 @@ signal dragged_over
 signal dropped(source_index: int, target_index: int)
 
 var close_button: Button
+var item_index: int = -1
 
 func _ready() -> void:
 	alignment = HORIZONTAL_ALIGNMENT_LEFT

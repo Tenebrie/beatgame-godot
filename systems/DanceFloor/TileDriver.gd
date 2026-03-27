@@ -3,9 +3,9 @@ class_name TileDriver extends Node
 var telegraph: float = 0.0
 var telegraphSpeed: float = 0.0
 
-func Start(pos: Vector2i, delay: float) -> void:
+func Start(_pos: Vector2i, delay: float) -> void:
 	telegraphSpeed = 1.0 / delay
-	
+
 func _process(delta: float) -> void:
 	var bpmMod: float = AudioSystem.get_current_bpm() / 60.0
 	telegraph += delta * telegraphSpeed * bpmMod

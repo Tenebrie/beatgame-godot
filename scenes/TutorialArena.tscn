@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bbvr3ouw6tjd7" path="res://player/Player.tscn" id="2_auhpn"]
 [ext_resource type="PackedScene" uid="uid://bmc8tfti12rqu" path="res://boss/Boss.tscn" id="4_adxne"]
 [ext_resource type="Script" uid="uid://b754hdhv5ohci" path="res://scenes/environment/LobbyTileHandler.gd" id="5_eqoqj"]
-[ext_resource type="Script" uid="uid://cihqnnkwn6s0v" path="res://scenes/MainCamera.gd" id="5_h48qv"]
+[ext_resource type="Script" uid="uid://cihqnnkwn6s0v" path="res://player/camera/MainCamera.gd" id="5_h48qv"]
 [ext_resource type="PackedScene" uid="uid://3qpw055ur5dl" path="res://systems/AudioSystem/AudioAgent.tscn" id="5_vxy8m"]
 [ext_resource type="PackedScene" uid="uid://ceiwb524wex1j" path="res://ui/Playhead/PlayheadWidget.tscn" id="6_3elwe"]
 [ext_resource type="PackedScene" uid="uid://bfh1xks4dsghv" path="res://ui/PerformanceStats/PerformanceStats.tscn" id="7_el274"]
@@ -22,11 +22,11 @@ glow_enabled = true
 script = ExtResource("1_w5bc6")
 
 [node name="SurpriseParticles" parent="." unique_id=1566747555 instance=ExtResource("2_4wjo6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.454512, -1.4922266, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.689962, -1.4922266, 0)
 
 [node name="DanceFloor" parent="." unique_id=796054563 instance=ExtResource("1_auhpn")]
 
-[node name="Player" parent="DanceFloor" unique_id=1090225112 instance=ExtResource("2_auhpn")]
+[node name="Player" parent="DanceFloor" unique_id=241487594 instance=ExtResource("2_auhpn")]
 
 [node name="Boss" parent="DanceFloor" unique_id=679576008 instance=ExtResource("4_adxne")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
@@ -34,9 +34,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
 [node name="LobbyTileHandler" type="Node" parent="DanceFloor" unique_id=1642492947]
 script = ExtResource("5_eqoqj")
 
-[node name="MainCamera" type="Camera3D" parent="." unique_id=310658524]
-transform = Transform3D(0.99999994, 0, 0, 0, 0.17364822, 0.9848077, 0, -0.9848077, 0.17364822, 0, 4, 1)
+[node name="MainCamera" type="Camera3D" parent="." unique_id=1773023744]
+transform = Transform3D(1, 0, 0, 0, 0.17364822, 0.9848077, 0, -0.9848077, 0.17364822, 0, 4, 1)
 script = ExtResource("5_h48qv")
+metadata/_custom_type_script = "uid://cihqnnkwn6s0v"
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=711198869]
 transform = Transform3D(1, 0, 0, 0, 0.74301636, 0.66927326, 0, -0.66927326, 0.74301636, 0, 2.491136, 1.1915557)
@@ -79,6 +80,6 @@ grow_horizontal = 2
 environment = SubResource("Environment_eqoqj")
 
 [node name="WorldBackground" parent="." unique_id=1907618401 instance=ExtResource("11_t4p3w")]
-transform = Transform3D(5.9605556, 0, 0, 0, 1, 0, 0, 0, 5.9605556, 0, -108.23712, 0)
+transform = Transform3D(5.9605556, 0, 0, 0, 1, 0, 0, 0, 5.9605556, 0.17023468, -108.23712, -0.010864258)
 
 [node name="DifficultyPicker" parent="." unique_id=1956702526 instance=ExtResource("13_7af6x")]

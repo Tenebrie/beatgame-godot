@@ -10,13 +10,13 @@ var selfDestruct: bool
 func _ready() -> void:
 	SignalBus.clearTimersBefore.connect(on_clear_timers_before)
 	SignalBus.OnFlushAllTimers.connect(on_flush_all_timers)
-	
+
 func start(trigger_beat: float, duration: float = 0.0) -> void:
 	triggerBeat = trigger_beat
 	boundToBeat = trigger_beat + duration
 	selfDestruct = true
 	AudioSystem.RegisterOneShotTimer(self)
-	
+
 func start_repeatable(trigger_beat: float) -> void:
 	triggerBeat = trigger_beat
 	boundToBeat = trigger_beat
@@ -31,13 +31,13 @@ func stop() -> void:
 
 func on_flush_all_timers() -> void:
 	trigger()
-	
+
 func on_clear_timers_before(target_beat: float) -> void:
 	if boundToBeat < target_beat && selfDestruct:
 		triggerBeat = INF
 		boundToBeat = INF
 		queue_free()
-			
+
 func move_trigger(beats: float) -> void:
 	triggerBeat += beats
 	boundToBeat += beats
@@ -53,7 +53,7 @@ func trigger() -> void:
 func is_passed() -> bool:
 	var currentTime: float = roundf(AudioSystem.get_current_beat() * 8.0) / 8.0
 	return currentTime >= triggerBeat
-	
+
 static func Create() -> MusicTimer:
 	var timer := MusicTimer.new()
 	return timer

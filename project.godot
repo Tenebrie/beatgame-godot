@@ -44,7 +44,7 @@ project/assembly_name="beatstep"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/FilesystemGenerator/plugin.cfg", "res://addons/script-ide/plugin.cfg")
+enabled=PackedStringArray("res://addons/FilesystemGenerator/plugin.cfg", "res://addons/asset-plugin/plugin.cfg", "res://addons/script-ide/plugin.cfg")
 
 [physics]
 

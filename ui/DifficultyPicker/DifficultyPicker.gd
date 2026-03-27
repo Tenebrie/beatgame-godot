@@ -22,7 +22,7 @@ func _ready() -> void:
 			difficulty = 3
 		Achievements.SaveValue("preferred_difficulty", difficulty)
 	)
-	
+
 	var preferredDifficulty: int = Achievements.LoadValue("preferred_difficulty", 1)
 	if preferredDifficulty == 0:
 		practiceCheckbox.button_pressed = true
@@ -33,7 +33,7 @@ func _ready() -> void:
 	elif preferredDifficulty == 3:
 		extraHardCheckbox.button_pressed = true
 	#normalCheckbox.button_pressed = true
-	
+
 	var harderUnlocked: bool = Achievements.LoadValue("harder_unlocked", false)
 	var extraHardUnlocked: bool = Achievements.LoadValue("extra_hard_unlocked", false)
 	if not harderUnlocked:
@@ -68,6 +68,6 @@ func _on_fight_begin() -> void:
 		boss.SetMaximumHealth(600.0)
 		player.SetMaximumHealth(4.0)
 		player.SetRegeneration(0.0)
-	
+
 	LastPlayedDifficulty = difficulty
 	queue_free()

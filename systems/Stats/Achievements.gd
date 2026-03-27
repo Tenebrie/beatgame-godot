@@ -2,7 +2,7 @@ extends Node
 
 func SaveValue(key: String, value: Variant) -> void:
 	var config := ConfigFile.new()
-	config.load("user://save.cfg")  # OK if file doesn't exist yet
+	config.load("user://save.cfg")
 	config.set_value("save", key, value)
 	config.save("user://save.cfg")
 

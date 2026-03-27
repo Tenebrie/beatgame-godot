@@ -1,3 +1,6 @@
+## Main player character
+##
+## Drag .tscn instead of just adding this node
 class_name Player extends CharacterBody3D
 
 const GRID_SIZE := 1.0
@@ -12,7 +15,7 @@ var target_position := Vector3.ZERO
 
 func _grid_to_world(gp: Vector2i) -> Vector3:
 	return Vector3(gp.x, 0.1, gp.y) * GRID_SIZE
-	
+
 var isAlive := false
 var damageTaken := 0.0
 var maximumHealth := 5.0
@@ -21,13 +24,13 @@ var regeneration := 1.0 / 16.0 # 1 hp per 16 seconds
 var playerDeathEnabled := true
 func MakeImmortal() -> void:
 	playerDeathEnabled = false
-	
+
 func ForfeitImmortality() -> void:
 	playerDeathEnabled = true
-	
+
 func SetMaximumHealth(value: float) -> void:
 	maximumHealth = value
-	
+
 func SetRegeneration(value: float) -> void:
 	regeneration = value
 
@@ -37,10 +40,10 @@ var color_tween: Tween
 func DealDamage(damage: float) -> void:
 	if not isAlive:
 		return
-	
+
 	damageTaken = minf(damageTaken + damage, maximumHealth)
 	Stats.RecordDamageTaken(damage)
-	
+
 	if playerDeathEnabled and damageTaken >= maximumHealth:
 		isAlive = false
 		SignalBus.OnPlayerDeath.emit()
@@ -70,14 +73,16 @@ func DealDamage(damage: float) -> void:
 		hit_tween.tween_property(sprite, "position", offset, shake_duration)
 		shake_strength *= 0.7  # decay each shake
 	hit_tween.tween_property(sprite, "position", Vector3.ZERO, shake_duration)
-	
+
 func ForceMoveOnGrid(dir: Vector2i) -> void:
 	_move(dir)
-	
+
 func _enter_tree() -> void:
+
 	GlobalContext.Register(self)
-	
+
 func _ready() -> void:
+	GridPosition = Vector2i(roundi(position.x), roundi(position.z))
 	target_position = _grid_to_world(GridPosition)
 	position = target_position
 	await get_tree().create_timer(0.2).timeout
@@ -88,7 +93,7 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not isAlive:
 		return
-		
+
 	if event is InputEventKey:
 		var dir := _key_to_direction(event.keycode)
 		if dir == Vector2i.ZERO:
@@ -107,7 +112,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func _process(delta: float) -> void:
 	if not isAlive:
 		return
-		
+
 	if held_direction != Vector2i.ZERO:
 		repeat_timer += delta
 		if repeat_timer >= MOVE_REPEAT_DELAY:
@@ -123,7 +128,7 @@ func _move(dir: Vector2i) -> void:
 	var targetTile := danceFloor.get_tile_at_position(new_pos)
 	if not targetTile or not targetTile.isAlive:
 		return
-	
+
 	var old_pos := GridPosition
 	GridPosition = new_pos
 	target_position = _grid_to_world(GridPosition)

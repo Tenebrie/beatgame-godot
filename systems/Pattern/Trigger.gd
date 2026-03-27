@@ -12,11 +12,11 @@ func _init() -> void:
 		func(_beat: int) -> void:
 			resolved.emit()
 	)
-		
+
 func Delay(delay: float) -> Trigger:
 	triggerTimer.move_trigger(delay)
 	return self
-	
+
 static func BasicAttack() -> Trigger:
 	var trigger := new()
 	trigger.triggerTimer.timeout.connect(
@@ -25,7 +25,7 @@ static func BasicAttack() -> Trigger:
 	)
 	Stats.RecordBasicAttackTrigger()
 	return trigger
-	
+
 static func Execute(callback: Callable) -> Trigger:
 	var trigger := new()
 	trigger.triggerTimer.timeout.connect(
@@ -33,7 +33,7 @@ static func Execute(callback: Callable) -> Trigger:
 			callback.call()
 	)
 	return trigger
-	
+
 static func EnemyMoveToColumnTop(column: String) -> Trigger:
 	var columnIndex := Pattern.letters.find(column)
 	var builderOffset := Pattern.BuilderOffset
@@ -43,7 +43,7 @@ static func EnemyMoveToColumnTop(column: String) -> Trigger:
 			GlobalContext.GetBoss().move_to_column_top(columnIndex + builderOffset.x)
 	)
 	return trigger
-	
+
 static func EnemyMove(pos: Vector2) -> Trigger:
 	var trigger := new()
 	var builderOffset := Pattern.BuilderOffset
@@ -79,6 +79,6 @@ static func EnemyMoveToPlayerRow() -> Trigger:
 			GlobalContext.GetBoss().move_to_row_right(playerRow)
 	)
 	return trigger
-	
+
 func Done() -> void:
 	await resolved

@@ -8,7 +8,7 @@ func RecordBasicAttackTrigger() -> void:
 
 func CalculateOptimalDamage() -> float:
 	return maxBasicAttacks
-	
+
 func RecordDamageTaken(damage: float) -> void:
 	totalDamageTaken += damage
 

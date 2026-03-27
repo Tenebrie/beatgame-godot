@@ -42,6 +42,13 @@ var last_drag_over_tab: CustomTab
 var drag_marker: ColorRect
 var current_tab: CustomTab
 
+## Tracks when each item_index was last selected, for temperature sorting.
+var tab_select_times: Dictionary = {}
+## True while ctrl+tab cycling is in progress; suppresses temperature updates.
+var is_cycling_tabs: bool = false
+## Frame number until which temperature updates are suppressed (for right-click, close).
+var suppress_temperature_until_frame: int = -1
+
 func _init() -> void:
 	tab_group.pressed.connect(on_new_tab_selected)
 
@@ -93,10 +100,6 @@ func _notification(what: int) -> void:
 
 func _process(delta: float) -> void:
 	sync_tabs_with_item_list()
-
-	if (is_singleline_tabs):
-		shift_singleline_tabs_to(current_tab)
-
 	set_process(false)
 
 func _shortcut_input(event: InputEvent) -> void:
@@ -116,12 +119,14 @@ func _shortcut_input(event: InputEvent) -> void:
 		if (tab_count <= 1):
 			return
 
-		var index: int = current_tab.get_index()
-		var new_tab: int = index + 1
-		if (new_tab == tab_count):
-			new_tab = 0
+		is_cycling_tabs = true
 
-		var tab: CustomTab = get_tab(new_tab)
+		# Cycle through visual order (temperature-sorted).
+		var tabs: Array[Node] = get_tabs()
+		var index: int = tabs.find(current_tab)
+		var new_index: int = (index + 1) % tab_count
+
+		var tab: CustomTab = tabs[new_index]
 		tab.button_pressed = true
 	elif (plugin.tab_cycle_backward_shc.matches_event(event)):
 		get_viewport().set_input_as_handled()
@@ -130,13 +135,26 @@ func _shortcut_input(event: InputEvent) -> void:
 		if (tab_count <= 1):
 			return
 
-		var index: int = current_tab.get_index()
-		var new_tab: int = index - 1
-		if (new_tab == -1):
-			new_tab = tab_count - 1
+		is_cycling_tabs = true
 
-		var tab: CustomTab = get_tab(new_tab)
+		# Cycle through visual order (temperature-sorted).
+		var tabs: Array[Node] = get_tabs()
+		var index: int = tabs.find(current_tab)
+		var new_index: int = (index - 1 + tab_count) % tab_count
+
+		var tab: CustomTab = tabs[new_index]
 		tab.button_pressed = true
+
+func _input(event: InputEvent) -> void:
+	if (!is_cycling_tabs):
+		return
+
+	# Commit temperature when the modifier key (Ctrl) is released.
+	if (event is InputEventKey && !event.is_pressed() && event.keycode == KEY_CTRL):
+		is_cycling_tabs = false
+		if (current_tab != null):
+			tab_select_times[current_tab.item_index] = Time.get_ticks_msec()
+			sort_tabs_by_temperature()
 
 func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
 	if !(data is Dictionary):
@@ -159,14 +177,21 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 func schedule_update():
 	set_process(true)
 
+## Suppress temperature updates for the next 2 frames (covers deferred callbacks).
+func suppress_temperature():
+	suppress_temperature_until_frame = Engine.get_process_frames() + 2
+
+func is_temperature_suppressed() -> bool:
+	return Engine.get_process_frames() <= suppress_temperature_until_frame
+
 func set_split(script: Script) -> void:
 	split_script = script
 
 	if (split_script != null):
 		split_btn.icon = split_icon
 
-		var text: String = scripts_item_list.get_item_text(current_tab.get_index())
-		var icon: Texture2D = scripts_item_list.get_item_icon(current_tab.get_index())
+		var text: String = scripts_item_list.get_item_text(current_tab.item_index)
+		var icon: Texture2D = scripts_item_list.get_item_icon(current_tab.item_index)
 		split_btn.text = text
 		split_btn.icon = icon
 	else:
@@ -231,7 +256,7 @@ func update_tab(tab: CustomTab):
 	if (tab == null):
 		return
 
-	var index: int = tab.get_index()
+	var index: int = tab.item_index
 
 	tab.text = scripts_item_list.get_item_text(index)
 	tab.icon = scripts_item_list.get_item_icon(index)
@@ -254,9 +279,17 @@ func get_tab(index: int) -> CustomTab:
 func get_tab_count() -> int:
 	return multiline_tab_bar.get_child_count()
 
-func add_tab() -> CustomTab:
+## Find a tab by its item_index (ItemList index), regardless of visual order.
+func find_tab_by_item_index(item_index: int) -> CustomTab:
+	for tab: CustomTab in get_tabs():
+		if (tab.item_index == item_index):
+			return tab
+	return null
+
+func add_tab(item_index: int) -> CustomTab:
 	var tab: CustomTab = CustomTab.new()
 	tab.button_group = tab_group
+	tab.item_index = item_index
 
 	if (show_close_button_always):
 		tab.show_close_button()
@@ -292,7 +325,8 @@ func update_icon_color(tab: CustomTab, color: Color):
 
 
 func on_tab_right_click(tab: CustomTab):
-	var index: int = tab.get_index()
+	var index: int = tab.item_index
+	suppress_temperature()
 	scripts_item_list.item_clicked.emit(index, scripts_item_list.get_local_mouse_position(), MOUSE_BUTTON_RIGHT)
 
 func on_new_tab_selected(tab: CustomTab):
@@ -306,7 +340,7 @@ func on_new_tab_selected(tab: CustomTab):
 
 	update_script_text_filter()
 
-	var index: int = tab.get_index()
+	var index: int = tab.item_index
 	if (scripts_item_list != null && !scripts_item_list.is_selected(index)):
 		scripts_item_list.select(index)
 		scripts_item_list.item_selected.emit(index)
@@ -325,35 +359,94 @@ func update_script_text_filter():
 		script_filter_txt.text_changed.emit(&"")
 
 func on_tab_close_pressed(tab: CustomTab) -> void:
-	scripts_item_list.item_clicked.emit(tab.get_index(), scripts_item_list.get_local_mouse_position(), MOUSE_BUTTON_MIDDLE)
+	tab_select_times.erase(tab.item_index)
+	suppress_temperature()
+	scripts_item_list.item_clicked.emit(tab.item_index, scripts_item_list.get_local_mouse_position(), MOUSE_BUTTON_MIDDLE)
 
 func sync_tabs_with_item_list() -> void:
 	if (plugin == null):
 		return
 
-	if (get_tab_count() > scripts_item_list.item_count):
-		for index: int in range(get_tab_count() - 1, scripts_item_list.item_count - 1, -1):
-			var tab: CustomTab = get_tab(index)
+	# Build a lookup of current ItemList entries by tooltip (script path).
+	var item_by_tooltip: Dictionary = {}
+	for index: int in scripts_item_list.item_count:
+		var tooltip: String = scripts_item_list.get_item_tooltip(index)
+		item_by_tooltip[tooltip] = index
 
+	# Match existing tabs to their new item indices via tooltip.
+	# Remove tabs that no longer have a matching item.
+	var matched_indices: Dictionary = {}
+	for i: int in range(get_tab_count() - 1, -1, -1):
+		var tab: CustomTab = get_tab(i)
+		var new_index: Variant = item_by_tooltip.get(tab.tooltip_text, null)
+
+		if (new_index == null):
+			# Script was removed.
 			if (tab == current_tab):
 				current_tab = null
 
+			# Migrate select time to new index if needed, or erase.
+			tab_select_times.erase(tab.item_index)
 			multiline_tab_bar.remove_child(tab)
 			free_tab(tab)
+		else:
+			# Remap the tab's item_index and select time.
+			var old_index: int = tab.item_index
+			if (old_index != new_index):
+				if (tab_select_times.has(old_index)):
+					tab_select_times[new_index] = tab_select_times[old_index]
+					tab_select_times.erase(old_index)
+				tab.item_index = new_index
 
+			matched_indices[new_index] = tab
+
+	# Add tabs for any new items that don't have a tab yet.
 	for index: int in scripts_item_list.item_count:
-		var tab: CustomTab = get_tab(index)
+		var tab: CustomTab = matched_indices.get(index, null)
 		if (tab == null):
-			tab = add_tab()
+			tab = add_tab(index)
 
 		update_tab(tab)
+
+	sort_tabs_by_temperature()
+	update_singleline_min_width()
+
+## Sort tab children so most-recently-selected tabs appear first.
+## Tabs with the same temperature are kept in item_index order for stability.
+func sort_tabs_by_temperature():
+	var tabs: Array[Node] = get_tabs()
+	if (tabs.size() <= 1):
+		return
+
+	tabs.sort_custom(func(a: CustomTab, b: CustomTab) -> bool:
+		var time_a: int = tab_select_times.get(a.item_index, 0)
+		var time_b: int = tab_select_times.get(b.item_index, 0)
+		if (time_a != time_b):
+			return time_a > time_b
+		return a.item_index < b.item_index
+	)
+
+	for i: int in tabs.size():
+		multiline_tab_bar.move_child(tabs[i], i)
 
 func tab_changed():
 	update_script_text_filter()
 
 	# When the tab change was not triggered by our component,
 	# we need to sync the selection.
-	update_tab(get_tab(scripts_tab_container.current_tab))
+	var item_index: int = scripts_tab_container.current_tab
+	var tab: CustomTab = find_tab_by_item_index(item_index)
+
+	# Only update temperature for direct tab changes (not cycling, right-click, or close).
+	var is_right_click: bool = Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)
+	if (!is_cycling_tabs && !is_temperature_suppressed() && !is_right_click):
+		tab_select_times[item_index] = Time.get_ticks_msec()
+		sort_tabs_by_temperature()
+		update_singleline_min_width()
+		if (is_singleline_tabs && scroll_container != null):
+			scroll_to_start(true)
+
+	update_tab(tab)
 
 func script_order_changed() -> void:
 	schedule_update()
@@ -387,7 +480,7 @@ func set_show_close_button_always(new_value: bool):
 		return
 
 	for tab: CustomTab in get_tabs():
-		tab.text = scripts_item_list.get_item_text(tab.get_index())
+		tab.text = scripts_item_list.get_item_text(tab.item_index)
 		if (show_close_button_always):
 			tab.text += CLOSE_BTN_SPACER
 			if (!tab.button_pressed):
@@ -408,79 +501,161 @@ func free_tab(tab: CustomTab):
 		tab.close_button.free()
 	tab.free()
 
-#region Singeline handling
+#region Singleline handling
+var scroll_container: ScrollContainer
+var scroll_tween: Tween
+
 func set_singleline_tabs(new_value: bool):
 	if (is_singleline_tabs == new_value):
 		return
 
 	is_singleline_tabs = new_value
 
+	if (multiline_tab_bar == null):
+		return
+
 	if (is_singleline_tabs):
-		item_rect_changed.connect(update_singleline_tabs_width)
-		tab_group.pressed.connect(ensure_singleline_tab_visible.unbind(1))
-
-		if (multiline_tab_bar == null):
-			return
-
-		shift_singleline_tabs_to(current_tab)
+		enable_singleline()
 	else:
-		item_rect_changed.disconnect(update_singleline_tabs_width)
-		tab_group.pressed.disconnect(ensure_singleline_tab_visible)
+		disable_singleline()
 
-		if (multiline_tab_bar == null):
-			return
+func enable_singleline():
+	# Create a ScrollContainer and reparent the tab bar into it.
+	scroll_container = ScrollContainer.new()
+	scroll_container.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll_container.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
+	scroll_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll_container.follow_focus = false
 
-		for tab: CustomTab in get_tabs():
-			tab.visible = true
+	var parent: Node = multiline_tab_bar.get_parent()
+	var tab_bar_index: int = multiline_tab_bar.get_index()
 
-func ensure_singleline_tab_visible():
-	if (current_tab != null && current_tab.visible):
-		return
+	parent.remove_child(multiline_tab_bar)
+	parent.add_child(scroll_container)
+	parent.move_child(scroll_container, tab_bar_index)
 
-	shift_singleline_tabs_to(current_tab)
+	scroll_container.add_child(multiline_tab_bar)
 
-func update_singleline_tabs_width():
-	if (current_tab != null && !current_tab.visible):
-		shift_singleline_tabs_to(current_tab)
-		return
-
+	# All tabs must be visible — scrolling handles overflow now.
 	for tab: CustomTab in get_tabs():
-		if (tab.visible):
-			shift_singleline_tabs_to(tab)
-			break
-
-func shift_singleline_tabs_to(start_tab: CustomTab):
-	var start: bool
-	var tab_bar_width: float = multiline_tab_bar.size.x
-	var tabs_width: float
-	var one_fit: bool = true
-
-	for tab: CustomTab in get_tabs():
-		if (start_tab == null || tab == start_tab):
-			start = true
-
-		if (start):
-			tabs_width += tab.size.x
-
-			tab.visible = tabs_width <= tab_bar_width
-			one_fit = one_fit || tab.visible
-		else:
-			tab.visible = false
-
-	if (current_tab != null && !current_tab.visible):
-		if (start_tab != current_tab):
-			shift_singleline_tabs_to(current_tab)
-			return
-
-	if (start_tab == null):
-		return
-
-	for index: int in range(start_tab.get_index() - 1, -1, -1):
-		var tab: CustomTab = get_tabs().get(index)
-
-		tabs_width += tab.size.x
-		if (tabs_width > tab_bar_width):
-			return
-
 		tab.visible = true
+
+	# Force the HFlowContainer wide enough that it never wraps.
+	update_singleline_min_width()
+
+	tab_group.pressed.connect(on_singleline_tab_selected.unbind(1))
+	scroll_to_tab(current_tab, false)
+
+func disable_singleline():
+	if (scroll_container == null):
+		return
+
+	tab_group.pressed.disconnect(on_singleline_tab_selected)
+
+	# Reparent tab bar back out of the scroll container.
+	var parent: Node = scroll_container.get_parent()
+	var sc_index: int = scroll_container.get_index()
+
+	scroll_container.remove_child(multiline_tab_bar)
+	parent.add_child(multiline_tab_bar)
+	parent.move_child(multiline_tab_bar, sc_index)
+
+	parent.remove_child(scroll_container)
+	scroll_container.queue_free()
+	scroll_container = null
+
+	# Reset min width so HFlowContainer can wrap again.
+	multiline_tab_bar.custom_minimum_size.x = 0
+
+	for tab: CustomTab in get_tabs():
+		tab.visible = true
+
+## Prevent wrapping immediately, then recalculate the real width after layout.
+func update_singleline_min_width():
+	if (!is_singleline_tabs):
+		return
+
+	# Phase 1: Set large value so HFlowContainer never wraps this frame.
+	multiline_tab_bar.custom_minimum_size.x = 100000
+
+	# Phase 2: After layout, shrink to actual content width.
+	recalc_singleline_min_width.call_deferred()
+
+func recalc_singleline_min_width():
+	if (!is_singleline_tabs || multiline_tab_bar == null):
+		return
+
+	var total_width: float = 0.0
+	for tab: CustomTab in get_tabs():
+		total_width += tab.size.x
+
+	# Add separation between tabs.
+	var sep: float = multiline_tab_bar.get_theme_constant(&"h_separation") if multiline_tab_bar.has_theme_constant(&"h_separation") else 4
+	var tab_count: int = get_tab_count()
+	if (tab_count > 1):
+		total_width += sep * (tab_count - 1)
+
+	multiline_tab_bar.custom_minimum_size.x = total_width + 64
+
+func on_singleline_tab_selected():
+	scroll_to_tab(current_tab, true)
+
+func scroll_to_start(animate: bool):
+	if (scroll_container == null):
+		return
+
+	if (!animate || scroll_container.scroll_horizontal < 1):
+		scroll_container.scroll_horizontal = 0
+		return
+
+	if (scroll_tween != null):
+		scroll_tween.kill()
+
+	scroll_tween = create_tween()
+	scroll_tween.set_ease(Tween.EASE_OUT)
+	scroll_tween.set_trans(Tween.TRANS_CUBIC)
+	scroll_tween.tween_property(scroll_container, "scroll_horizontal", 0, 0.15)
+
+func scroll_to_tab(tab: CustomTab, animate: bool):
+	if (tab == null || scroll_container == null):
+		return
+
+	# Ensure all tabs are visible so positions are valid.
+	for t: CustomTab in get_tabs():
+		t.visible = true
+
+	# Wait a frame for layout if needed.
+	if (tab.size.x == 0):
+		await get_tree().process_frame
+
+	var peek_padding: float = 64.0 * EditorInterface.get_editor_scale()
+	var tab_left: float = tab.position.x
+	var tab_right: float = tab_left + tab.size.x
+	var viewport_width: float = scroll_container.size.x
+	var current_scroll: float = scroll_container.scroll_horizontal
+	var max_scroll: float = multiline_tab_bar.size.x - viewport_width
+
+	var target_scroll: float = current_scroll
+
+	# If tab is to the right of the visible area, scroll right with peek room.
+	if (tab_right + peek_padding > current_scroll + viewport_width):
+		target_scroll = tab_right + peek_padding - viewport_width
+
+	# If tab is to the left of the visible area, scroll left with peek room.
+	if (tab_left - peek_padding < current_scroll):
+		target_scroll = tab_left - peek_padding
+
+	target_scroll = clampf(target_scroll, 0, max(max_scroll, 0))
+
+	if (!animate || absf(target_scroll - current_scroll) < 1.0):
+		scroll_container.scroll_horizontal = int(target_scroll)
+		return
+
+	if (scroll_tween != null):
+		scroll_tween.kill()
+
+	scroll_tween = create_tween()
+	scroll_tween.set_ease(Tween.EASE_OUT)
+	scroll_tween.set_trans(Tween.TRANS_CUBIC)
+	scroll_tween.tween_property(scroll_container, "scroll_horizontal", int(target_scroll), 0.15)
 #endregion

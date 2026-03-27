@@ -4,7 +4,7 @@ func _ready() -> void:
 	$Area3D.area_entered.connect(OnCollision)
 	await get_tree().create_timer(2.5).timeout
 	queue_free()
-	
+
 func OnCollision(other: Area3D) -> void:
 	if other.get_parent() is not Boss:
 		return
@@ -16,7 +16,7 @@ func OnCollision(other: Area3D) -> void:
 	boss.DealDamage(1.0)
 	await get_tree().create_timer(0.5).timeout
 	queue_free()
-	
+
 var isDestroyed := false
 
 func _process(delta: float) -> void:

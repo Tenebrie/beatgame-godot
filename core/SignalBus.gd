@@ -17,4 +17,6 @@ signal OnBeat(beat: float)
 signal OnPlayerDeath()
 signal OnAdversaryDeath()
 
+signal ArenaReset()
+
 signal StartEmittingSurpriseParticles()

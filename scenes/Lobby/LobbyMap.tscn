@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://4khp4ahby5ma"]
+
+[ext_resource type="Script" uid="uid://ytteo027idau" path="res://scenes/Lobby/LobbyMap.gd" id="1_8mfch"]
+[ext_resource type="Script" uid="uid://d4j2cb5kamym0" path="res://systems/DanceFloor/DanceFloor.gd" id="2_kprcc"]
+[ext_resource type="PackedScene" uid="uid://bbvr3ouw6tjd7" path="res://player/Player.tscn" id="3_h03h2"]
+[ext_resource type="Script" uid="uid://cihqnnkwn6s0v" path="res://player/camera/MainCamera.gd" id="3_rnljv"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q56u3"]
+billboard_mode = 1
+
+[sub_resource type="TextMesh" id="TextMesh_q56u3"]
+material = SubResource("StandardMaterial3D_q56u3")
+text = "Drainage Courtesan"
+depth = 0.01
+
+[node name="LobbyMap" type="Node3D" unique_id=1633401859]
+script = ExtResource("1_8mfch")
+
+[node name="DanceFloor" type="Node3D" parent="." unique_id=1938770143]
+script = ExtResource("2_kprcc")
+metadata/_custom_type_script = "uid://d4j2cb5kamym0"
+
+[node name="TutorialMapLabel" type="MeshInstance3D" parent="DanceFloor" unique_id=984170184]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.5, -0.5)
+mesh = SubResource("TextMesh_q56u3")
+
+[node name="Player" parent="DanceFloor" unique_id=241487594 instance=ExtResource("3_h03h2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
+
+[node name="MainCamera" type="Camera3D" parent="." unique_id=1103429697]
+transform = Transform3D(1, 0, 0, 0, 0.17364822, 0.9848077, 0, -0.9848077, 0.17364822, 0, 4, 1)
+script = ExtResource("3_rnljv")
+metadata/_custom_type_script = "uid://cihqnnkwn6s0v"
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1435085568]
+transform = Transform3D(1, 0, 0, 0, 0.77294403, 0.6344742, 0, -0.6344742, 0.77294403, 0, 0, 0)

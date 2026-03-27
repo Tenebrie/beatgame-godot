@@ -5,7 +5,7 @@ func _ready() -> void:
 	pass # Replace with function body.
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	var pos := GlobalContext.GetAudioAgent().get_position_seconds()
 	var dur := GlobalContext.GetAudioAgent().get_duration_seconds()
 	var beat := GlobalContext.GetAudioAgent().get_position_beats()

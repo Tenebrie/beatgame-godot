@@ -1,5 +1,8 @@
-extends Node3D
-class_name DanceTile
+## Dynamically generated tile for DanceFloor
+##
+## Not intended for public use
+@icon("res://assets/icons/editor/Cross.svg")
+class_name DanceTile extends Node3D
 
 var gridX: int
 var gridY: int
@@ -16,16 +19,16 @@ func _ready() -> void:
 	SignalBus.clearAllTiles.connect(on_clear_all_tiles)
 	SignalBus.OnRestoreTile.connect(on_restore_tile)
 	SignalBus.OnDestroyTile.connect(on_destroy_tile)
-	
+
 	beatTimer = MusicTimer.Create()
 	beatTimer.timeout.connect(on_beat)
 	beatTimer.start_repeatable(0.0)
 
-	
+
 func on_beat(triggerBeat: int) -> void:
 	if not isAlive:
 		return
-		
+
 	beatTimer.start_repeatable(triggerBeat + 1)
 	beatTween = create_tween()
 	if triggerBeat % 2 == 0:
@@ -38,7 +41,7 @@ func on_beat(triggerBeat: int) -> void:
 func on_telegraph(pos: Vector2i, delay: float) -> void:
 	if pos.x != gridX or pos.y != gridY:
 		return
-		
+
 	var driver := TileDriver.new()
 	driver.Start(Vector2i(gridX, gridY), delay)
 	add_child(driver)
@@ -46,37 +49,37 @@ func on_telegraph(pos: Vector2i, delay: float) -> void:
 func on_explode(x: int, y: int) -> void:
 	if x != gridX or y != gridY:
 		return
-	
+
 	explode = 1.0
-	
+
 	var player := GlobalContext.GetPlayer()
 	if player.GridPosition.x != gridX or player.GridPosition.y != gridY:
 		return
-		
+
 	await get_tree().create_timer(0.02).timeout
 	if player.GridPosition.x == gridX and player.GridPosition.y == gridY:
 		player.DealDamage(1.0)
-	
+
 func on_clear_all_tiles() -> void:
 	explode = 0.0
 	for child in get_children():
 		if child is TileDriver:
 			remove_child(child)
 			child.queue_free()
-			
+
 func on_restore_tile(x: int, y: int) -> void:
 	if x != gridX or y != gridY:
 		return
-	
+
 	beatTimer.start_repeatable(roundi(GlobalContext.GetAudioAgent().get_position_beats()) + 1)
 	isAlive = true
 	create_tween().tween_property($MeshInstance3D, ^"scale", Vector3(1, 1, 1), 0.2)
 	set_process(true)
-	
+
 func on_destroy_tile(x: int, y: int) -> void:
 	if x != gridX or y != gridY:
 		return
-		
+
 	beatTween.stop()
 	isAlive = false
 	create_tween().tween_property($MeshInstance3D, ^"scale", Vector3(0, 0, 0), 0.2)
@@ -91,9 +94,9 @@ func _process(delta: float) -> void:
 		var driver := child as TileDriver
 		if driver:
 			telegraph = maxf(telegraph, driver.telegraph)
-	
+
 	explode -= minf(explode, delta)
-	
+
 	var mat: ShaderMaterial = $MeshInstance3D.get_active_material(0)
 	mat.set_shader_parameter("TelegraphProgress", telegraph)
 	mat.set_shader_parameter("ImpactProgress", explode)
