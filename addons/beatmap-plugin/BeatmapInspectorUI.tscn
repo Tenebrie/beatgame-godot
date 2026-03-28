@@ -1,0 +1,207 @@
+[gd_scene format=3 uid="uid://d2lccy6i1csrl"]
+
+[ext_resource type="Script" uid="uid://3uu4rs7e3305" path="res://addons/beatmap-plugin/BeatmapInspectorUI.gd" id="1_jbmvc"]
+[ext_resource type="Texture2D" uid="uid://d12dipvavnlvt" path="res://assets/icons/editor/Pause.svg" id="2_mpfu8"]
+[ext_resource type="Texture2D" uid="uid://bmwdnc60c1h1g" path="res://assets/icons/editor/MainPlay.svg" id="2_ngf4s"]
+[ext_resource type="Texture2D" uid="uid://cc6pk31mrjh5h" path="res://assets/icons/editor/Stop.svg" id="4_c2lj6"]
+
+[node name="BeatmapInspectorUI" type="Control" unique_id=1154842838]
+custom_minimum_size = Vector2(0, 500)
+layout_mode = 3
+anchors_preset = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 2552.0
+offset_bottom = 1432.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+focus_mode = 1
+script = ExtResource("1_jbmvc")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2082725818]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="Control" type="Control" parent="MarginContainer" unique_id=378215745]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/Control" unique_id=1320738069]
+layout_mode = 0
+offset_left = -8.0
+offset_right = 113.0
+offset_bottom = 23.0
+text = "Beatmap Editor"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Control" unique_id=197638578]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 40.0
+offset_right = 7.0
+offset_bottom = 74.0
+grow_horizontal = 2
+
+[node name="PlayButton" type="Button" parent="MarginContainer/Control/HBoxContainer" unique_id=1411836866]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+theme_override_constants/icon_max_width = 24
+icon = ExtResource("2_ngf4s")
+
+[node name="PauseButton" type="Button" parent="MarginContainer/Control/HBoxContainer" unique_id=166948496]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+theme_override_constants/icon_max_width = 24
+icon = ExtResource("2_mpfu8")
+
+[node name="StopButton" type="Button" parent="MarginContainer/Control/HBoxContainer" unique_id=1995051755]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+theme_override_constants/icon_max_width = 24
+icon = ExtResource("4_c2lj6")
+
+[node name="Control" type="Control" parent="MarginContainer/Control/HBoxContainer" unique_id=803464400]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SongProgress" type="ProgressBar" parent="MarginContainer/Control/HBoxContainer/Control" unique_id=95748577]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+show_percentage = false
+
+[node name="StartPos" type="ColorRect" parent="MarginContainer/Control/HBoxContainer/Control/SongProgress" unique_id=127634107]
+custom_minimum_size = Vector2(2, 0)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 2.0
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.36196557, 0.6156772, 6.3532593e-06, 1)
+
+[node name="Scrubber" type="ColorRect" parent="MarginContainer/Control/HBoxContainer/Control/SongProgress" unique_id=1547301809]
+custom_minimum_size = Vector2(2, 0)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 46.0
+offset_right = 48.0
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.7807016, 0.7807017, 0.7807016, 1)
+
+[node name="EndPos" type="ColorRect" parent="MarginContainer/Control/HBoxContainer/Control/SongProgress" unique_id=639452344]
+custom_minimum_size = Vector2(2, 0)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 9999.0
+offset_right = 10001.0
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.62, 0.24800003, 0, 1)
+
+[node name="BeatIndexLabel" type="Label" parent="MarginContainer/Control/HBoxContainer/Control/SongProgress" unique_id=2013969443]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -66.0
+offset_top = -11.5
+offset_right = -26.0
+offset_bottom = 11.5
+grow_horizontal = 0
+grow_vertical = 2
+text = "000"
+horizontal_alignment = 2
+
+[node name="FractionTop" type="Label" parent="MarginContainer/Control/HBoxContainer/Control/SongProgress" unique_id=1363149468]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 23.0
+grow_horizontal = 0
+theme_override_constants/line_spacing = 0
+theme_override_constants/paragraph_spacing = 0
+theme_override_font_sizes/font_size = 16
+text = "1"
+horizontal_alignment = 1
+
+[node name="FractionBottom" type="Label" parent="MarginContainer/Control/HBoxContainer/Control/SongProgress" unique_id=1292741813]
+visible = false
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -23.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/line_spacing = 0
+theme_override_constants/paragraph_spacing = 0
+theme_override_font_sizes/font_size = 16
+text = "8"
+horizontal_alignment = 1
+
+[node name="OneBack" type="Button" parent="MarginContainer/Control/HBoxContainer" unique_id=395589861]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+theme_override_constants/icon_max_width = 24
+icon = ExtResource("2_ngf4s")
+
+[node name="OneBackTiny" type="Button" parent="MarginContainer/Control/HBoxContainer" unique_id=2037014777]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+theme_override_constants/icon_max_width = 24
+icon = ExtResource("2_ngf4s")
+
+[node name="OneForwardTiny" type="Button" parent="MarginContainer/Control/HBoxContainer" unique_id=1588396981]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+theme_override_constants/icon_max_width = 24
+icon = ExtResource("2_ngf4s")
+
+[node name="OneForward" type="Button" parent="MarginContainer/Control/HBoxContainer" unique_id=418416387]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+theme_override_constants/icon_max_width = 24
+icon = ExtResource("2_ngf4s")
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/Control" unique_id=1283139728]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 114.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=445520593]

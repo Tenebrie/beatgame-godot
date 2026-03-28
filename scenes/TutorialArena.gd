@@ -24,7 +24,6 @@ func _trigger_fight(gridPos: Vector2i, _oldPos: Vector2i) -> void:
 		return
 
 	isFightTriggered = true
-	GlobalContext.GetAudioAgent().StartPlaying()
 	SignalBus.OnFightBegin.emit()
 
 func _on_arena_reset() -> void:

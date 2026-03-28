@@ -1,0 +1,163 @@
+[gd_resource type="Resource" script_class="Beatmap" format=3 uid="uid://bgjde5rc3lprm"]
+
+[ext_resource type="AudioStream" uid="uid://dg8flfg16trk8" path="res://audio/SecretSongShort.ogg" id="1_6tvk0"]
+[ext_resource type="Script" uid="uid://b3of2y8w21clc" path="res://systems/Pattern/BeatmapPatternData.gd" id="1_evm31"]
+[ext_resource type="Script" uid="uid://dac2rue52tyom" path="res://systems/Pattern/Beatmap.gd" id="2_6tvk0"]
+
+[sub_resource type="Resource" id="Resource_6tvk0"]
+script = ExtResource("1_evm31")
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_kyfha"]
+script = ExtResource("1_evm31")
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_4uxu1"]
+script = ExtResource("1_evm31")
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_3t5n2"]
+script = ExtResource("1_evm31")
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_iovjj"]
+script = ExtResource("1_evm31")
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_w4axd"]
+script = ExtResource("1_evm31")
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_rqi4e"]
+script = ExtResource("1_evm31")
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_6oxg7"]
+script = ExtResource("1_evm31")
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_moxbx"]
+script = ExtResource("1_evm31")
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_effxv"]
+script = ExtResource("1_evm31")
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_3llce"]
+script = ExtResource("1_evm31")
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_xhwgf"]
+script = ExtResource("1_evm31")
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_kqqwd"]
+script = ExtResource("1_evm31")
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_a2g7d"]
+script = ExtResource("1_evm31")
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_2orxj"]
+script = ExtResource("1_evm31")
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_j2gun"]
+script = ExtResource("1_evm31")
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_f08pi"]
+script = ExtResource("1_evm31")
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_mc5d0"]
+script = ExtResource("1_evm31")
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_o1xv5"]
+script = ExtResource("1_evm31")
+finishedAt = 7.875
+
+[sub_resource type="Resource" id="Resource_gjoir"]
+script = ExtResource("1_evm31")
+state = 1
+startedAt = 7.875
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_crfrt"]
+script = ExtResource("1_evm31")
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_ji755"]
+script = ExtResource("1_evm31")
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_iqdxf"]
+script = ExtResource("1_evm31")
+finishedAt = 9.875
+
+[sub_resource type="Resource" id="Resource_5p2c0"]
+script = ExtResource("1_evm31")
+state = 1
+startedAt = 9.875
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_13bqd"]
+script = ExtResource("1_evm31")
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_1nrcy"]
+script = ExtResource("1_evm31")
+finishedAt = 8.875
+
+[sub_resource type="Resource" id="Resource_1u7aw"]
+script = ExtResource("1_evm31")
+state = 1
+startedAt = 8.875
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_dya50"]
+script = ExtResource("1_evm31")
+finishedAt = 0.5
+
+[sub_resource type="Resource" id="Resource_855w3"]
+script = ExtResource("1_evm31")
+state = 1
+startedAt = 0.5
+finishedAt = 737.5
+
+[resource]
+script = ExtResource("2_6tvk0")
+bpm = 130
+audioFile = ExtResource("1_6tvk0")
+gridSize = Vector2i(5, 5)
+patterns = Dictionary[String, Array]({
+"0-0": [SubResource("Resource_6tvk0")],
+"0-1": [SubResource("Resource_w4axd")],
+"0-2": [SubResource("Resource_3llce")],
+"0-3": [SubResource("Resource_j2gun")],
+"0-4": [SubResource("Resource_ji755")],
+"1-0": [SubResource("Resource_kyfha")],
+"1-1": [SubResource("Resource_rqi4e")],
+"1-2": [SubResource("Resource_xhwgf")],
+"1-3": [SubResource("Resource_f08pi")],
+"1-4": [SubResource("Resource_iqdxf"), SubResource("Resource_5p2c0")],
+"2-0": [SubResource("Resource_4uxu1")],
+"2-1": [SubResource("Resource_6oxg7")],
+"2-2": [SubResource("Resource_kqqwd")],
+"2-3": [SubResource("Resource_mc5d0")],
+"2-4": [SubResource("Resource_13bqd")],
+"3-0": [SubResource("Resource_3t5n2")],
+"3-1": [SubResource("Resource_moxbx")],
+"3-2": [SubResource("Resource_a2g7d")],
+"3-3": [SubResource("Resource_o1xv5"), SubResource("Resource_gjoir")],
+"3-4": [SubResource("Resource_1nrcy"), SubResource("Resource_1u7aw")],
+"4-0": [SubResource("Resource_iovjj")],
+"4-1": [SubResource("Resource_effxv")],
+"4-2": [SubResource("Resource_2orxj")],
+"4-3": [SubResource("Resource_crfrt")],
+"4-4": [SubResource("Resource_dya50"), SubResource("Resource_855w3")]
+})
+metadata/_custom_type_script = "uid://dac2rue52tyom"

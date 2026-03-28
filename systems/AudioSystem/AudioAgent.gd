@@ -6,9 +6,10 @@ func _enter_tree() -> void:
 	GlobalContext.Register(self)
 
 var isStarting := false
-#func _ready() -> void:
-
-
+func _ready() -> void:
+	SignalBus.OnFightBegin.connect(func() -> void:
+		StartPlaying()
+	)
 
 func get_bpm() -> float:
 	return 130.0
