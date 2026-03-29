@@ -1,13 +1,18 @@
 @tool
 class_name PatternTileButton extends Button
 
-var parent: BeatmapInspectorUI
+var parent: BeatmapInspectorWidget
 
-var state := Beatmap.PatternState.Idle
+var state := Beatmap.PatternState.Destroyed
+signal MouseDown(event: InputEventMouseButton)
 signal StateChanged(to: Beatmap.PatternState)
+signal BeforeToolInvoked
 
 var hoveredAlready := false
-var stateToSetOnHover := Beatmap.PatternState.Idle
+
+func _set_state_and_save(to: Beatmap.PatternState) -> void:
+	SetState(to)
+	StateChanged.emit(to)
 
 func SetState(to: Beatmap.PatternState) -> void:
 	state = to
@@ -19,47 +24,38 @@ func SetState(to: Beatmap.PatternState) -> void:
 	elif state == Beatmap.PatternState.Destroyed:
 		color = Color.from_string("#00000010", Color.BLACK)
 	self_modulate = color
-	StateChanged.emit(to)
 
-func _init(newParent: BeatmapInspectorUI) -> void:
+func _init(newParent: BeatmapInspectorWidget) -> void:
 	parent = newParent
-	newParent.StartedMassSettingTilePatterns.connect(func(to: Beatmap.PatternState, from: Beatmap.PatternState) -> void:
-		stateToSetOnHover = to
-	)
 
 func _ready() -> void:
-
-
+	SetState(state)
 	mouse_entered.connect(func() -> void:
-		if state == stateToSetOnHover:
+		if parent.dragMode != BeatmapInspectorWidget.DragMode.Pattern:
 			return
 
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-			SetState(stateToSetOnHover)
-	)
-	mouse_exited.connect(func() -> void:
-		if state == stateToSetOnHover:
-			return
+			_apply_selected_tool()
 	)
 	gui_input.connect(func(event: InputEvent) -> void:
 		if event is InputEventMouseButton and event.button_index == 1 and event.pressed:
-			_cycle_states()
-
-		if event is InputEventMouseMotion and event.button_mask == 1:
-			return
+			_apply_selected_tool()
+			MouseDown.emit(event)
 	)
 
-func _cycle_states():
-	var oldState := state
+func _apply_selected_tool():
 	var nextState := Beatmap.PatternState.Idle
-	if state == Beatmap.PatternState.Idle:
-		nextState = Beatmap.PatternState.Telegraph
-	elif state == Beatmap.PatternState.Telegraph:
-		nextState = Beatmap.PatternState.Destroyed
-	elif state == Beatmap.PatternState.Destroyed:
+	if parent.toolMode == BeatmapInspectorWidget.TileTool.Restore:
 		nextState = Beatmap.PatternState.Idle
-	SetState(nextState)
-	parent.StartedMassSettingTilePatterns.emit(nextState, oldState)
+	elif parent.toolMode == BeatmapInspectorWidget.TileTool.Telegraph:
+		nextState = Beatmap.PatternState.Telegraph
+	elif parent.toolMode == BeatmapInspectorWidget.TileTool.Destroy:
+		nextState = Beatmap.PatternState.Destroyed
+	elif parent.toolMode == BeatmapInspectorWidget.TileTool.FullClear:
+		nextState = Beatmap.PatternState.Destroyed
+
+	BeforeToolInvoked.emit()
+	_set_state_and_save(nextState)
 
 func _input(event: InputEvent):
 	if event is InputEventMouseButton and not event.pressed and event.button_index == 1:

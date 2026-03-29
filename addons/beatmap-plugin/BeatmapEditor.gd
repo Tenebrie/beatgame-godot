@@ -8,8 +8,14 @@ func setup(res: Beatmap) -> void:
 	resource = res
 	resource.changed.connect(_rebuild)
 	resource.stateUpdated.connect(func() -> void:
-		_validateResource()
+		var errorCount := _validateResource()
 		ResourceSaver.save(resource)
+		if errorCount > 0:
+			_rebuild()
+	)
+	var inspector := EditorInterface.get_inspector()
+	inspector.property_edited.connect(func(property: String) -> void:
+		_rebuild()
 	)
 	_rebuild()
 
@@ -46,10 +52,10 @@ func _validateResource() -> int:
 		print("Found " + str(errorCount) + " errors during validation.")
 	return errorCount
 
-
 func _rebuild() -> void:
+	print("Rebuild")
 	for child in get_children():
 		child.queue_free()
-	var controls := preload("res://addons/beatmap-plugin/BeatmapInspectorUI.tscn").instantiate()
+	var controls := preload("res://addons/beatmap-plugin/BeatmapInspectorWidget.tscn").instantiate()
 	controls.Setup(resource)
 	add_child(controls)

@@ -4,741 +4,205 @@
 [ext_resource type="AudioStream" uid="uid://dg8flfg16trk8" path="res://audio/SecretSongShort.ogg" id="1_mhnhn"]
 [ext_resource type="Script" uid="uid://dac2rue52tyom" path="res://systems/Pattern/Beatmap.gd" id="2_mhnhn"]
 
-[sub_resource type="Resource" id="Resource_k8m7l"]
-script = ExtResource("1_fstfi")
-finishedAt = 2.0
-
-[sub_resource type="Resource" id="Resource_qhu2e"]
-script = ExtResource("1_fstfi")
-state = 1
-startedAt = 2.0
-finishedAt = 4.0
-
-[sub_resource type="Resource" id="Resource_vgbbk"]
-script = ExtResource("1_fstfi")
-state = 2
-startedAt = 4.0
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_eukdc"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 2.0
-
-[sub_resource type="Resource" id="Resource_q1vua"]
-script = ExtResource("1_fstfi")
-startedAt = 2.0
-finishedAt = 3.0
-
-[sub_resource type="Resource" id="Resource_cttja"]
-script = ExtResource("1_fstfi")
-state = 1
-startedAt = 3.0
-finishedAt = 5.0
-
-[sub_resource type="Resource" id="Resource_2e3l5"]
-script = ExtResource("1_fstfi")
-state = 2
-startedAt = 5.0
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_u3jka"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 3.0
-
-[sub_resource type="Resource" id="Resource_voi7g"]
-script = ExtResource("1_fstfi")
-startedAt = 3.0
-finishedAt = 4.0
-
-[sub_resource type="Resource" id="Resource_vomun"]
-script = ExtResource("1_fstfi")
-state = 1
-startedAt = 4.0
-finishedAt = 6.0
-
-[sub_resource type="Resource" id="Resource_48icb"]
-script = ExtResource("1_fstfi")
-state = 2
-startedAt = 6.0
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_pqcj2"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 4.0
-
 [sub_resource type="Resource" id="Resource_mhnhn"]
 script = ExtResource("1_fstfi")
-startedAt = 4.0
-finishedAt = 3.875
+state = 2
+finishedAt = 737.5
 
 [sub_resource type="Resource" id="Resource_ku66s"]
 script = ExtResource("1_fstfi")
-state = 2
-startedAt = 3.875
-finishedAt = 4.0
+finishedAt = 737.5
 
-[sub_resource type="Resource" id="Resource_t8xlo"]
+[sub_resource type="Resource" id="Resource_k8m7l"]
 script = ExtResource("1_fstfi")
-startedAt = 4.0
-finishedAt = 5.0
-
-[sub_resource type="Resource" id="Resource_ojx2n"]
-script = ExtResource("1_fstfi")
-state = 1
-startedAt = 5.0
-finishedAt = 7.0
-
-[sub_resource type="Resource" id="Resource_innb8"]
-script = ExtResource("1_fstfi")
-state = 2
-startedAt = 7.0
 finishedAt = 737.5
 
 [sub_resource type="Resource" id="Resource_txsqd"]
 script = ExtResource("1_fstfi")
-state = 2
 finishedAt = 737.5
 
-[sub_resource type="Resource" id="Resource_g5ohm"]
+[sub_resource type="Resource" id="Resource_qhu2e"]
 script = ExtResource("1_fstfi")
-finishedAt = 1.0
-
-[sub_resource type="Resource" id="Resource_d6oy1"]
-script = ExtResource("1_fstfi")
-state = 2
-startedAt = 1.0
-finishedAt = 2.0
-
-[sub_resource type="Resource" id="Resource_q2nb8"]
-script = ExtResource("1_fstfi")
-startedAt = 2.0
-finishedAt = 3.0
-
-[sub_resource type="Resource" id="Resource_8hcms"]
-script = ExtResource("1_fstfi")
-state = 2
-startedAt = 3.0
-finishedAt = 4.0
-
-[sub_resource type="Resource" id="Resource_agyn7"]
-script = ExtResource("1_fstfi")
-startedAt = 4.0
-finishedAt = 6.0
-
-[sub_resource type="Resource" id="Resource_4vmfl"]
-script = ExtResource("1_fstfi")
-state = 2
-startedAt = 6.0
 finishedAt = 737.5
 
-[sub_resource type="Resource" id="Resource_tggrg"]
+[sub_resource type="Resource" id="Resource_q1vua"]
+script = ExtResource("1_fstfi")
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_cttja"]
+script = ExtResource("1_fstfi")
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_t8xlo"]
+script = ExtResource("1_fstfi")
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_voi7g"]
+script = ExtResource("1_fstfi")
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_vomun"]
+script = ExtResource("1_fstfi")
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_vgbbk"]
 script = ExtResource("1_fstfi")
 state = 2
 finishedAt = 737.5
 
-[sub_resource type="Resource" id="Resource_8f7cc"]
+[sub_resource type="Resource" id="Resource_2e3l5"]
 script = ExtResource("1_fstfi")
 state = 2
-finishedAt = 5.0
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_ojx2n"]
+script = ExtResource("1_fstfi")
+state = 2
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_48icb"]
+script = ExtResource("1_fstfi")
+state = 2
+finishedAt = 737.5
 
 [sub_resource type="Resource" id="Resource_q165v"]
 script = ExtResource("1_fstfi")
-startedAt = 5.0
-finishedAt = 6.0
+state = 2
+finishedAt = 737.5
 
 [sub_resource type="Resource" id="Resource_tq0nx"]
 script = ExtResource("1_fstfi")
-state = 1
-startedAt = 6.0
-finishedAt = 8.0
+state = 2
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_innb8"]
+script = ExtResource("1_fstfi")
+state = 2
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_tojjm"]
+script = ExtResource("1_fstfi")
+state = 2
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_72lkc"]
+script = ExtResource("1_fstfi")
+state = 2
+finishedAt = 737.5
 
 [sub_resource type="Resource" id="Resource_ia67v"]
 script = ExtResource("1_fstfi")
 state = 2
-startedAt = 8.0
 finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_nko87"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_we5kj"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_ug30p"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_cyvj8"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_o0nv3"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_25cv1"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_tvb0i"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_v31nu"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_d04og"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_b7r62"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_g4qxy"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_bv0mk"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_upevk"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_yrf1h"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_vrq4y"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_q703v"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_rwdye"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_330ad"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_fn5v5"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_3jiay"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_gk14b"]
-script = ExtResource("1_fstfi")
-finishedAt = 388.0
-
-[sub_resource type="Resource" id="Resource_4ggxa"]
-script = ExtResource("1_fstfi")
-state = 2
-startedAt = 388.0
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_6xt8p"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_7o8go"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_qxpmq"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 4.0
-
-[sub_resource type="Resource" id="Resource_8byga"]
-script = ExtResource("1_fstfi")
-state = 2
-startedAt = 4.0
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_cglfa"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 9.0
-
-[sub_resource type="Resource" id="Resource_xy27v"]
-script = ExtResource("1_fstfi")
-startedAt = 9.0
-finishedAt = 10.0
-
-[sub_resource type="Resource" id="Resource_r2jkw"]
-script = ExtResource("1_fstfi")
-state = 1
-startedAt = 10.0
-finishedAt = 12.0
-
-[sub_resource type="Resource" id="Resource_oq317"]
-script = ExtResource("1_fstfi")
-state = 2
-startedAt = 12.0
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_v5cmh"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 8.0
-
-[sub_resource type="Resource" id="Resource_tv3kl"]
-script = ExtResource("1_fstfi")
-startedAt = 8.0
-finishedAt = 9.0
-
-[sub_resource type="Resource" id="Resource_fwayi"]
-script = ExtResource("1_fstfi")
-state = 1
-startedAt = 9.0
-finishedAt = 11.0
-
-[sub_resource type="Resource" id="Resource_i52tm"]
-script = ExtResource("1_fstfi")
-state = 2
-startedAt = 11.0
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_iwp2p"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 7.0
 
 [sub_resource type="Resource" id="Resource_dbecr"]
 script = ExtResource("1_fstfi")
-startedAt = 7.0
-finishedAt = 8.0
+state = 2
+finishedAt = 737.5
 
 [sub_resource type="Resource" id="Resource_nfthx"]
 script = ExtResource("1_fstfi")
-state = 1
-startedAt = 8.0
-finishedAt = 10.0
-
-[sub_resource type="Resource" id="Resource_i7k2r"]
-script = ExtResource("1_fstfi")
 state = 2
-startedAt = 10.0
 finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_il31q"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 6.0
-
-[sub_resource type="Resource" id="Resource_tojjm"]
-script = ExtResource("1_fstfi")
-startedAt = 6.0
-finishedAt = 7.0
-
-[sub_resource type="Resource" id="Resource_72lkc"]
-script = ExtResource("1_fstfi")
-state = 1
-startedAt = 7.0
-finishedAt = 9.0
 
 [sub_resource type="Resource" id="Resource_14ma6"]
 script = ExtResource("1_fstfi")
 state = 2
-startedAt = 9.0
 finishedAt = 737.5
 
-[sub_resource type="Resource" id="Resource_jayqq"]
+[sub_resource type="Resource" id="Resource_tv3kl"]
 script = ExtResource("1_fstfi")
 state = 2
-finishedAt = 10.0
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_fwayi"]
+script = ExtResource("1_fstfi")
+state = 2
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_i7k2r"]
+script = ExtResource("1_fstfi")
+state = 2
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_xy27v"]
+script = ExtResource("1_fstfi")
+state = 2
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_r2jkw"]
+script = ExtResource("1_fstfi")
+state = 2
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_i52tm"]
+script = ExtResource("1_fstfi")
+state = 2
+finishedAt = 737.5
 
 [sub_resource type="Resource" id="Resource_7jn1m"]
 script = ExtResource("1_fstfi")
-startedAt = 10.0
-finishedAt = 11.0
+state = 2
+finishedAt = 737.5
 
 [sub_resource type="Resource" id="Resource_wnpkx"]
 script = ExtResource("1_fstfi")
-state = 1
-startedAt = 11.0
-finishedAt = 13.0
+state = 2
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_oq317"]
+script = ExtResource("1_fstfi")
+state = 2
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_nged7"]
+script = ExtResource("1_fstfi")
+state = 2
+finishedAt = 737.5
+
+[sub_resource type="Resource" id="Resource_8w07c"]
+script = ExtResource("1_fstfi")
+state = 2
+finishedAt = 737.5
 
 [sub_resource type="Resource" id="Resource_24sc1"]
 script = ExtResource("1_fstfi")
 state = 2
-startedAt = 13.0
 finishedAt = 737.5
 
-[sub_resource type="Resource" id="Resource_d7j4h"]
+[sub_resource type="Resource" id="Resource_ij6je"]
 script = ExtResource("1_fstfi")
 state = 2
 finishedAt = 737.5
 
-[sub_resource type="Resource" id="Resource_ygt5j"]
+[sub_resource type="Resource" id="Resource_m8bql"]
 script = ExtResource("1_fstfi")
 state = 2
 finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_haiqg"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_th0sh"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 11.0
-
-[sub_resource type="Resource" id="Resource_nged7"]
-script = ExtResource("1_fstfi")
-startedAt = 11.0
-finishedAt = 12.0
-
-[sub_resource type="Resource" id="Resource_8w07c"]
-script = ExtResource("1_fstfi")
-state = 1
-startedAt = 12.0
-finishedAt = 14.0
 
 [sub_resource type="Resource" id="Resource_rk7jr"]
 script = ExtResource("1_fstfi")
 state = 2
-startedAt = 14.0
 finishedAt = 737.5
 
-[sub_resource type="Resource" id="Resource_80j3o"]
+[sub_resource type="Resource" id="Resource_rds0u"]
 script = ExtResource("1_fstfi")
 state = 2
 finishedAt = 737.5
 
-[sub_resource type="Resource" id="Resource_70tmq"]
+[sub_resource type="Resource" id="Resource_mvy5b"]
 script = ExtResource("1_fstfi")
 state = 2
-finishedAt = 17.0
-
-[sub_resource type="Resource" id="Resource_2m85q"]
-script = ExtResource("1_fstfi")
-startedAt = 17.0
-finishedAt = 19.875
-
-[sub_resource type="Resource" id="Resource_uh7xh"]
-script = ExtResource("1_fstfi")
-state = 2
-startedAt = 19.875
 finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_njucs"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 19.875
-
-[sub_resource type="Resource" id="Resource_385ac"]
-script = ExtResource("1_fstfi")
-state = 2
-startedAt = 19.875
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_uye77"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 12.0
-
-[sub_resource type="Resource" id="Resource_ij6je"]
-script = ExtResource("1_fstfi")
-startedAt = 12.0
-finishedAt = 13.0
-
-[sub_resource type="Resource" id="Resource_m8bql"]
-script = ExtResource("1_fstfi")
-state = 1
-startedAt = 13.0
-finishedAt = 15.0
 
 [sub_resource type="Resource" id="Resource_xf8g4"]
 script = ExtResource("1_fstfi")
 state = 2
-startedAt = 15.0
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_byv12"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_vjbip"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 16.0
-
-[sub_resource type="Resource" id="Resource_eh40g"]
-script = ExtResource("1_fstfi")
-startedAt = 16.0
-finishedAt = 17.0
-
-[sub_resource type="Resource" id="Resource_ms51j"]
-script = ExtResource("1_fstfi")
-state = 1
-startedAt = 17.0
-finishedAt = 19.0
-
-[sub_resource type="Resource" id="Resource_s5o16"]
-script = ExtResource("1_fstfi")
-state = 2
-startedAt = 19.0
-finishedAt = 19.875
-
-[sub_resource type="Resource" id="Resource_ro75g"]
-script = ExtResource("1_fstfi")
-startedAt = 19.875
-finishedAt = 20.375
-
-[sub_resource type="Resource" id="Resource_334bw"]
-script = ExtResource("1_fstfi")
-state = 2
-startedAt = 20.375
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_l27np"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_2sjyl"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 13.0
-
-[sub_resource type="Resource" id="Resource_rds0u"]
-script = ExtResource("1_fstfi")
-startedAt = 13.0
-finishedAt = 14.0
-
-[sub_resource type="Resource" id="Resource_mvy5b"]
-script = ExtResource("1_fstfi")
-state = 1
-startedAt = 14.0
-finishedAt = 16.0
-
-[sub_resource type="Resource" id="Resource_s2sr5"]
-script = ExtResource("1_fstfi")
-state = 2
-startedAt = 16.0
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_i8nty"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 14.0
-
-[sub_resource type="Resource" id="Resource_21oip"]
-script = ExtResource("1_fstfi")
-startedAt = 14.0
-finishedAt = 15.0
-
-[sub_resource type="Resource" id="Resource_hjs7l"]
-script = ExtResource("1_fstfi")
-state = 1
-startedAt = 15.0
-finishedAt = 17.0
-
-[sub_resource type="Resource" id="Resource_lup70"]
-script = ExtResource("1_fstfi")
-state = 2
-startedAt = 17.0
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_aun2j"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 15.0
-
-[sub_resource type="Resource" id="Resource_44beh"]
-script = ExtResource("1_fstfi")
-startedAt = 15.0
-finishedAt = 16.0
-
-[sub_resource type="Resource" id="Resource_jk3tt"]
-script = ExtResource("1_fstfi")
-state = 1
-startedAt = 16.0
-finishedAt = 18.0
-
-[sub_resource type="Resource" id="Resource_rb4pn"]
-script = ExtResource("1_fstfi")
-state = 2
-startedAt = 18.0
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_3cfkr"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_tjd41"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_51i4l"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_20cav"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_ljsi3"]
-script = ExtResource("1_fstfi")
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_rwluk"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_rminl"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_ryvwj"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_gu2bd"]
-script = ExtResource("1_fstfi")
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_q1jon"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 15.0
-
-[sub_resource type="Resource" id="Resource_br2ug"]
-script = ExtResource("1_fstfi")
-state = 1
-startedAt = 15.0
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_rk3q0"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_15vee"]
-script = ExtResource("1_fstfi")
-state = 2
-finishedAt = 737.5
-
-[sub_resource type="Resource" id="Resource_loy5y"]
-script = ExtResource("1_fstfi")
 finishedAt = 737.5
 
 [resource]
 script = ExtResource("2_mhnhn")
 bpm = 130
 audioFile = ExtResource("1_mhnhn")
-gridSize = Vector2i(16, 4)
-patterns = Dictionary[String, Array]({
-"0-0": [SubResource("Resource_k8m7l"), SubResource("Resource_qhu2e"), SubResource("Resource_vgbbk")],
-"0-1": [SubResource("Resource_eukdc"), SubResource("Resource_q1vua"), SubResource("Resource_cttja"), SubResource("Resource_2e3l5")],
-"0-2": [SubResource("Resource_u3jka"), SubResource("Resource_voi7g"), SubResource("Resource_vomun"), SubResource("Resource_48icb")],
-"0-3": [SubResource("Resource_pqcj2"), SubResource("Resource_mhnhn"), SubResource("Resource_ku66s"), SubResource("Resource_t8xlo"), SubResource("Resource_ojx2n"), SubResource("Resource_innb8")],
-"1-0": [SubResource("Resource_txsqd")],
-"1-1": [SubResource("Resource_g5ohm"), SubResource("Resource_d6oy1"), SubResource("Resource_q2nb8"), SubResource("Resource_8hcms"), SubResource("Resource_agyn7"), SubResource("Resource_4vmfl")],
-"1-2": [SubResource("Resource_tggrg")],
-"1-3": [SubResource("Resource_8f7cc"), SubResource("Resource_q165v"), SubResource("Resource_tq0nx"), SubResource("Resource_ia67v")],
-"10-0": [SubResource("Resource_nko87")],
-"10-1": [SubResource("Resource_we5kj")],
-"10-2": [SubResource("Resource_ug30p")],
-"10-3": [SubResource("Resource_cyvj8")],
-"11-0": [SubResource("Resource_o0nv3")],
-"11-1": [SubResource("Resource_25cv1")],
-"11-2": [SubResource("Resource_tvb0i")],
-"11-3": [SubResource("Resource_v31nu")],
-"12-0": [SubResource("Resource_d04og")],
-"12-1": [SubResource("Resource_b7r62")],
-"12-2": [SubResource("Resource_g4qxy")],
-"12-3": [SubResource("Resource_bv0mk")],
-"13-0": [SubResource("Resource_upevk")],
-"13-1": [SubResource("Resource_yrf1h")],
-"13-2": [SubResource("Resource_vrq4y")],
-"13-3": [SubResource("Resource_q703v")],
-"14-0": [SubResource("Resource_rwdye")],
-"14-1": [SubResource("Resource_330ad")],
-"14-2": [SubResource("Resource_fn5v5")],
-"14-3": [SubResource("Resource_3jiay")],
-"15-0": [SubResource("Resource_gk14b"), SubResource("Resource_4ggxa")],
-"15-1": [SubResource("Resource_6xt8p")],
-"15-2": [SubResource("Resource_7o8go")],
-"15-3": [SubResource("Resource_qxpmq"), SubResource("Resource_8byga")],
-"2-0": [SubResource("Resource_cglfa"), SubResource("Resource_xy27v"), SubResource("Resource_r2jkw"), SubResource("Resource_oq317")],
-"2-1": [SubResource("Resource_v5cmh"), SubResource("Resource_tv3kl"), SubResource("Resource_fwayi"), SubResource("Resource_i52tm")],
-"2-2": [SubResource("Resource_iwp2p"), SubResource("Resource_dbecr"), SubResource("Resource_nfthx"), SubResource("Resource_i7k2r")],
-"2-3": [SubResource("Resource_il31q"), SubResource("Resource_tojjm"), SubResource("Resource_72lkc"), SubResource("Resource_14ma6")],
-"3-0": [SubResource("Resource_jayqq"), SubResource("Resource_7jn1m"), SubResource("Resource_wnpkx"), SubResource("Resource_24sc1")],
-"3-1": [SubResource("Resource_d7j4h")],
-"3-2": [SubResource("Resource_ygt5j")],
-"3-3": [SubResource("Resource_haiqg")],
-"4-0": [SubResource("Resource_th0sh"), SubResource("Resource_nged7"), SubResource("Resource_8w07c"), SubResource("Resource_rk7jr")],
-"4-1": [SubResource("Resource_80j3o")],
-"4-2": [SubResource("Resource_70tmq"), SubResource("Resource_2m85q"), SubResource("Resource_uh7xh")],
-"4-3": [SubResource("Resource_njucs"), SubResource("Resource_385ac")],
-"5-0": [SubResource("Resource_uye77"), SubResource("Resource_ij6je"), SubResource("Resource_m8bql"), SubResource("Resource_xf8g4")],
-"5-1": [SubResource("Resource_byv12")],
-"5-2": [SubResource("Resource_vjbip"), SubResource("Resource_eh40g"), SubResource("Resource_ms51j"), SubResource("Resource_s5o16"), SubResource("Resource_ro75g"), SubResource("Resource_334bw")],
-"5-3": [SubResource("Resource_l27np")],
-"6-0": [SubResource("Resource_2sjyl"), SubResource("Resource_rds0u"), SubResource("Resource_mvy5b"), SubResource("Resource_s2sr5")],
-"6-1": [SubResource("Resource_i8nty"), SubResource("Resource_21oip"), SubResource("Resource_hjs7l"), SubResource("Resource_lup70")],
-"6-2": [SubResource("Resource_aun2j"), SubResource("Resource_44beh"), SubResource("Resource_jk3tt"), SubResource("Resource_rb4pn")],
-"6-3": [SubResource("Resource_3cfkr")],
-"7-0": [SubResource("Resource_tjd41")],
-"7-1": [SubResource("Resource_51i4l")],
-"7-2": [SubResource("Resource_20cav")],
-"7-3": [SubResource("Resource_ljsi3")],
-"8-0": [SubResource("Resource_rwluk")],
-"8-1": [SubResource("Resource_rminl")],
-"8-2": [SubResource("Resource_ryvwj")],
-"8-3": [SubResource("Resource_gu2bd")],
-"9-0": [SubResource("Resource_q1jon"), SubResource("Resource_br2ug")],
-"9-1": [SubResource("Resource_rk3q0")],
-"9-2": [SubResource("Resource_15vee")],
-"9-3": [SubResource("Resource_loy5y")]
-})
+gridSize = Vector2i(32, 4)
 metadata/_custom_type_script = "uid://dac2rue52tyom"
