@@ -53,7 +53,6 @@ func _validateResource() -> int:
 	return errorCount
 
 func _rebuild() -> void:
-	print("Rebuild")
 	for child in get_children():
 		child.queue_free()
 	var controls := preload("res://addons/beatmap-plugin/BeatmapInspectorWidget.tscn").instantiate()

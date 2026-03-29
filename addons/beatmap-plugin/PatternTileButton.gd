@@ -5,14 +5,10 @@ var parent: BeatmapInspectorWidget
 
 var state := Beatmap.PatternState.Destroyed
 signal MouseDown(event: InputEventMouseButton)
-signal StateChanged(to: Beatmap.PatternState)
+signal StateChangeRequested(to: Beatmap.PatternState)
 signal BeforeToolInvoked
 
 var hoveredAlready := false
-
-func _set_state_and_save(to: Beatmap.PatternState) -> void:
-	SetState(to)
-	StateChanged.emit(to)
 
 func SetState(to: Beatmap.PatternState) -> void:
 	state = to
@@ -29,7 +25,6 @@ func _init(newParent: BeatmapInspectorWidget) -> void:
 	parent = newParent
 
 func _ready() -> void:
-	SetState(state)
 	mouse_entered.connect(func() -> void:
 		if parent.dragMode != BeatmapInspectorWidget.DragMode.Pattern:
 			return
@@ -55,7 +50,7 @@ func _apply_selected_tool():
 		nextState = Beatmap.PatternState.Destroyed
 
 	BeforeToolInvoked.emit()
-	_set_state_and_save(nextState)
+	StateChangeRequested.emit(nextState)
 
 func _input(event: InputEvent):
 	if event is InputEventMouseButton and not event.pressed and event.button_index == 1:

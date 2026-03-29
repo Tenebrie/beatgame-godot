@@ -36,8 +36,8 @@ func _ready() -> void:
 	if resource.gridSize.x <= 0 or resource.gridSize.y <= 0:
 		$%ErrorLabel.text = "Grid size can't be 0!"
 		return
-	if resource.gridSize.x > 64 or resource.gridSize.y > 64:
-		$%ErrorLabel.text = "Grid size too large! (Max: 64x64)"
+	if resource.gridSize.x > 256 or resource.gridSize.y > 52:
+		$%ErrorLabel.text = "Grid size too large! (Max: 256x52)"
 		return
 
 	$%ErrorLabel.visible = false
@@ -53,7 +53,7 @@ func _ready() -> void:
 	$%SongProgress/EndPos.position.x = 9999.0
 	_update_scrubber_pos()
 	$%PlayButton.pressed.connect(func() -> void:
-		if $AudioStreamPlayer.playing:
+		if $AudioStreamPlayer.playing or Input.is_key_pressed(KEY_SHIFT):
 			$AudioStreamPlayer.play(startPositionSeconds)
 		else:
 			$AudioStreamPlayer.play(positionSeconds)
@@ -159,43 +159,88 @@ func _ready() -> void:
 #endregion
 
 #region Pattern grid
-	var btnSize := Vector2(32, 32)
-	$%GridContainer.columns = resource.gridSize.x
-	for y in range(resource.gridSize.y):
+	var btnSize := Vector2(48, 48)
+
+	#$%PlaceholderColumnEmpty.custom_minimum_size = btnSize
+
+	$%GridContainer.columns = resource.gridSize.x + 1
+	for y in range(resource.gridSize.y + 1):
+		# Row header
+		var rowHeaderButton := PatternTileButton.new(self)
+		$%GridContainer.add_child(rowHeaderButton)
+		if y > 0:
+			rowHeaderButton.text = str(y)
+			rowHeaderButton.self_modulate = Color.GRAY
+		else:
+			rowHeaderButton.self_modulate = Color.from_hsv(0, 0, 0, 0)
+		rowHeaderButton.custom_minimum_size = btnSize
+		var rowHeaderControlledTiles: Array[Vector2i]
+		for tileX in range(resource.gridSize.x):
+			rowHeaderControlledTiles.append(Vector2i(tileX, y - 1))
+		_connect_grid_button_events(rowHeaderButton, rowHeaderControlledTiles)
+
+		# Column header
+		if y == 0:
+			for x in range(resource.gridSize.x):
+				var columnHeaderButton := PatternTileButton.new(self)
+				$%GridContainer.add_child(columnHeaderButton)
+				columnHeaderButton.custom_minimum_size = btnSize
+				columnHeaderButton.text = Pattern.letters[x]
+				columnHeaderButton.self_modulate = Color.GRAY
+				var columnHeaderControlledTiles: Array[Vector2i]
+				for tileY in range(resource.gridSize.y):
+					columnHeaderControlledTiles.append(Vector2i(x, tileY))
+				_connect_grid_button_events(columnHeaderButton, columnHeaderControlledTiles)
+			continue
+
+		# Tile buttons
 		for x in range(resource.gridSize.x):
 			var button = PatternTileButton.new(self)
 			button.custom_minimum_size = btnSize
-			button.StateChanged.connect(func(to: Beatmap.PatternState) -> void:
-				_set_current_tile_state(x, y, to)
-			)
-			button.MouseDown.connect(func(event: InputEventMouseButton) -> void:
-				dragMode = DragMode.Pattern
-			)
-			button.BeforeToolInvoked.connect(func() -> void:
-				if toolMode == TileTool.FullClear:
-					_clear_all_tile_patterns(x, y, positionBeats)
-			)
+			_connect_grid_button_events(button, [Vector2i(x, y - 1)])
 			$%GridContainer.add_child(button)
 
-			var key := str(x) + "-" + str(y)
+			var key := str(x) + "-" + str(y - 1)
 			gridButtons[key] = button
+	#$MainVBox/RowsAndGrid/ScrollContainer.custom_minimum_size.x = minf(512.0, $%GridContainer.get_combined_minimum_size().x + 32)
+	$%GridScrollContainer.custom_minimum_size.y = minf(1024.0, $%GridContainer.get_combined_minimum_size().y + 64)
 #endregion
 
 	_update_pattern_states()
 
+func _connect_grid_button_events(button: PatternTileButton, controlledTiles: Array[Vector2i]) -> void:
+	button.pressed.connect(func() -> void:
+		grab_focus(true)
+	)
+	button.StateChangeRequested.connect(func(to: Beatmap.PatternState) -> void:
+		for tile in controlledTiles:
+			var key = str(tile.x) + "-" + str(tile.y)
+			gridButtons[key].SetState(to)
+			_set_current_tile_state(tile.x, tile.y, to)
+	)
+	button.MouseDown.connect(func(event: InputEventMouseButton) -> void:
+		dragMode = DragMode.Pattern
+	)
+	button.BeforeToolInvoked.connect(func() -> void:
+		if toolMode == TileTool.FullClear:
+			for tile in controlledTiles:
+				_clear_all_tile_patterns(tile.x, tile.y, positionBeats)
+	)
+
+
 func _hotkey(event: InputEventKey) -> void:
-	if event.keycode == Key.KEY_SPACE:
-		if $AudioStreamPlayer.playing:
+	if event.keycode == Key.KEY_SPACE and event.pressed and not event.echo:
+		if $AudioStreamPlayer.playing and not Input.is_key_pressed(KEY_SHIFT):
 			$%PauseButton.pressed.emit()
 		else:
 			$%PlayButton.pressed.emit()
-	elif event.keycode == Key.KEY_RIGHT and event.pressed:
-		$%OneForwardTiny.pressed.emit()
-	elif event.keycode == Key.KEY_LEFT and event.pressed:
-		$%OneBackTiny.pressed.emit()
 	elif event.keycode == Key.KEY_UP and event.pressed:
-		$%OneForward.pressed.emit()
+		$%OneForwardTiny.pressed.emit()
 	elif event.keycode == Key.KEY_DOWN and event.pressed:
+		$%OneBackTiny.pressed.emit()
+	elif event.keycode == Key.KEY_RIGHT and event.pressed:
+		$%OneForward.pressed.emit()
+	elif event.keycode == Key.KEY_LEFT and event.pressed:
 		$%OneBack.pressed.emit()
 	elif event.keycode == Key.KEY_1 and event.pressed:
 		$%PatternTools/RestoreTile.button_pressed = true
@@ -428,15 +473,20 @@ func _clear_all_tile_patterns(x: int, y: int, startingFrom: float) -> void:
 	var patterns := resource.patterns[key]
 
 	var isDeleting := false
-	for i in range(patterns.size()):
+	var i: int = 0
+	while i < patterns.size():
 		var pattern: BeatmapPatternData = patterns[i]
 		if pattern.finishedAt < time:
+			i += 1
 			continue
 
 		if isDeleting:
 			patterns.remove_at(i)
-			i -= 1
 			continue
 
-		pattern.finishedAt = time
 		isDeleting = true
+		pattern.finishedAt = time
+		if pattern.finishedAt - pattern.startedAt == 0.0:
+			patterns.remove_at(i)
+		else:
+			i += 1
