@@ -1,7 +1,7 @@
 extends Node3D
 
 func _ready() -> void:
-	var beatmap: Beatmap = ResourceLoader.load("res://scenes/TutorialArenaBeatmap.tres")
+	var beatmap: Beatmap = ResourceLoader.load("res://scenes/NessaMap.tres")
 
 	var args := DanceFloor.InitArgs.new()
 	args.gridSize = beatmap.gridSize

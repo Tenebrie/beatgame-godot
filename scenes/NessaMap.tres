@@ -1,0 +1,274 @@
+[gd_resource type="Resource" script_class="Beatmap" format=3 uid="uid://by1e1dohqxf7p"]
+
+[ext_resource type="Script" uid="uid://dac2rue52tyom" path="res://systems/Pattern/Beatmap.gd" id="1_7o5eb"]
+[ext_resource type="AudioStream" uid="uid://bser2mkxru78d" path="res://audio/SecretSong.ogg" id="1_mtxlt"]
+[ext_resource type="Script" uid="uid://b3of2y8w21clc" path="res://systems/Pattern/BeatmapPatternData.gd" id="2_lg6sr"]
+
+[sub_resource type="Resource" id="Resource_udb7k"]
+script = ExtResource("2_lg6sr")
+finishedAt = 4.0
+
+[sub_resource type="Resource" id="Resource_65l5h"]
+script = ExtResource("2_lg6sr")
+state = 1
+startedAt = 4.0
+finishedAt = 6.0
+
+[sub_resource type="Resource" id="Resource_v8lxf"]
+script = ExtResource("2_lg6sr")
+startedAt = 6.0
+finishedAt = 944.0
+
+[sub_resource type="Resource" id="Resource_mtxlt"]
+script = ExtResource("2_lg6sr")
+finishedAt = 4.0
+
+[sub_resource type="Resource" id="Resource_t0liq"]
+script = ExtResource("2_lg6sr")
+state = 1
+startedAt = 4.0
+finishedAt = 6.0
+
+[sub_resource type="Resource" id="Resource_y6xvx"]
+script = ExtResource("2_lg6sr")
+startedAt = 6.0
+finishedAt = 944.0
+
+[sub_resource type="Resource" id="Resource_lg6sr"]
+script = ExtResource("2_lg6sr")
+finishedAt = 4.0
+
+[sub_resource type="Resource" id="Resource_7rqod"]
+script = ExtResource("2_lg6sr")
+state = 1
+startedAt = 4.0
+finishedAt = 6.0
+
+[sub_resource type="Resource" id="Resource_tsf4y"]
+script = ExtResource("2_lg6sr")
+startedAt = 6.0
+finishedAt = 944.0
+
+[sub_resource type="Resource" id="Resource_taybs"]
+script = ExtResource("2_lg6sr")
+finishedAt = 4.0
+
+[sub_resource type="Resource" id="Resource_bkifj"]
+script = ExtResource("2_lg6sr")
+state = 1
+startedAt = 4.0
+finishedAt = 6.0
+
+[sub_resource type="Resource" id="Resource_iyyfc"]
+script = ExtResource("2_lg6sr")
+startedAt = 6.0
+finishedAt = 944.0
+
+[sub_resource type="Resource" id="Resource_83j4y"]
+script = ExtResource("2_lg6sr")
+finishedAt = 3.0
+
+[sub_resource type="Resource" id="Resource_x0svc"]
+script = ExtResource("2_lg6sr")
+state = 1
+startedAt = 3.0
+finishedAt = 5.0
+
+[sub_resource type="Resource" id="Resource_kymxk"]
+script = ExtResource("2_lg6sr")
+finishedAt = 3.0
+
+[sub_resource type="Resource" id="Resource_h2wvk"]
+script = ExtResource("2_lg6sr")
+state = 1
+startedAt = 3.0
+finishedAt = 5.0
+
+[sub_resource type="Resource" id="Resource_hyddd"]
+script = ExtResource("2_lg6sr")
+state = 2
+startedAt = 5.0
+finishedAt = 944.0
+
+[sub_resource type="Resource" id="Resource_vvyov"]
+script = ExtResource("2_lg6sr")
+finishedAt = 3.0
+
+[sub_resource type="Resource" id="Resource_umcpr"]
+script = ExtResource("2_lg6sr")
+state = 1
+startedAt = 3.0
+finishedAt = 5.0
+
+[sub_resource type="Resource" id="Resource_gvxna"]
+script = ExtResource("2_lg6sr")
+finishedAt = 3.0
+
+[sub_resource type="Resource" id="Resource_8msfd"]
+script = ExtResource("2_lg6sr")
+state = 1
+startedAt = 3.0
+finishedAt = 5.0
+
+[sub_resource type="Resource" id="Resource_trd1a"]
+script = ExtResource("2_lg6sr")
+finishedAt = 2.0
+
+[sub_resource type="Resource" id="Resource_hwkjx"]
+script = ExtResource("2_lg6sr")
+state = 1
+startedAt = 2.0
+finishedAt = 4.0
+
+[sub_resource type="Resource" id="Resource_nr0u2"]
+script = ExtResource("2_lg6sr")
+finishedAt = 2.0
+
+[sub_resource type="Resource" id="Resource_2n7jm"]
+script = ExtResource("2_lg6sr")
+state = 1
+startedAt = 2.0
+finishedAt = 4.0
+
+[sub_resource type="Resource" id="Resource_3qbae"]
+script = ExtResource("2_lg6sr")
+state = 2
+startedAt = 4.0
+finishedAt = 944.0
+
+[sub_resource type="Resource" id="Resource_toj51"]
+script = ExtResource("2_lg6sr")
+finishedAt = 2.0
+
+[sub_resource type="Resource" id="Resource_eq0qh"]
+script = ExtResource("2_lg6sr")
+state = 1
+startedAt = 2.0
+finishedAt = 4.0
+
+[sub_resource type="Resource" id="Resource_0bl6w"]
+script = ExtResource("2_lg6sr")
+finishedAt = 2.0
+
+[sub_resource type="Resource" id="Resource_w1peg"]
+script = ExtResource("2_lg6sr")
+state = 1
+startedAt = 2.0
+finishedAt = 4.0
+
+[sub_resource type="Resource" id="Resource_yh8r2"]
+script = ExtResource("2_lg6sr")
+finishedAt = 1.0
+
+[sub_resource type="Resource" id="Resource_b2i2t"]
+script = ExtResource("2_lg6sr")
+state = 1
+startedAt = 1.0
+finishedAt = 3.0
+
+[sub_resource type="Resource" id="Resource_jynoo"]
+script = ExtResource("2_lg6sr")
+state = 2
+startedAt = 3.0
+finishedAt = 944.0
+
+[sub_resource type="Resource" id="Resource_n2iqa"]
+script = ExtResource("2_lg6sr")
+finishedAt = 1.0
+
+[sub_resource type="Resource" id="Resource_mdbnq"]
+script = ExtResource("2_lg6sr")
+state = 1
+startedAt = 1.0
+finishedAt = 3.0
+
+[sub_resource type="Resource" id="Resource_skdm0"]
+script = ExtResource("2_lg6sr")
+state = 2
+startedAt = 3.0
+finishedAt = 944.0
+
+[sub_resource type="Resource" id="Resource_ecfce"]
+script = ExtResource("2_lg6sr")
+finishedAt = 1.0
+
+[sub_resource type="Resource" id="Resource_t00o1"]
+script = ExtResource("2_lg6sr")
+state = 1
+startedAt = 1.0
+finishedAt = 3.0
+
+[sub_resource type="Resource" id="Resource_cyg0j"]
+script = ExtResource("2_lg6sr")
+state = 2
+startedAt = 3.0
+finishedAt = 944.0
+
+[sub_resource type="Resource" id="Resource_a1fem"]
+script = ExtResource("2_lg6sr")
+finishedAt = 1.0
+
+[sub_resource type="Resource" id="Resource_i872j"]
+script = ExtResource("2_lg6sr")
+state = 1
+startedAt = 1.0
+finishedAt = 3.0
+
+[sub_resource type="Resource" id="Resource_v7ycy"]
+script = ExtResource("2_lg6sr")
+state = 2
+startedAt = 3.0
+finishedAt = 944.0
+
+[sub_resource type="Resource" id="Resource_7shxr"]
+script = ExtResource("2_lg6sr")
+state = 2
+finishedAt = 944.0
+
+[sub_resource type="Resource" id="Resource_2grte"]
+script = ExtResource("2_lg6sr")
+state = 2
+finishedAt = 944.0
+
+[sub_resource type="Resource" id="Resource_uawpu"]
+script = ExtResource("2_lg6sr")
+state = 2
+finishedAt = 944.0
+
+[sub_resource type="Resource" id="Resource_aahjl"]
+script = ExtResource("2_lg6sr")
+state = 2
+finishedAt = 944.0
+
+[resource]
+script = ExtResource("1_7o5eb")
+bpm = 130
+audioFile = ExtResource("1_mtxlt")
+gridSize = Vector2i(6, 4)
+patterns = Dictionary[String, Array]({
+"0-0": [SubResource("Resource_udb7k"), SubResource("Resource_65l5h"), SubResource("Resource_v8lxf")],
+"0-1": [SubResource("Resource_mtxlt"), SubResource("Resource_t0liq"), SubResource("Resource_y6xvx")],
+"0-2": [SubResource("Resource_lg6sr"), SubResource("Resource_7rqod"), SubResource("Resource_tsf4y")],
+"0-3": [SubResource("Resource_taybs"), SubResource("Resource_bkifj"), SubResource("Resource_iyyfc")],
+"1-0": [SubResource("Resource_83j4y"), SubResource("Resource_x0svc")],
+"1-1": [SubResource("Resource_kymxk"), SubResource("Resource_h2wvk"), SubResource("Resource_hyddd")],
+"1-2": [SubResource("Resource_vvyov"), SubResource("Resource_umcpr")],
+"1-3": [SubResource("Resource_gvxna"), SubResource("Resource_8msfd")],
+"2-0": [SubResource("Resource_trd1a"), SubResource("Resource_hwkjx")],
+"2-1": [SubResource("Resource_nr0u2"), SubResource("Resource_2n7jm"), SubResource("Resource_3qbae")],
+"2-2": [SubResource("Resource_toj51"), SubResource("Resource_eq0qh")],
+"2-3": [SubResource("Resource_0bl6w"), SubResource("Resource_w1peg")],
+"3-0": [SubResource("Resource_yh8r2"), SubResource("Resource_b2i2t"), SubResource("Resource_jynoo")],
+"3-1": [SubResource("Resource_n2iqa"), SubResource("Resource_mdbnq"), SubResource("Resource_skdm0")],
+"3-2": [SubResource("Resource_ecfce"), SubResource("Resource_t00o1"), SubResource("Resource_cyg0j")],
+"3-3": [SubResource("Resource_a1fem"), SubResource("Resource_i872j"), SubResource("Resource_v7ycy")],
+"4-0": [SubResource("Resource_7shxr")],
+"4-1": [SubResource("Resource_2grte")],
+"4-2": [SubResource("Resource_uawpu")],
+"4-3": [SubResource("Resource_aahjl")],
+"5-0": [],
+"5-1": [],
+"5-2": [],
+"5-3": []
+})
+metadata/_custom_type_script = "uid://dac2rue52tyom"

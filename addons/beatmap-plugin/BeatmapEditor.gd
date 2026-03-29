@@ -1,6 +1,8 @@
 @tool
 class_name BeatmapEditor extends VBoxContainer
 
+signal ValidationErrorFixed
+
 var resource: Beatmap
 var _buttons: Dictionary = {}  # Vector2i -> Button
 
@@ -11,7 +13,7 @@ func setup(res: Beatmap) -> void:
 		var errorCount := _validateResource()
 		ResourceSaver.save(resource)
 		if errorCount > 0:
-			_rebuild()
+			ValidationErrorFixed.emit()
 	)
 	var inspector := EditorInterface.get_inspector()
 	inspector.property_edited.connect(func(property: String) -> void:
@@ -37,24 +39,47 @@ func _validateResource() -> int:
 			continue
 
 		var value = resource.patterns[key]
-		for pattern: BeatmapPatternData in value:
-			if pattern.startedAt < 0.0:
-				print("WARN: Found pattern starting before time 0")
-				errorCount += 1
-				value.remove_at(value.find(pattern))
-			var clampedFinishedAt := minf(pattern.finishedAt, resource.audioFile.get_length())
-			if clampedFinishedAt - pattern.startedAt == 0.0:
-				print("WARN: Found pattern with length 0")
-				errorCount += 1
-				value.remove_at(value.find(pattern))
+		var previousPattern: BeatmapPatternData
+		var selector := str(Pattern.letters[x]) + str(y + 1)
+		var debugPos := "[%s/%d-%d]"%[selector, x, y]
 
-	if errorCount > 0:
-		print("Found " + str(errorCount) + " errors during validation.")
+		for pattern: BeatmapPatternData in value:
+			var clampedFinishedAt := minf(pattern.finishedAt, resource.audioFile.get_length())
+			if pattern.startedAt < 0.0:
+				print("FIX %s: Removing %s as it has started before time 0"%[debugPos, pattern])
+				errorCount += 1
+				value.remove_at(value.find(pattern))
+			elif clampedFinishedAt - pattern.startedAt == 0.0:
+				print("FIX %s: Removing %s as it has length 0"%[debugPos, pattern])
+				errorCount += 1
+				value.remove_at(value.find(pattern))
+			elif previousPattern and pattern.state == previousPattern.state and pattern.startedAt == previousPattern.finishedAt:
+				print("FIX %s: Merging %s with %s as they have the same state"%[debugPos, previousPattern, pattern])
+				errorCount += 1
+				value.remove_at(value.find(pattern))
+				previousPattern.finishedAt = pattern.finishedAt
+				previousPattern = pattern
+			#elif previousPattern and previousPattern.finishedAt < pattern.startedAt:
+				#print("FIX %s: Setting %s's finishedAt to %s's startedAt to close the gap"%[debugPos, previousPattern, pattern])
+				#errorCount += 1
+				#previousPattern.finishedAt = pattern.startedAt
+				#previousPattern = pattern
+			elif previousPattern and previousPattern.finishedAt > pattern.startedAt:
+				print("FIX %s: Setting %s's finishedAt to %s's startedAt to prevent overlapping"%[debugPos, previousPattern, pattern])
+				errorCount += 1
+				previousPattern.finishedAt = pattern.startedAt
+				previousPattern = pattern
+			else:
+				previousPattern = pattern
+
+
+	#if errorCount > 0:
+		#print("Found " + str(errorCount) + " errors during validation.")
 	return errorCount
 
 func _rebuild() -> void:
 	for child in get_children():
 		child.queue_free()
-	var controls := preload("res://addons/beatmap-plugin/BeatmapInspectorWidget.tscn").instantiate()
-	controls.Setup(resource)
+	var controls: BeatmapInspectorWidget = preload("res://addons/beatmap-plugin/BeatmapInspectorWidget.tscn").instantiate()
+	controls.Setup(resource, self)
 	add_child(controls)

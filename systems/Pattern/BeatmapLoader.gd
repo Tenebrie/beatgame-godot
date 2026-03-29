@@ -6,9 +6,14 @@ static func LoadInitial(resource: Beatmap) -> void:
 			var key := str(x) + "-" + str(y)
 			if not resource.patterns.has(key) or resource.patterns[key].size() == 0:
 				continue
-			var pattern: BeatmapPatternData = resource.patterns[key][0]
-			if pattern.startedAt == 0:
-				LoadPattern(x, y, pattern, resource)
+
+			var patterns := resource.patterns[key]
+			for i in range(patterns.size()):
+				var pattern: BeatmapPatternData = patterns[i]
+				if pattern.startedAt > 0:
+					continue
+				var lookahead: BeatmapPatternData = patterns[i + 1] if patterns.size() > i + 1 else null
+				LoadPattern(x, y, pattern, lookahead, resource)
 
 static func Load(resource: Beatmap) -> void:
 	for x in range(resource.gridSize.x):
@@ -19,16 +24,20 @@ static func Load(resource: Beatmap) -> void:
 			var patterns: Array = resource.patterns[key]
 			LoadTile(x, y, patterns, resource)
 
-static func LoadPattern(x: int, y: int, pattern: BeatmapPatternData, _resource: Beatmap) -> void:
+static func LoadPattern(x: int, y: int, pattern: BeatmapPatternData, lookahead: BeatmapPatternData, _resource: Beatmap) -> void:
 	if pattern.state == Beatmap.PatternState.Idle:
 		Pattern.SingleIndexed(Vector2i(x, y)).Delay(pattern.startedAt).RestoreTile()
 	if pattern.state == Beatmap.PatternState.Telegraph:
-		Pattern.SingleIndexed(Vector2i(x, y)).Delay(pattern.finishedAt).Telegraph(pattern.finishedAt - pattern.startedAt)
+		var api := Pattern.SingleIndexed(Vector2i(x, y)).Delay(pattern.finishedAt).Telegraph(pattern.finishedAt - pattern.startedAt)
+		if not lookahead:
+			api.DestroyTile()
 	elif pattern.state == Beatmap.PatternState.Destroyed:
 		Pattern.SingleIndexed(Vector2i(x, y)).Delay(pattern.startedAt).DestroyTile()
 
 static func LoadTile(x: int, y: int, patterns: Array, resource: Beatmap) -> void:
-	for pattern: BeatmapPatternData in patterns:
+	for i in range(patterns.size()):
+		var pattern: BeatmapPatternData = patterns[i]
 		if pattern.startedAt == 0:
 			continue
-		LoadPattern(x, y, pattern, resource)
+		var lookahead: BeatmapPatternData = patterns[i + 1] if patterns.size() > i + 1 else null
+		LoadPattern(x, y, pattern, lookahead, resource)

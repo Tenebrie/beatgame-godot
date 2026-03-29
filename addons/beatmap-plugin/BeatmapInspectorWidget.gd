@@ -10,10 +10,13 @@ var loopPositionBeats := INF
 var loopPositionSeconds := INF
 var gridButtons: Dictionary # Dictionary["x-y", Button]
 
-func Setup(newResource: Beatmap) -> void:
+func Setup(newResource: Beatmap, parent: BeatmapEditor) -> void:
 	resource = newResource
 	$AudioStreamPlayer.stream = newResource.audioFile
 	gridButtons.clear()
+	parent.ValidationErrorFixed.connect(func() -> void:
+		_update_pattern_states()
+	)
 
 var skipNextLeftClickRelease := false
 
@@ -58,10 +61,12 @@ func _ready() -> void:
 		else:
 			$AudioStreamPlayer.play(positionSeconds)
 		_update_pattern_states()
+		grab_focus(true)
 	)
 	$%PauseButton.pressed.connect(func() -> void:
 		$AudioStreamPlayer.stop()
 		_update_pattern_states()
+		grab_focus(true)
 	)
 	$%PauseButton.gui_input.connect(func(event: InputEvent) -> void:
 		if event is not InputEventMouseButton or $AudioStreamPlayer.playing:
@@ -80,24 +85,29 @@ func _ready() -> void:
 		positionSeconds = startPositionSeconds
 		_update_scrubber_pos()
 		_update_pattern_states()
+		grab_focus(true)
 	)
 	$%OneBackTiny.pressed.connect(func() -> void:
 		_seek_relative_beats(-1.0 / 8.0)
+		grab_focus(true)
 	)
 	$%OneBack.pressed.connect(func() -> void:
 		var delta := -1.0
 		if Input.is_key_pressed(KEY_SHIFT):
 			delta = -8.0
 		_seek_relative_beats(delta)
+		grab_focus(true)
 	)
 	$%OneForward.pressed.connect(func() -> void:
 		var delta := 1.0
 		if Input.is_key_pressed(KEY_SHIFT):
 			delta = 8.0
 		_seek_relative_beats(delta)
+		grab_focus(true)
 	)
 	$%OneForwardTiny.pressed.connect(func() -> void:
 		_seek_relative_beats(1.0 / 8.0)
+		grab_focus(true)
 	)
 
 	# Song progress controls
@@ -132,6 +142,7 @@ func _ready() -> void:
 			skipNextLeftClickRelease = false
 			return
 		_update_pattern_states()
+		grab_focus(true)
 	)
 #endregion
 
@@ -242,6 +253,12 @@ func _hotkey(event: InputEventKey) -> void:
 		$%OneForward.pressed.emit()
 	elif event.keycode == Key.KEY_LEFT and event.pressed:
 		$%OneBack.pressed.emit()
+	elif event.keycode == Key.KEY_L and event.pressed:
+		var percentage: float = positionBeats / _get_song_duration_beats()
+		_set_song_start_position(percentage)
+	elif event.keycode == Key.KEY_P and event.pressed:
+		var percentage: float = positionBeats / _get_song_duration_beats()
+		_set_song_loop_position(percentage)
 	elif event.keycode == Key.KEY_1 and event.pressed:
 		$%PatternTools/RestoreTile.button_pressed = true
 		$%PatternTools/RestoreTile.pressed.emit()
@@ -306,9 +323,50 @@ func _set_current_tile_state(x: int, y: int, state: Beatmap.PatternState) -> voi
 	var key := str(x) + "-" + str(y)
 	var current := _get_current_tile_data(x, y)
 	time = max(0.0, time)
-	if not resource.patterns.has(key) or not current:
+
+	# Patterns exist for this tile, but not at the current time
+	if resource.patterns.has(key) and not current:
+		if state == Beatmap.PatternState.Destroyed:
+			return
+
+		var lookahead: BeatmapPatternData = resource.patterns[key][0]
+
+		# Patterns start later
+		if lookahead.startedAt > time:
+			var prevPattern := BeatmapPatternData.new()
+			prevPattern.state = Beatmap.PatternState.Destroyed
+			prevPattern.startedAt = 0.0
+			prevPattern.finishedAt = time
+
+			var nextPattern := BeatmapPatternData.new()
+			nextPattern.state = state
+			nextPattern.startedAt = time
+			nextPattern.finishedAt = lookahead.startedAt
+			if time > 0.0:
+				resource.patterns[key] = [prevPattern, nextPattern]
+			else:
+				resource.patterns[key] = [nextPattern]
+
+		# Patterns have finished
+		else:
+			var prevPattern := BeatmapPatternData.new()
+			prevPattern.state = Beatmap.PatternState.Destroyed
+			prevPattern.startedAt = lookahead.finishedAt
+			prevPattern.finishedAt = time
+
+			var nextPattern := BeatmapPatternData.new()
+			nextPattern.state = state
+			nextPattern.startedAt = time
+			nextPattern.finishedAt = _get_song_duration_beats()
+			resource.patterns[key] = [prevPattern, nextPattern]
+
+	# No patterns are defined yet
+	elif not resource.patterns.has(key):
+		if state == Beatmap.PatternState.Destroyed:
+			return
+
 		var prevPattern := BeatmapPatternData.new()
-		prevPattern.state = Beatmap.PatternState.Idle
+		prevPattern.state = Beatmap.PatternState.Destroyed
 		prevPattern.startedAt = 0.0
 		prevPattern.finishedAt = time
 
@@ -321,6 +379,8 @@ func _set_current_tile_state(x: int, y: int, state: Beatmap.PatternState) -> voi
 			resource.patterns[key] = [prevPattern, nextPattern]
 		else:
 			resource.patterns[key] = [nextPattern]
+
+	# In the middle of the pattern
 	else:
 		var tilePatterns := resource.patterns[key]
 
@@ -350,8 +410,8 @@ func _set_current_tile_state(x: int, y: int, state: Beatmap.PatternState) -> voi
 		nextPattern.state = state
 		nextPattern.startedAt = time
 		nextPattern.finishedAt = current.finishedAt
-		var idx := tilePatterns.find(current)
 
+		var idx := tilePatterns.find(current)
 		tilePatterns.remove_at(idx)
 		tilePatterns.insert(idx, nextPattern)
 		tilePatterns.insert(idx, prevPattern)
@@ -388,7 +448,8 @@ func _set_song_start_position(percentage: float) -> void:
 
 	var oldStartPositionSeconds := startPositionSeconds
 
-	startPositionBeats = roundf(precisePosition / 16.0) * 16.0
+	var snapTo := 1.0
+	startPositionBeats = roundf(precisePosition / snapTo) * snapTo
 	startPositionSeconds = startPositionBeats * 60.0 / resource.bpm
 	if startPositionBeats >= loopPositionBeats:
 		_set_song_loop_position(1.0)
@@ -403,7 +464,8 @@ func _set_song_loop_position(percentage: float) -> void:
 	var offsetPos := percentage * resource.audioFile.get_length()
 	var precisePosition := offsetPos / 60.0 * resource.bpm
 
-	loopPositionBeats = roundf(precisePosition / 16.0) * 16.0
+	var snapTo := 1.0
+	loopPositionBeats = roundf(precisePosition / snapTo) * snapTo
 	loopPositionSeconds = loopPositionBeats * 60.0 / resource.bpm
 	if startPositionBeats >= loopPositionBeats:
 		_set_song_start_position(0.0)
@@ -486,7 +548,8 @@ func _clear_all_tile_patterns(x: int, y: int, startingFrom: float) -> void:
 
 		isDeleting = true
 		pattern.finishedAt = time
-		if pattern.finishedAt - pattern.startedAt == 0.0:
+		if pattern.finishedAt - pattern.startedAt == 0.0 or pattern.state == Beatmap.PatternState.Destroyed:
 			patterns.remove_at(i)
 		else:
 			i += 1
+	resource.stateUpdated.emit()
