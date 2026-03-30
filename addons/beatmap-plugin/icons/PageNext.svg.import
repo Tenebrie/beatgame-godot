@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bb7xi5o4534ov"
-path="res://.godot/imported/PageNext.svg-957b1f8fe147238b30721ecf56d95ca9.ctex"
+path="res://.godot/imported/PageNext.svg-39cf24a397d9609ecbb8472c9083bd89.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/icons/editor/PageNext.svg"
-dest_files=["res://.godot/imported/PageNext.svg-957b1f8fe147238b30721ecf56d95ca9.ctex"]
+source_file="res://addons/beatmap-plugin/icons/PageNext.svg"
+dest_files=["res://.godot/imported/PageNext.svg-39cf24a397d9609ecbb8472c9083bd89.ctex"]
 
 [params]
 

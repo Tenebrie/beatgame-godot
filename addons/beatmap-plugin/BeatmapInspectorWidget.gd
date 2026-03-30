@@ -217,16 +217,17 @@ func _ready() -> void:
 		# Row header
 		var rowHeaderButton := BeatmapTileButton.new(self)
 		$%GridContainer.add_child(rowHeaderButton)
-		if y > 0:
+		if y == 0:
+			rowHeaderButton.self_modulate = Color.from_hsv(0, 0, 0, 0)
+		else:
 			rowHeaderButton.text = str(y)
 			rowHeaderButton.self_modulate = Color.GRAY
-		else:
-			rowHeaderButton.self_modulate = Color.from_hsv(0, 0, 0, 0)
+
+			var rowHeaderControlledTiles: Array[Vector2i]
+			for tileX in range(resource.gridSize.x):
+				rowHeaderControlledTiles.append(Vector2i(tileX, y - 1))
+			_connect_grid_button_events(rowHeaderButton, rowHeaderControlledTiles)
 		rowHeaderButton.custom_minimum_size = btnSize
-		var rowHeaderControlledTiles: Array[Vector2i]
-		for tileX in range(resource.gridSize.x):
-			rowHeaderControlledTiles.append(Vector2i(tileX, y - 1))
-		_connect_grid_button_events(rowHeaderButton, rowHeaderControlledTiles)
 
 		# Column header
 		if y == 0:
@@ -234,7 +235,7 @@ func _ready() -> void:
 				var columnHeaderButton := BeatmapTileButton.new(self)
 				$%GridContainer.add_child(columnHeaderButton)
 				columnHeaderButton.custom_minimum_size = btnSize
-				columnHeaderButton.text = Pattern.letters[x]
+				columnHeaderButton.text = BeatmapLetters.letters[x]
 				columnHeaderButton.self_modulate = Color.GRAY
 				var columnHeaderControlledTiles: Array[Vector2i]
 				for tileY in range(resource.gridSize.y):
@@ -282,6 +283,7 @@ func _connect_grid_button_events(button: BeatmapTileButton, controlledTiles: Arr
 	)
 	button.MouseDown.connect(func(event: InputEventMouseButton) -> void:
 		dragMode = DragMode.Pattern
+		grab_focus(true)
 	)
 	button.BeforeToolInvoked.connect(func() -> void:
 		if controlledTiles.size() == 0:
@@ -709,7 +711,7 @@ func _find_keyframe_end_tool(x: int, y: int) -> void:
 	_update_pattern_states()
 
 func _get_selector(x: int, y: int) -> String:
-	return Pattern.letters[x] + str(y + 1)
+	return BeatmapLetters.letters[x] + str(y + 1)
 
 func _format_beat(beat: float) -> String:
 	var wholePart := floori(beat)

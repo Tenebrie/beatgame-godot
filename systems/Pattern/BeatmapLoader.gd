@@ -4,7 +4,6 @@ static func LoadAudio(resource: Beatmap) -> void:
 	AudioSystem.RegisterBeatmap(resource)
 
 static func LoadInitial(resource: Beatmap) -> void:
-	var tilesWithoutInitialState: Array[Vector2i]
 	for x in range(resource.gridSize.x):
 		for y in range(resource.gridSize.y):
 			var key := str(x) + "-" + str(y)

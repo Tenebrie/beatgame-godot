@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://d12dipvavnlvt"
-path="res://.godot/imported/Pause.svg-073c501aa505ff806bacf5ca2f92ac7d.ctex"
+path="res://.godot/imported/Pause.svg-6fc67c1a6ff3934f0697d573685671f6.ctex"
 metadata={
 "has_editor_variant": true,
 "vram_texture": false
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/icons/editor/Pause.svg"
-dest_files=["res://.godot/imported/Pause.svg-073c501aa505ff806bacf5ca2f92ac7d.ctex"]
+source_file="res://addons/beatmap-plugin/icons/Pause.svg"
+dest_files=["res://.godot/imported/Pause.svg-6fc67c1a6ff3934f0697d573685671f6.ctex"]
 
 [params]
 

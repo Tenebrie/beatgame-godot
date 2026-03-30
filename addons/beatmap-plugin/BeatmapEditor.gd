@@ -19,7 +19,7 @@ func setup(res: Beatmap, newUndoRedo: EditorUndoRedoManager) -> void:
 		var returnValue := _validateResource()
 		var errorCount := returnValue.x
 		var unmergedPatternCount := returnValue.y
-		ResourceSaver.save(resource)
+		scheduleResourceSave()
 		if errorCount > 0:
 			ValidationErrorFixed.emit()
 		FixableErrorsFound.emit(unmergedPatternCount)
@@ -39,6 +39,20 @@ func setup(res: Beatmap, newUndoRedo: EditorUndoRedoManager) -> void:
 	)
 	_rebuild()
 
+var debounceTimer: Timer
+func scheduleResourceSave() -> void:
+	if not debounceTimer:
+		debounceTimer = Timer.new()
+		add_child(debounceTimer)
+		debounceTimer.timeout.connect(func() -> void:
+			ResourceSaver.save(resource)
+			print("Save")
+		)
+		debounceTimer.one_shot = true
+
+	debounceTimer.stop()
+	debounceTimer.start(0.5)
+
 func _apply_snapshot(patterns: Dictionary[String, Array]) -> void:
 	_last_patterns_snapshot = _deep_copy_patterns(patterns)
 	resource.patterns = patterns
@@ -53,7 +67,7 @@ func _validateResource() -> Vector2i:
 
 		var value = resource.patterns[key]
 		var previousPattern: BeatmapPatternData
-		var selector := str(Pattern.letters[x]) + str(y + 1)
+		var selector := str(BeatmapLetters.letters[x]) + str(y + 1)
 		var debugPos := "[%s/%d-%d]"%[selector, x, y]
 
 		if x >= resource.gridSize.x:
@@ -110,7 +124,7 @@ func _apply_auto_fixes() -> int:
 
 			var value = resource.patterns[key]
 			var previousPattern: BeatmapPatternData
-			var selector := str(Pattern.letters[x]) + str(y + 1)
+			var selector := str(BeatmapLetters.letters[x]) + str(y + 1)
 			var debugPos := "[%s/%d-%d]"%[selector, x, y]
 
 			for pattern: BeatmapPatternData in value:
