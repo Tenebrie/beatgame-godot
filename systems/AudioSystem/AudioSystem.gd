@@ -1,5 +1,7 @@
 extends Node
 
+var beatmap: Beatmap
+
 func _ready() -> void:
 	SignalBus.ArenaReset.connect(func() -> void:
 		while $OneShotTimers.get_child_count() > 0:
@@ -27,6 +29,9 @@ func set_playback_speed(speed: float) -> void:
 		GlobalContext.GetAudioAgent().set_volume(0.2)
 	else:
 		GlobalContext.GetAudioAgent().set_volume(1.0)
+
+func RegisterBeatmap(newBeatmap: Beatmap) -> void:
+	beatmap = newBeatmap
 
 func IsSongStarted() -> bool:
 	var audioAgent := GlobalContext.GetAudioAgent()

@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://lm3yyb3y34dl"]
+
+[ext_resource type="Script" uid="uid://jsl8rtre16sh" path="res://scenes/FrogFight/FrogMap.gd" id="1_vcv34"]
+[ext_resource type="Script" uid="uid://d4j2cb5kamym0" path="res://systems/DanceFloor/DanceFloor.gd" id="2_2ck24"]
+[ext_resource type="PackedScene" uid="uid://bbvr3ouw6tjd7" path="res://player/Player.tscn" id="3_bba8f"]
+[ext_resource type="Script" uid="uid://cihqnnkwn6s0v" path="res://player/camera/MainCamera.gd" id="4_id7p6"]
+[ext_resource type="PackedScene" uid="uid://3qpw055ur5dl" path="res://systems/AudioSystem/AudioAgent.tscn" id="5_q2vo6"]
+
+[node name="FrogFight" type="Node3D" unique_id=1633401859]
+script = ExtResource("1_vcv34")
+
+[node name="DanceFloor" type="Node3D" parent="." unique_id=1938770143]
+script = ExtResource("2_2ck24")
+metadata/_custom_type_script = "uid://d4j2cb5kamym0"
+
+[node name="Player" parent="DanceFloor" unique_id=241487594 instance=ExtResource("3_bba8f")]
+
+[node name="MainCamera" type="Camera3D" parent="." unique_id=1103429697]
+transform = Transform3D(1, 0, 0, 0, 0.17364822, 0.9848077, 0, -0.9848077, 0.17364822, 0, 4, 1)
+script = ExtResource("4_id7p6")
+metadata/_custom_type_script = "uid://cihqnnkwn6s0v"
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1435085568]
+transform = Transform3D(1, 0, 0, 0, 0.77294403, 0.6344742, 0, -0.6344742, 0.77294403, 0, 0, 0)
+
+[node name="AudioAgent" parent="." unique_id=1144407143 instance=ExtResource("5_q2vo6")]

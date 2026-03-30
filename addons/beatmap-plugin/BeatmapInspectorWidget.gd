@@ -1,6 +1,8 @@
 @tool
 class_name BeatmapInspectorWidget extends Control
 
+signal ApplyAutoFix
+
 var resource: Beatmap
 var positionBeats := 0.0
 var positionSeconds := 0.0
@@ -17,13 +19,21 @@ func Setup(newResource: Beatmap, parent: BeatmapEditor) -> void:
 	parent.ValidationErrorFixed.connect(func() -> void:
 		_update_pattern_states()
 	)
+	parent.FixableErrorsFound.connect(func(count: int) -> void:
+		if count > 0:
+			$%AutoFixWarning.visible = true
+			$%AutoFixWarning/Label.text = "%d keyframe%s can be simplified"%[count, "" if count == 1 else "s"]
+		else:
+			$%AutoFixWarning.visible = false
+	)
+	$%AutoFixWarning.visible = false
 
 var skipNextLeftClickRelease := false
 
 var toolMode := TileTool.Restore
 var dragMode := DragMode.None
 
-enum TileTool { Restore, Telegraph, Destroy, FullClear }
+enum TileTool { Restore, Telegraph, Destroy, FindKeyframe, FullClear }
 enum DragMode { None, Song, Pattern }
 
 func _ready() -> void:
@@ -47,8 +57,9 @@ func _ready() -> void:
 
 	gui_input.connect(func(event: InputEvent) -> void:
 		if event is InputEventKey:
-			accept_event()
-			_hotkey(event)
+			var isHandled := _hotkey(event)
+			if isHandled:
+				accept_event()
 	)
 
 #region Song controls
@@ -93,15 +104,22 @@ func _ready() -> void:
 	)
 	$%OneBack.pressed.connect(func() -> void:
 		var delta := -1.0
+		if positionBeats - floorf(positionBeats) > 0:
+			delta = -(positionBeats - floorf(positionBeats))
 		if Input.is_key_pressed(KEY_SHIFT):
-			delta = -8.0
+			var snappedToDoubleBar := ceilf(positionBeats / 8.0 - 1) * 8.0
+			delta = snappedToDoubleBar - positionBeats
+
 		_seek_relative_beats(delta)
 		grab_focus(true)
 	)
 	$%OneForward.pressed.connect(func() -> void:
 		var delta := 1.0
+		if ceil(positionBeats) - positionBeats > 0:
+			delta = ceil(positionBeats) - positionBeats
 		if Input.is_key_pressed(KEY_SHIFT):
-			delta = 8.0
+			var snappedToDoubleBar := floorf(positionBeats / 8.0 + 1) * 8.0
+			delta = snappedToDoubleBar - positionBeats
 		_seek_relative_beats(delta)
 		grab_focus(true)
 	)
@@ -151,6 +169,7 @@ func _ready() -> void:
 	$%PatternTools/RestoreTile.button_group = buttonGroup
 	$%PatternTools/Telegraph.button_group = buttonGroup
 	$%PatternTools/DestroyTile.button_group = buttonGroup
+	$%PatternTools/FindKeyframe.button_group = buttonGroup
 	$%PatternTools/ClearAll.button_group = buttonGroup
 
 	$%PatternTools/RestoreTile.button_pressed = true
@@ -164,6 +183,9 @@ func _ready() -> void:
 	$%PatternTools/DestroyTile.pressed.connect(func() -> void:
 		toolMode = TileTool.Destroy
 	)
+	$%PatternTools/FindKeyframe.pressed.connect(func() -> void:
+		toolMode = TileTool.FindKeyframe
+	)
 	$%PatternTools/ClearAll.pressed.connect(func() -> void:
 		toolMode = TileTool.FullClear
 	)
@@ -171,8 +193,6 @@ func _ready() -> void:
 
 #region Pattern grid
 	var btnSize := Vector2(48, 48)
-
-	#$%PlaceholderColumnEmpty.custom_minimum_size = btnSize
 
 	$%GridContainer.columns = resource.gridSize.x + 1
 	for y in range(resource.gridSize.y + 1):
@@ -211,11 +231,24 @@ func _ready() -> void:
 			_connect_grid_button_events(button, [Vector2i(x, y - 1)])
 			$%GridContainer.add_child(button)
 
+			var keyframeIndicator := Label.new()
+			keyframeIndicator.name = "KeyframeIndicator"
+			keyframeIndicator.position = Vector2i(24, -3)
+			keyframeIndicator.text = "●"
+			keyframeIndicator.add_theme_font_size_override("font_size", 8)
+			keyframeIndicator.add_theme_color_override("font_color", Color.DARK_GOLDENROD)
+			keyframeIndicator.visible = false
+			button.add_child(keyframeIndicator)
+
 			var key := str(x) + "-" + str(y - 1)
 			gridButtons[key] = button
-	#$MainVBox/RowsAndGrid/ScrollContainer.custom_minimum_size.x = minf(512.0, $%GridContainer.get_combined_minimum_size().x + 32)
-	$%GridScrollContainer.custom_minimum_size.y = minf(1024.0, $%GridContainer.get_combined_minimum_size().y + 64)
+
+	$%GridScrollContainer.custom_minimum_size.y = minf(1024.0, $%GridContainer.get_combined_minimum_size().y + 20)
 #endregion
+
+	$%ApplyAutoFixButton.pressed.connect(func() -> void:
+		ApplyAutoFix.emit()
+	)
 
 	_update_pattern_states()
 
@@ -233,30 +266,51 @@ func _connect_grid_button_events(button: PatternTileButton, controlledTiles: Arr
 		dragMode = DragMode.Pattern
 	)
 	button.BeforeToolInvoked.connect(func() -> void:
+		if controlledTiles.size() == 0:
+			return
 		if toolMode == TileTool.FullClear:
 			for tile in controlledTiles:
 				_clear_all_tile_patterns(tile.x, tile.y, positionBeats)
+		elif toolMode == TileTool.FindKeyframe:
+			var tile := controlledTiles[0]
+			_find_keyframe_start_tool(tile.x, tile.y)
+	)
+	button.BeforeAltToolInvoked.connect(func() -> void:
+		if controlledTiles.size() == 0:
+			return
+
+		var clearKeyframeTools: Array[TileTool] = [TileTool.Restore, TileTool.Telegraph, TileTool.Destroy]
+		# Right click to clear keyframe
+		if clearKeyframeTools.has(toolMode):
+			for tile in controlledTiles:
+				_clear_current_tile_keyframe_if_present(tile.x, tile.y)
+				_update_single_tile_state(tile.x, tile.y)
+
+		if toolMode == TileTool.FindKeyframe:
+			var tile := controlledTiles[0]
+			_find_keyframe_end_tool(tile.x, tile.y)
 	)
 
-
-func _hotkey(event: InputEventKey) -> void:
+func _hotkey(event: InputEventKey) -> bool:
 	if event.keycode == Key.KEY_SPACE and event.pressed and not event.echo:
 		if $AudioStreamPlayer.playing and not Input.is_key_pressed(KEY_SHIFT):
 			$%PauseButton.pressed.emit()
 		else:
 			$%PlayButton.pressed.emit()
-	elif event.keycode == Key.KEY_UP and event.pressed:
+	elif event.keycode == Key.KEY_T and event.pressed:
+		$%StopButton.pressed.emit()
+	elif (event.keycode == Key.KEY_UP or event.keycode == Key.KEY_W) and event.pressed:
 		$%OneForwardTiny.pressed.emit()
-	elif event.keycode == Key.KEY_DOWN and event.pressed:
+	elif (event.keycode == Key.KEY_DOWN or event.keycode == Key.KEY_S) and event.pressed:
 		$%OneBackTiny.pressed.emit()
-	elif event.keycode == Key.KEY_RIGHT and event.pressed:
+	elif (event.keycode == Key.KEY_RIGHT or event.keycode == Key.KEY_D) and event.pressed:
 		$%OneForward.pressed.emit()
-	elif event.keycode == Key.KEY_LEFT and event.pressed:
+	elif (event.keycode == Key.KEY_LEFT or event.keycode == Key.KEY_A) and event.pressed:
 		$%OneBack.pressed.emit()
-	elif event.keycode == Key.KEY_L and event.pressed:
+	elif (event.keycode == Key.KEY_L or event.keycode == Key.KEY_Q) and event.pressed:
 		var percentage: float = positionBeats / _get_song_duration_beats()
 		_set_song_start_position(percentage)
-	elif event.keycode == Key.KEY_P and event.pressed:
+	elif (event.keycode == Key.KEY_P or event.keycode == Key.KEY_E) and event.pressed:
 		var percentage: float = positionBeats / _get_song_duration_beats()
 		_set_song_loop_position(percentage)
 	elif event.keycode == Key.KEY_1 and event.pressed:
@@ -271,6 +325,12 @@ func _hotkey(event: InputEventKey) -> void:
 	elif event.keycode == Key.KEY_9 and event.pressed:
 		$%PatternTools/ClearAll.button_pressed = true
 		$%PatternTools/ClearAll.pressed.emit()
+	elif event.keycode == Key.KEY_F and event.pressed:
+		$%PatternTools/FindKeyframe.button_pressed = true
+		$%PatternTools/FindKeyframe.pressed.emit()
+	else:
+		return false
+	return true
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == 1 and not event.pressed:
@@ -324,8 +384,10 @@ func _set_current_tile_state(x: int, y: int, state: Beatmap.PatternState) -> voi
 	var current := _get_current_tile_data(x, y)
 	time = max(0.0, time)
 
+	var stateUpdateMessage: String
+
 	# Patterns exist for this tile, but not at the current time
-	if resource.patterns.has(key) and not current:
+	if resource.patterns.has(key) and not current and resource.patterns[key].size() > 0:
 		if state == Beatmap.PatternState.Destroyed:
 			return
 
@@ -343,9 +405,10 @@ func _set_current_tile_state(x: int, y: int, state: Beatmap.PatternState) -> voi
 			nextPattern.startedAt = time
 			nextPattern.finishedAt = lookahead.startedAt
 			if time > 0.0:
-				resource.patterns[key] = [prevPattern, nextPattern]
+				resource.patterns[key] = [prevPattern, nextPattern] + resource.patterns[key] as Array
 			else:
-				resource.patterns[key] = [nextPattern]
+				resource.patterns[key] = [nextPattern] + resource.patterns[key] as Array
+			stateUpdateMessage = "[%s] Add leading keyframe at %d"%[_get_selector(x, y), time]
 
 		# Patterns have finished
 		else:
@@ -358,10 +421,11 @@ func _set_current_tile_state(x: int, y: int, state: Beatmap.PatternState) -> voi
 			nextPattern.state = state
 			nextPattern.startedAt = time
 			nextPattern.finishedAt = _get_song_duration_beats()
-			resource.patterns[key] = [prevPattern, nextPattern]
+			resource.patterns[key] = resource.patterns[key] as Array + [prevPattern, nextPattern]
+			stateUpdateMessage = "[%s] Add trailing keyframe at %d"%[_get_selector(x, y), time]
 
 	# No patterns are defined yet
-	elif not resource.patterns.has(key):
+	elif not resource.patterns.has(key) or resource.patterns[key].size() == 0:
 		if state == Beatmap.PatternState.Destroyed:
 			return
 
@@ -379,26 +443,18 @@ func _set_current_tile_state(x: int, y: int, state: Beatmap.PatternState) -> voi
 			resource.patterns[key] = [prevPattern, nextPattern]
 		else:
 			resource.patterns[key] = [nextPattern]
+		stateUpdateMessage = "[%s] Add initial keyframe at beat %s"%[_get_selector(x, y), _format_beat(time)]
 
 	# In the middle of the pattern
 	else:
 		var tilePatterns := resource.patterns[key]
 
-		if current.state == state:
+		if current.state == state and not Input.is_key_pressed(Key.KEY_SHIFT):
 			return
 
 		if current.startedAt == time:
 			current.state = state
-			resource.stateUpdated.emit()
-			return
-
-		var lookahead := _get_next_tile_data(x, y)
-
-		# If the next state is the target, just move the trigger point
-		if lookahead and lookahead.state == state:
-			lookahead.startedAt = time
-			current.finishedAt = time
-			resource.stateUpdated.emit()
+			resource.stateUpdated.emit("[%s] Update keyframe at beat %s"%[_get_selector(x, y), _format_beat(time)])
 			return
 
 		var prevPattern := BeatmapPatternData.new()
@@ -415,7 +471,30 @@ func _set_current_tile_state(x: int, y: int, state: Beatmap.PatternState) -> voi
 		tilePatterns.remove_at(idx)
 		tilePatterns.insert(idx, nextPattern)
 		tilePatterns.insert(idx, prevPattern)
-	resource.stateUpdated.emit()
+
+		stateUpdateMessage = "[%s] Split keyframe at %s"%[_get_selector(x, y), _format_beat(time)]
+	resource.stateUpdated.emit(stateUpdateMessage)
+	_update_pattern_states()
+
+func _clear_current_tile_keyframe_if_present(x: int, y: int) -> void:
+	var time := _get_song_position_beats()
+	var key := str(x) + "-" + str(y)
+	if not resource.patterns.has(key):
+		return
+
+	var tilePatterns := resource.patterns[key]
+	var previousPattern: BeatmapPatternData
+	for tilePattern: BeatmapPatternData in tilePatterns:
+		if tilePattern.startedAt <= time and tilePattern.finishedAt > time:
+			if tilePattern.startedAt != positionBeats:
+				return
+
+			resource.patterns[key].remove_at(resource.patterns[key].find(tilePattern))
+			if previousPattern:
+				previousPattern.finishedAt = tilePattern.finishedAt
+			resource.stateUpdated.emit("[%s] Remove keyframe at beat %s"%[_get_selector(x, y), _format_beat(time)])
+			return
+		previousPattern = tilePattern
 
 func _set_song_current_position(percentage: float, allowPlay: bool, force: bool) -> void:
 	if not resource.audioFile:
@@ -518,14 +597,21 @@ func _update_scrubber_pos() -> void:
 	var fraction := positionBeats - floori(positionBeats)
 	$%SongProgress/FractionTop.text = str(floori(fraction * 8 + 1))
 
+func _update_single_tile_state(x: int, y: int) -> void:
+	var key := str(x) + "-" + str(y)
+	var button: PatternTileButton = gridButtons[key]
+	var data := _get_current_tile_data(x, y)
+	var state := data.state if data else Beatmap.PatternState.Destroyed
+	var isKeyframe := data.startedAt == positionBeats if data else false
+
+	button.SetState(state)
+	var keyframeIndicator := button.get_child(0) as Label
+	keyframeIndicator.visible = isKeyframe and positionBeats > 0.0
+
 func _update_pattern_states() -> void:
 	for y in range(resource.gridSize.y):
 		for x in range(resource.gridSize.x):
-			var key := str(x) + "-" + str(y)
-			var button: PatternTileButton = gridButtons[key]
-			var state := _get_current_tile_state(x, y)
-
-			button.SetState(state)
+			_update_single_tile_state(x, y)
 
 func _clear_all_tile_patterns(x: int, y: int, startingFrom: float) -> void:
 	var time := positionBeats
@@ -552,4 +638,65 @@ func _clear_all_tile_patterns(x: int, y: int, startingFrom: float) -> void:
 			patterns.remove_at(i)
 		else:
 			i += 1
-	resource.stateUpdated.emit()
+	resource.stateUpdated.emit("[%s] Clear history after beat %s"%[_get_selector(x, y), _format_beat(time)])
+
+func _find_keyframe_start_tool(x: int, y: int) -> void:
+	var data := _get_current_tile_data(x, y)
+
+	if data:
+		# If we have an active state, start cycling through them
+		if positionBeats > data.startedAt:
+			_set_song_current_position_beats(data.startedAt, false, false)
+		else:
+			var key := str(x) + "-" + str(y)
+			var index := resource.patterns[key].find(data)
+			if index <= 0:
+				_set_song_current_position_beats(0.0, false, false)
+			else:
+				var previous: BeatmapPatternData = resource.patterns[key][index - 1]
+				_set_song_current_position_beats(previous.startedAt, false, false)
+	else:
+		# Otherwise, either find the first state to the left, or snap to song start
+		var key := str(x) + "-" + str(y)
+		if resource.patterns.has(key) and resource.patterns[key].size() > 0:
+			var reversed = resource.patterns[key].slice(0)
+			reversed.reverse()
+			for pattern in reversed:
+				if pattern.finishedAt <= positionBeats:
+					_set_song_current_position_beats(pattern.startedAt, false, false)
+					break
+		else:
+			_set_song_current_position_beats(0, false, false)
+
+	_update_pattern_states()
+
+func _find_keyframe_end_tool(x: int, y: int) -> void:
+	var data := _get_current_tile_data(x, y)
+
+	if data:
+		# If we have an active state, start cycling through them
+		_set_song_current_position_beats(data.finishedAt, false, false)
+		_update_pattern_states()
+	else:
+		# Otherwise, either find the first state to the right, or snap to song end
+		var key := str(x) + "-" + str(y)
+		if resource.patterns.has(key) and resource.patterns[key].size() > 0:
+			for pattern in resource.patterns[key]:
+				if pattern.startedAt > positionBeats:
+					_set_song_current_position_beats(pattern.startedAt, false, false)
+					break
+		else:
+			_set_song_current_position_beats(_get_song_duration_beats(), false, false)
+
+	_update_pattern_states()
+
+func _get_selector(x: int, y: int) -> String:
+	return Pattern.letters[x] + str(y + 1)
+
+func _format_beat(beat: float) -> String:
+	var wholePart := floori(beat)
+	var fractionalPart := beat - wholePart
+	if fractionalPart == 0:
+		return str(wholePart)
+	else:
+		return str(wholePart) + " " + str(roundi(fractionalPart * 8.0) + 1) + "/8"

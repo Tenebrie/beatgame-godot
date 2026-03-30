@@ -100,10 +100,10 @@ func move_to(targetPos: Vector2) -> void:
 	create_tween().tween_property(self, ^"position", Vector3(row, 0.0, column), 0.2)
 
 func prep_patterns() -> void:
-	Pattern.Rect("i1", "Z4").DestroyTile()
-	Pattern.Rect("b1", "d2").DestroyTile()
-	Pattern.Rect("a4", "d4").DestroyTile()
-	SignalBus.OnFlushAllTimers.emit()
+	#Pattern.Rect("i1", "Z4").DestroyTile()
+	#Pattern.Rect("b1", "d2").DestroyTile()
+	#Pattern.Rect("a4", "d4").DestroyTile()
+	#SignalBus.OnFlushAllTimers.emit()
 	Trigger.EnemyMoveToRowRight(2.5)
 	Pattern.Translate(Vector2i(4, 0))
 

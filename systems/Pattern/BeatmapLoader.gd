@@ -1,10 +1,15 @@
 class_name BeatmapLoader extends Node
 
+static func LoadAudio(resource: Beatmap) -> void:
+	AudioSystem.RegisterBeatmap(resource)
+
 static func LoadInitial(resource: Beatmap) -> void:
+	var tilesWithoutInitialState: Array[Vector2i]
 	for x in range(resource.gridSize.x):
 		for y in range(resource.gridSize.y):
 			var key := str(x) + "-" + str(y)
 			if not resource.patterns.has(key) or resource.patterns[key].size() == 0:
+				LoadDefaultPattern(x, y)
 				continue
 
 			var patterns := resource.patterns[key]
@@ -33,6 +38,9 @@ static func LoadPattern(x: int, y: int, pattern: BeatmapPatternData, lookahead: 
 			api.DestroyTile()
 	elif pattern.state == Beatmap.PatternState.Destroyed:
 		Pattern.SingleIndexed(Vector2i(x, y)).Delay(pattern.startedAt).DestroyTile()
+
+static func LoadDefaultPattern(x: int, y: int) -> void:
+	Pattern.SingleIndexed(Vector2i(x, y)).DestroyTile()
 
 static func LoadTile(x: int, y: int, patterns: Array, resource: Beatmap) -> void:
 	for i in range(patterns.size()):

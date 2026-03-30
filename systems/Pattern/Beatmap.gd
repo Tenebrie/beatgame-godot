@@ -1,7 +1,7 @@
 @tool
 class_name Beatmap extends Resource
 
-signal stateUpdated
+signal stateUpdated(updateType: String)
 
 @export var bpm: int = 120
 @export var audioFile: AudioStream
@@ -9,7 +9,8 @@ signal stateUpdated
 @export var patterns: Dictionary[String, Array] # Dictionary["x-y", SortedArray[BeatmapPatternData]]
 
 enum PatternState {
-	Idle,
-	Telegraph,
-	Destroyed,
+	Idle = 0,
+	Telegraph = 1,
+	Destroyed = 2,
+	Null = 100 # Explicit null value, not a valid state
 }

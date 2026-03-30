@@ -7,6 +7,7 @@ var state := Beatmap.PatternState.Destroyed
 signal MouseDown(event: InputEventMouseButton)
 signal StateChangeRequested(to: Beatmap.PatternState)
 signal BeforeToolInvoked
+signal BeforeAltToolInvoked
 
 var hoveredAlready := false
 
@@ -31,15 +32,20 @@ func _ready() -> void:
 
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 			_apply_selected_tool()
+		elif Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
+			_apply_selected_tool_alt()
 	)
 	gui_input.connect(func(event: InputEvent) -> void:
 		if event is InputEventMouseButton and event.button_index == 1 and event.pressed:
 			_apply_selected_tool()
 			MouseDown.emit(event)
+		elif event is InputEventMouseButton and event.button_index == 2 and event.pressed:
+			_apply_selected_tool_alt()
+			MouseDown.emit(event)
 	)
 
 func _apply_selected_tool():
-	var nextState := Beatmap.PatternState.Idle
+	var nextState := Beatmap.PatternState.Null
 	if parent.toolMode == BeatmapInspectorWidget.TileTool.Restore:
 		nextState = Beatmap.PatternState.Idle
 	elif parent.toolMode == BeatmapInspectorWidget.TileTool.Telegraph:
@@ -50,7 +56,11 @@ func _apply_selected_tool():
 		nextState = Beatmap.PatternState.Destroyed
 
 	BeforeToolInvoked.emit()
-	StateChangeRequested.emit(nextState)
+	if nextState != Beatmap.PatternState.Null:
+		StateChangeRequested.emit(nextState)
+
+func _apply_selected_tool_alt():
+	BeforeAltToolInvoked.emit()
 
 func _input(event: InputEvent):
 	if event is InputEventMouseButton and not event.pressed and event.button_index == 1:

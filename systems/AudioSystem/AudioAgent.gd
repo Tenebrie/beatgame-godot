@@ -12,7 +12,7 @@ func _ready() -> void:
 	)
 
 func get_bpm() -> float:
-	return 130.0
+	return AudioSystem.beatmap.bpm
 
 func get_position_beats() -> float:
 	if not $AudioStreamPlayer.playing:
@@ -52,6 +52,7 @@ func set_starting_time(beats: float) -> void:
 	starting_time = beats
 
 func StartPlaying() -> void:
+	$AudioStreamPlayer.stream = AudioSystem.beatmap.audioFile
 	isStarting = true
 	await get_tree().create_timer(0.5).timeout
 	isStarting = false

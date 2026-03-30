@@ -1,0 +1,123 @@
+[gd_resource type="Resource" script_class="Beatmap" format=3 uid="uid://dhyp5tildnjyg"]
+
+[ext_resource type="AudioStream" uid="uid://4gto3yffcxs3" path="res://scenes/FrogFight/Frogs are Friends 2.ogg" id="1_vrsla"]
+[ext_resource type="Script" uid="uid://dac2rue52tyom" path="res://systems/Pattern/Beatmap.gd" id="1_vx4fi"]
+[ext_resource type="Script" uid="uid://b3of2y8w21clc" path="res://systems/Pattern/BeatmapPatternData.gd" id="2_vjcdk"]
+
+[sub_resource type="Resource" id="Resource_qxfs0"]
+script = ExtResource("2_vjcdk")
+finishedAt = 252.75
+
+[sub_resource type="Resource" id="Resource_vrsla"]
+script = ExtResource("2_vjcdk")
+finishedAt = 252.75
+
+[sub_resource type="Resource" id="Resource_vjcdk"]
+script = ExtResource("2_vjcdk")
+finishedAt = 252.75
+
+[sub_resource type="Resource" id="Resource_1r4nu"]
+script = ExtResource("2_vjcdk")
+finishedAt = 252.75
+
+[sub_resource type="Resource" id="Resource_6imlw"]
+script = ExtResource("2_vjcdk")
+finishedAt = 252.75
+
+[sub_resource type="Resource" id="Resource_ly8dv"]
+script = ExtResource("2_vjcdk")
+finishedAt = 252.75
+
+[sub_resource type="Resource" id="Resource_xndfv"]
+script = ExtResource("2_vjcdk")
+finishedAt = 252.75
+
+[sub_resource type="Resource" id="Resource_fj5a1"]
+script = ExtResource("2_vjcdk")
+finishedAt = 252.75
+
+[sub_resource type="Resource" id="Resource_1ses3"]
+script = ExtResource("2_vjcdk")
+finishedAt = 252.75
+
+[sub_resource type="Resource" id="Resource_i8p3d"]
+script = ExtResource("2_vjcdk")
+finishedAt = 252.75
+
+[sub_resource type="Resource" id="Resource_m3qmu"]
+script = ExtResource("2_vjcdk")
+finishedAt = 252.75
+
+[sub_resource type="Resource" id="Resource_remwo"]
+script = ExtResource("2_vjcdk")
+finishedAt = 252.75
+
+[sub_resource type="Resource" id="Resource_dlawc"]
+script = ExtResource("2_vjcdk")
+finishedAt = 252.75
+
+[sub_resource type="Resource" id="Resource_id2xr"]
+script = ExtResource("2_vjcdk")
+finishedAt = 252.75
+
+[sub_resource type="Resource" id="Resource_gfgmc"]
+script = ExtResource("2_vjcdk")
+finishedAt = 252.75
+
+[sub_resource type="Resource" id="Resource_c2key"]
+script = ExtResource("2_vjcdk")
+finishedAt = 252.75
+
+[sub_resource type="Resource" id="Resource_irlwk"]
+script = ExtResource("2_vjcdk")
+finishedAt = 252.75
+
+[sub_resource type="Resource" id="Resource_ryx1t"]
+script = ExtResource("2_vjcdk")
+finishedAt = 252.75
+
+[sub_resource type="Resource" id="Resource_6emjm"]
+script = ExtResource("2_vjcdk")
+finishedAt = 252.75
+
+[sub_resource type="Resource" id="Resource_pet7e"]
+script = ExtResource("2_vjcdk")
+finishedAt = 252.75
+
+[sub_resource type="Resource" id="Resource_rrsg4"]
+script = ExtResource("2_vjcdk")
+finishedAt = 252.75
+
+[sub_resource type="Resource" id="Resource_io73h"]
+script = ExtResource("2_vjcdk")
+finishedAt = 252.75
+
+[resource]
+script = ExtResource("1_vx4fi")
+audioFile = ExtResource("1_vrsla")
+gridSize = Vector2i(7, 4)
+patterns = Dictionary[String, Array]({
+"0-0": [SubResource("Resource_qxfs0")],
+"0-1": [SubResource("Resource_vrsla")],
+"0-2": [SubResource("Resource_vjcdk")],
+"0-3": [SubResource("Resource_1r4nu")],
+"1-2": [SubResource("Resource_id2xr")],
+"1-3": [SubResource("Resource_6imlw")],
+"2-0": [SubResource("Resource_gfgmc")],
+"2-1": [SubResource("Resource_c2key")],
+"2-2": [SubResource("Resource_dlawc")],
+"2-3": [SubResource("Resource_ly8dv")],
+"3-2": [SubResource("Resource_remwo")],
+"3-3": [SubResource("Resource_xndfv")],
+"4-0": [SubResource("Resource_irlwk")],
+"4-1": [SubResource("Resource_ryx1t")],
+"4-2": [SubResource("Resource_m3qmu")],
+"4-3": [SubResource("Resource_fj5a1")],
+"5-2": [SubResource("Resource_i8p3d")],
+"5-3": [SubResource("Resource_1ses3")],
+"6-0": [SubResource("Resource_6emjm")],
+"6-1": [SubResource("Resource_pet7e")],
+"6-2": [SubResource("Resource_rrsg4")],
+"6-3": [SubResource("Resource_io73h")]
+})
+metadata/_custom_type_script = "uid://dac2rue52tyom"

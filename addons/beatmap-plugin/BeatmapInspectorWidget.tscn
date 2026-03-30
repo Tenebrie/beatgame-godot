@@ -6,6 +6,11 @@
 [ext_resource type="Texture2D" uid="uid://cc6pk31mrjh5h" path="res://assets/icons/editor/Stop.svg" id="4_iijuc"]
 [ext_resource type="Texture2D" uid="uid://bb7xi5o4534ov" path="res://assets/icons/editor/PageNext.svg" id="5_2f4js"]
 [ext_resource type="Texture2D" uid="uid://cmu8lkr571igh" path="res://assets/icons/editor/PagePrevious.svg" id="5_ieag7"]
+[ext_resource type="Texture2D" uid="uid://bv4wj3baex1ml" path="res://addons/beatmap-plugin/icons/DestroyTileTool.svg" id="7_88usi"]
+[ext_resource type="Texture2D" uid="uid://b7dbhursi7p7n" path="res://addons/beatmap-plugin/icons/RestoreTileTool.svg" id="7_wgkf7"]
+[ext_resource type="Texture2D" uid="uid://cge08utonc5ca" path="res://addons/beatmap-plugin/icons/TelegraphTileTool.svg" id="8_1k4n7"]
+[ext_resource type="Texture2D" uid="uid://ce4bua8xae8od" path="res://addons/beatmap-plugin/icons/ClearHistoryTool.svg" id="10_1k4n7"]
+[ext_resource type="Texture2D" uid="uid://xviad8uhx7no" path="res://addons/beatmap-plugin/icons/FindKeyframeTool.svg" id="10_vty71"]
 
 [node name="BeatmapInspectorWidget" type="MarginContainer" unique_id=2082725818]
 anchors_preset = 15
@@ -189,31 +194,72 @@ layout_mode = 2
 
 [node name="RestoreTile" type="Button" parent="MainVBox/PatternTools" unique_id=1617543746]
 layout_mode = 2
-tooltip_text = "Restore Tile Tool
+tooltip_text = "Restore Tile Tool (1)
 Restore destroyed tile or finish telegraph with an attack"
+theme_override_constants/icon_max_width = 24
 toggle_mode = true
-text = "1"
+icon = ExtResource("7_wgkf7")
 
 [node name="Telegraph" type="Button" parent="MainVBox/PatternTools" unique_id=1048144314]
 layout_mode = 2
-tooltip_text = "Telegraph Tool
+tooltip_text = "Telegraph Tool (2)
 Start telegraph at the current time"
+theme_override_constants/icon_max_width = 24
 toggle_mode = true
-text = "2"
+icon = ExtResource("8_1k4n7")
 
 [node name="DestroyTile" type="Button" parent="MainVBox/PatternTools" unique_id=1279229986]
 layout_mode = 2
-tooltip_text = "Destroy Tile Tool
+tooltip_text = "Destroy Tile Tool (3)
 Mark tile as destroyed"
+theme_override_constants/icon_max_width = 24
 toggle_mode = true
-text = "3"
+icon = ExtResource("7_88usi")
+
+[node name="Placeholder1" type="Button" parent="MainVBox/PatternTools" unique_id=591761453]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+theme_override_constants/icon_max_width = 24
+toggle_mode = true
+icon = ExtResource("7_88usi")
+
+[node name="FindKeyframe" type="Button" parent="MainVBox/PatternTools" unique_id=1585995749]
+layout_mode = 2
+tooltip_text = "Find Keyframe Tool (F)
+Cycle through tile's keyframes
+LMB to go back; RMB to go forward"
+theme_override_constants/icon_max_width = 24
+toggle_mode = true
+icon = ExtResource("10_vty71")
+
+[node name="Placeholder3" type="Button" parent="MainVBox/PatternTools" unique_id=472839904]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+theme_override_constants/icon_max_width = 24
+toggle_mode = true
+icon = ExtResource("7_88usi")
+
+[node name="Placeholder4" type="Button" parent="MainVBox/PatternTools" unique_id=444667283]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+theme_override_constants/icon_max_width = 24
+toggle_mode = true
+icon = ExtResource("7_88usi")
+
+[node name="Placeholder5" type="Button" parent="MainVBox/PatternTools" unique_id=1918413199]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+theme_override_constants/icon_max_width = 24
+toggle_mode = true
+icon = ExtResource("7_88usi")
 
 [node name="ClearAll" type="Button" parent="MainVBox/PatternTools" unique_id=787205021]
 layout_mode = 2
-tooltip_text = "Clear Tile Tool
+tooltip_text = "Clear History Tool (9)
 Remove ALL patterns on this tile from current time until the end"
+theme_override_constants/icon_max_width = 24
 toggle_mode = true
-text = "9"
+icon = ExtResource("10_1k4n7")
 
 [node name="GridScrollContainer" type="ScrollContainer" parent="MainVBox" unique_id=278230359]
 unique_name_in_owner = true
@@ -226,3 +272,25 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/h_separation = 4
 theme_override_constants/v_separation = 4
+
+[node name="AutoFixWarning" type="HBoxContainer" parent="MainVBox" unique_id=1229464126]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainVBox/AutoFixWarning" unique_id=670824433]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Two or more consecutive keyframes have the same state. This may cause runtime issues if not fixed, but you may want to keep them unmerged while working on the map.
+Click \"Merge keyframes\" before running in game."
+mouse_filter = 0
+theme_override_colors/font_color = Color(1, 0.52166665, 0.3, 1)
+text = "Some patterns should be merged"
+
+[node name="SizingContainer" type="HBoxContainer" parent="MainVBox/AutoFixWarning" unique_id=1443439900]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ApplyAutoFixButton" type="Button" parent="MainVBox/AutoFixWarning/SizingContainer" unique_id=1613051435]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Merge keyframes"

@@ -3,11 +3,14 @@ extends Node
 var isFightTriggered := false
 
 func _ready() -> void:
+	var beatmap: Beatmap = ResourceLoader.load("res://scenes/TutorialArenaBeatmap.tres")
+
 	var args := DanceFloor.InitArgs.new()
-	args.gridSize = Vector2i(32, 4)
-	args.showLabels = true
+	args.gridSize = beatmap.gridSize
 	$DanceFloor.Setup(args)
-	$DanceFloor/Boss.set_grid_size(Vector2i(4, 4))
+
+	BeatmapLoader.LoadAudio(beatmap)
+	BeatmapLoader.LoadInitial(beatmap)
 
 	GlobalContext.GetBoss().prep_patterns()
 	SignalBus.OnFlushAllTimers.emit()

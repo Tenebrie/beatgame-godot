@@ -56,6 +56,9 @@ func on_explode(x: int, y: int) -> void:
 	if player.GridPosition.x != gridX or player.GridPosition.y != gridY:
 		return
 
+	if not is_inside_tree():
+		print("Tile is not inside tree for some reason")
+		return
 	await get_tree().create_timer(0.02).timeout
 	if player.GridPosition.x == gridX and player.GridPosition.y == gridY:
 		player.DealDamage(1.0)
