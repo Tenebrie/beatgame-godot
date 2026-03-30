@@ -4,10 +4,10 @@ var tiles: Array[Vector2i]
 var explodeTimer: MusicTimer
 var telegraphDelayTimer: MusicTimer
 
-signal before_telegraph
-signal telegraph_started
-signal before_trigger
-signal after_trigger
+signal beforeTelegraph
+signal telegraphStarted
+signal beforeTrigger
+signal afterTrigger
 signal resolved
 
 const letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -24,12 +24,12 @@ func _init(newTiles: Array[Vector2i]) -> void:
 	explodeTimer.start(BuilderTime)
 	explodeTimer.timeout.connect(
 		func(_beat: float) -> void:
-			before_trigger.emit()
+			beforeTrigger.emit()
 			for tile in tiles:
 				var x := tile[0] + offset.x
 				var y := tile[1] + offset.y
 				SignalBus.explodeTile.emit(x, y)
-			after_trigger.emit()
+			afterTrigger.emit()
 			resolved.emit()
 	)
 
@@ -39,18 +39,18 @@ func Telegraph(delay: float) -> Pattern:
 	var offset := BuilderOffset
 	telegraphDelayTimer.timeout.connect(
 		func(_beat: float) -> void:
-			before_telegraph.emit()
+			beforeTelegraph.emit()
 			for tile in tiles:
 				var x := tile[0] + offset.x
 				var y := tile[1] + offset.y
 				SignalBus.telegraphTile.emit(Vector2i(x, y), delay)
-			telegraph_started.emit()
+			telegraphStarted.emit()
 	)
 	return self
 
 func Push(direction: Vector2i) -> Pattern:
 	var offset := BuilderOffset
-	before_trigger.connect(func() -> void:
+	beforeTrigger.connect(func() -> void:
 		var player := GlobalContext.GetPlayer()
 		for tile in tiles:
 			var x := tile[0] + offset.x
@@ -62,11 +62,11 @@ func Push(direction: Vector2i) -> Pattern:
 	return self
 
 func BeforeTelegraph(function: Callable) -> Pattern:
-	before_telegraph.connect(function)
+	beforeTelegraph.connect(function)
 	return self
 
 func BeforeTrigger(function: Callable) -> Pattern:
-	before_trigger.connect(function)
+	beforeTrigger.connect(function)
 	return self
 
 func Delay(delay: float) -> Pattern:
@@ -78,7 +78,7 @@ func Delay(delay: float) -> Pattern:
 
 func RestoreTile() -> Pattern:
 	var offset := BuilderOffset
-	after_trigger.connect(func() -> void:
+	afterTrigger.connect(func() -> void:
 		for tile in tiles:
 			var x := tile[0] + offset.x
 			var y := tile[1] + offset.y
@@ -88,7 +88,7 @@ func RestoreTile() -> Pattern:
 
 func DestroyTile() -> Pattern:
 	var offset := BuilderOffset
-	after_trigger.connect(func() -> void:
+	afterTrigger.connect(func() -> void:
 		for tile in tiles:
 			var x := tile[0] + offset.x
 			var y := tile[1] + offset.y
@@ -112,13 +112,10 @@ static func _resolveSelectors(selectors: Array[String]) -> Array[Vector2i]:
 ### Static factories
 ###========================================
 
-static func Void() -> Pattern:
-	return Pattern.new([])
-
 static func PlayerPosition(offset := Vector2i(0, 0)) -> Pattern:
 	var pattern := Pattern.new([])
 	var builderOffset := BuilderOffset
-	pattern.before_telegraph.connect(func () -> void:
+	pattern.beforeTelegraph.connect(func () -> void:
 		var pos := GlobalContext.GetPlayer().GridPosition + offset - builderOffset
 		pattern.tiles = [Vector2i(pos.x, pos.y)]
 	)
@@ -165,7 +162,7 @@ static func Rect(topLeft: String, bottomRight: String) -> Pattern:
 
 static func Cast(ability: BossCast) -> Pattern:
 	var pattern := Pattern.new([])
-	pattern.telegraph_started.connect(
+	pattern.telegraphStarted.connect(
 		func () -> void:
 			ability.start_telegraph()
 	)

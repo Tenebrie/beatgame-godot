@@ -4,7 +4,7 @@
 resource_name = "Pitch Compensation"
 
 [resource]
-bus/1/name = &"BeatmapEditor-d8aa6cbb-973a-40f1-89ce-16e40575416d"
+bus/1/name = &"BeatmapEditor-fcf1a683-f9df-4ec1-a1c1-d2588de5b808"
 bus/1/solo = false
 bus/1/mute = false
 bus/1/bypass_fx = false

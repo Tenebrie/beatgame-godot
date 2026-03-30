@@ -1,7 +1,7 @@
 @tool
 class_name BeatmapEditor extends VBoxContainer
 
-signal ValidationErrorFixed
+signal ResourceUpdated
 signal FixableErrorsFound(count: int)
 
 var resource: Beatmap
@@ -16,13 +16,7 @@ func setup(res: Beatmap, newUndoRedo: EditorUndoRedoManager) -> void:
 	_last_patterns_snapshot = _deep_copy_patterns(resource.patterns)
 	resource.changed.connect(_rebuild)
 	resource.stateUpdated.connect(func(actionMessage: String) -> void:
-		var returnValue := _validateResource()
-		var errorCount := returnValue.x
-		var unmergedPatternCount := returnValue.y
-		scheduleResourceSave()
-		if errorCount > 0:
-			ValidationErrorFixed.emit()
-		FixableErrorsFound.emit(unmergedPatternCount)
+		_validateAndNotify()
 
 		var new_patterns = _deep_copy_patterns(resource.patterns)
 
@@ -46,7 +40,6 @@ func scheduleResourceSave() -> void:
 		add_child(debounceTimer)
 		debounceTimer.timeout.connect(func() -> void:
 			ResourceSaver.save(resource)
-			print("Save")
 		)
 		debounceTimer.one_shot = true
 
@@ -56,7 +49,17 @@ func scheduleResourceSave() -> void:
 func _apply_snapshot(patterns: Dictionary[String, Array]) -> void:
 	_last_patterns_snapshot = _deep_copy_patterns(patterns)
 	resource.patterns = patterns
-	ValidationErrorFixed.emit()
+	ResourceUpdated.emit()
+	_validateAndNotify()
+
+func _validateAndNotify() -> void:
+	var returnValue := _validateResource()
+	var errorCount := returnValue.x
+	var unmergedPatternCount := returnValue.y
+	scheduleResourceSave()
+	if errorCount > 0:
+		ResourceUpdated.emit()
+	FixableErrorsFound.emit(unmergedPatternCount)
 
 func _validateResource() -> Vector2i:
 	var errorCount := 0
@@ -144,11 +147,17 @@ func _apply_auto_fixes() -> int:
 
 	return fixedErrors
 
+var lastRebuiltFor: Beatmap
+
 func _rebuild() -> void:
+	if lastRebuiltFor and resource.audioFile == lastRebuiltFor.audioFile and resource.gridSize == lastRebuiltFor.gridSize:
+		ResourceUpdated.emit()
+		return
+
 	for child in get_children():
 		child.queue_free()
 	var controls: BeatmapInspectorWidget = preload("res://addons/beatmap-plugin/BeatmapInspectorWidget.tscn").instantiate()
-	controls.Setup(resource, self)
+	controls.setup(resource, self)
 	add_child(controls)
 	var validationResult := _validateResource()
 	FixableErrorsFound.emit(validationResult.y)
@@ -156,8 +165,9 @@ func _rebuild() -> void:
 		var errorCount := _apply_auto_fixes()
 		FixableErrorsFound.emit(0)
 		if errorCount > 0:
-			ValidationErrorFixed.emit()
+			ResourceUpdated.emit()
 	)
+	lastRebuiltFor = resource.duplicate()
 
 func _deep_copy_patterns(patterns: Dictionary[String, Array]) -> Dictionary[String, Array]:
 	var copy: Dictionary[String, Array] = {}

@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cc6pk31mrjh5h" path="res://addons/beatmap-plugin/icons/Stop.svg" id="4_iijuc"]
 [ext_resource type="Texture2D" uid="uid://bb7xi5o4534ov" path="res://addons/beatmap-plugin/icons/PageNext.svg" id="5_2f4js"]
 [ext_resource type="Texture2D" uid="uid://cmu8lkr571igh" path="res://addons/beatmap-plugin/icons/PagePrevious.svg" id="5_ieag7"]
+[ext_resource type="Script" uid="uid://b7ywqfp4wsnoe" path="res://addons/beatmap-plugin/components/BeatmapSpeedNudgeButton.gd" id="6_kxvie"]
 [ext_resource type="Texture2D" uid="uid://bv4wj3baex1ml" path="res://addons/beatmap-plugin/icons/DestroyTileTool.svg" id="7_88usi"]
 [ext_resource type="Texture2D" uid="uid://b7dbhursi7p7n" path="res://addons/beatmap-plugin/icons/RestoreTileTool.svg" id="7_wgkf7"]
 [ext_resource type="Texture2D" uid="uid://cge08utonc5ca" path="res://addons/beatmap-plugin/icons/TelegraphTileTool.svg" id="8_1k4n7"]
@@ -151,33 +152,41 @@ theme_override_font_sizes/font_size = 16
 text = "8"
 horizontal_alignment = 1
 
-[node name="OneBack" type="Button" parent="MainVBox/SongControls" unique_id=395589861]
+[node name="OneBack" type="Button" parent="MainVBox/SongControls" unique_id=633402192]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 theme_override_constants/icon_max_width = 24
 icon = ExtResource("5_ieag7")
+script = ExtResource("6_kxvie")
+metadata/_custom_type_script = "uid://b7ywqfp4wsnoe"
 
-[node name="OneBackTiny" type="Button" parent="MainVBox/SongControls" unique_id=2037014777]
+[node name="OneBackTiny" type="Button" parent="MainVBox/SongControls" unique_id=1072991000]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 theme_override_constants/icon_max_width = 24
 icon = ExtResource("5_ieag7")
+script = ExtResource("6_kxvie")
+metadata/_custom_type_script = "uid://b7ywqfp4wsnoe"
 
-[node name="OneForwardTiny" type="Button" parent="MainVBox/SongControls" unique_id=1588396981]
+[node name="OneForwardTiny" type="Button" parent="MainVBox/SongControls" unique_id=1204515665]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 theme_override_constants/icon_max_width = 24
 icon = ExtResource("5_2f4js")
+script = ExtResource("6_kxvie")
+metadata/_custom_type_script = "uid://b7ywqfp4wsnoe"
 
-[node name="OneForward" type="Button" parent="MainVBox/SongControls" unique_id=418416387]
+[node name="OneForward" type="Button" parent="MainVBox/SongControls" unique_id=2062926958]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 theme_override_constants/icon_max_width = 24
 icon = ExtResource("5_2f4js")
+script = ExtResource("6_kxvie")
+metadata/_custom_type_script = "uid://b7ywqfp4wsnoe"
 
 [node name="ErrorLabel" type="Label" parent="MainVBox" unique_id=2089617827]
 unique_name_in_owner = true

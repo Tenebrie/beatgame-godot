@@ -1,7 +1,7 @@
 @tool
 class_name BeatmapInspectorWidget extends Control
 
-signal ApplyAutoFix
+signal applyAutoFix
 
 var resource: Beatmap
 var positionBeats := 0.0
@@ -11,13 +11,15 @@ var startPositionSeconds := 0.0
 var loopPositionBeats := INF
 var loopPositionSeconds := INF
 var gridButtons: Dictionary # Dictionary["x-y", Button]
+var pitchShiftEffect: AudioEffectPitchShift
 
-func Setup(newResource: Beatmap, parent: BeatmapEditor) -> void:
+func setup(newResource: Beatmap, parent: BeatmapEditor) -> void:
 	resource = newResource
 	$AudioStreamPlayer.stream = newResource.audioFile
 	gridButtons.clear()
-	parent.ValidationErrorFixed.connect(func() -> void:
-		_update_pattern_states()
+	parent.ResourceUpdated.connect(func() -> void:
+		_updatePatternStates()
+		_updatePlaybackSpeed()
 	)
 	parent.FixableErrorsFound.connect(func(count: int) -> void:
 		if count > 0:
@@ -67,18 +69,18 @@ func _ready() -> void:
 #region Song controls
 	$%SongProgress/StartPos.position.x = 0.0
 	$%SongProgress/EndPos.position.x = 9999.0
-	_update_scrubber_pos()
+	_updateScrubberPosition()
 	$%PlayButton.pressed.connect(func() -> void:
 		if $AudioStreamPlayer.playing or Input.is_key_pressed(KEY_SHIFT):
 			$AudioStreamPlayer.play(startPositionSeconds)
 		else:
 			$AudioStreamPlayer.play(positionSeconds)
-		_update_pattern_states()
+		_updatePatternStates()
 		grab_focus(true)
 	)
 	$%PauseButton.pressed.connect(func() -> void:
 		$AudioStreamPlayer.stop()
-		_update_pattern_states()
+		_updatePatternStates()
 		grab_focus(true)
 	)
 	$%PauseButton.gui_input.connect(func(event: InputEvent) -> void:
@@ -87,46 +89,51 @@ func _ready() -> void:
 
 		if event.pressed:
 			$AudioStreamPlayer.play(positionSeconds)
-			_update_pattern_states()
+			_updatePatternStates()
 		else:
 			$AudioStreamPlayer.stop()
-			_update_pattern_states()
+			_updatePatternStates()
 	)
 	$%StopButton.pressed.connect(func() -> void:
 		$AudioStreamPlayer.stop()
 		positionBeats = startPositionBeats
 		positionSeconds = startPositionSeconds
-		_update_scrubber_pos()
-		_update_pattern_states()
+		_updateScrubberPosition()
+		_updatePatternStates()
 		grab_focus(true)
 	)
-	$%OneBackTiny.pressed.connect(func() -> void:
-		_seek_relative_beats(-1.0 / 8.0)
+	$%OneBackTiny.Nudge.connect(func() -> void:
+		$AudioStreamPlayer.stop()
+		$AudioStreamPlayer.stop()
+		_seekRelativeBeats(-1.0 / resource.editorBeatSubdivisions)
 		grab_focus(true)
 	)
-	$%OneBack.pressed.connect(func() -> void:
+	$%OneBack.Nudge.connect(func() -> void:
+		$AudioStreamPlayer.stop()
 		var delta := -1.0
 		if positionBeats - floorf(positionBeats) > 0:
 			delta = -(positionBeats - floorf(positionBeats))
 		if Input.is_key_pressed(KEY_SHIFT):
-			var snappedToDoubleBar := ceilf(positionBeats / 8.0 - 1) * 8.0
+			var snappedToDoubleBar := ceilf(positionBeats / resource.editorBeatSubdivisions - 1) * resource.editorBeatSubdivisions
 			delta = snappedToDoubleBar - positionBeats
 
-		_seek_relative_beats(delta)
+		_seekRelativeBeats(delta)
 		grab_focus(true)
 	)
-	$%OneForward.pressed.connect(func() -> void:
+	$%OneForward.Nudge.connect(func() -> void:
+		$AudioStreamPlayer.stop()
 		var delta := 1.0
 		if ceil(positionBeats) - positionBeats > 0:
 			delta = ceil(positionBeats) - positionBeats
 		if Input.is_key_pressed(KEY_SHIFT):
-			var snappedToDoubleBar := floorf(positionBeats / 8.0 + 1) * 8.0
+			var snappedToDoubleBar := floorf(positionBeats / resource.editorBeatSubdivisions + 1) * resource.editorBeatSubdivisions
 			delta = snappedToDoubleBar - positionBeats
-		_seek_relative_beats(delta)
+		_seekRelativeBeats(delta)
 		grab_focus(true)
 	)
-	$%OneForwardTiny.pressed.connect(func() -> void:
-		_seek_relative_beats(1.0 / 8.0)
+	$%OneForwardTiny.Nudge.connect(func() -> void:
+		$AudioStreamPlayer.stop()
+		_seekRelativeBeats(1.0 / resource.editorBeatSubdivisions)
 		grab_focus(true)
 	)
 
@@ -139,29 +146,29 @@ func _ready() -> void:
 		var percentage = clampf(event.position.x / inputSize.x, 0.0, 1.0)
 
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and Input.is_key_pressed(KEY_SHIFT):
-			_set_song_start_position(percentage)
+			_setSongStartPosition(percentage)
 			skipNextLeftClickRelease = true
 		elif Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT) and Input.is_key_pressed(KEY_SHIFT):
-			_set_song_loop_position(percentage)
+			_setSongLoopPosition(percentage)
 		elif event is InputEventMouseButton and event.button_index == 1 and event.pressed:
 			skipNextLeftClickRelease = true
-			_set_song_current_position(percentage, true, true)
+			_setSongCurrentPosition(percentage, true, true)
 			dragMode = DragMode.Song
 			if not $AudioStreamPlayer.playing:
 				$AudioStreamPlayer.play()
 		elif event is InputEventMouseMotion and event.button_mask == 1:
 			skipNextLeftClickRelease = false
-			_set_song_current_position(percentage, true, true)
-			if not $AudioStreamPlayer.playing and positionBeats < _get_song_duration_beats():
+			_setSongCurrentPosition(percentage, true, true)
+			if not $AudioStreamPlayer.playing and positionBeats < _getSongDurationBeats():
 				$AudioStreamPlayer.play()
 		elif event is InputEventMouseButton and event.button_index == 1 and not event.pressed and not skipNextLeftClickRelease:
-			_set_song_current_position(percentage, true, true)
+			_setSongCurrentPosition(percentage, true, true)
 			$AudioStreamPlayer.stop()
-			_update_scrubber_pos()
+			_updateScrubberPosition()
 		else:
 			skipNextLeftClickRelease = false
 			return
-		_update_pattern_states()
+		_updatePatternStates()
 		grab_focus(true)
 	)
 #endregion
@@ -169,13 +176,14 @@ func _ready() -> void:
 
 	var audioBus := AudioBus.new()
 	add_child(audioBus)
-	var pitchShiftEffect := AudioEffectPitchShift.new()
+	pitchShiftEffect = AudioEffectPitchShift.new()
 	pitchShiftEffect.pitch_scale = 1.0
 	pitchShiftEffect.resource_name = "Pitch Compensation"
 	audioBus.addEffect(pitchShiftEffect)
 
 	var player: AudioStreamPlayer = $AudioStreamPlayer
 	player.bus = audioBus.getName()
+	_updatePlaybackSpeed()
 
 #endregion
 #region Pattern toolbar
@@ -226,7 +234,7 @@ func _ready() -> void:
 			var rowHeaderControlledTiles: Array[Vector2i]
 			for tileX in range(resource.gridSize.x):
 				rowHeaderControlledTiles.append(Vector2i(tileX, y - 1))
-			_connect_grid_button_events(rowHeaderButton, rowHeaderControlledTiles)
+			_connectGridButtonEvents(rowHeaderButton, rowHeaderControlledTiles)
 		rowHeaderButton.custom_minimum_size = btnSize
 
 		# Column header
@@ -240,14 +248,14 @@ func _ready() -> void:
 				var columnHeaderControlledTiles: Array[Vector2i]
 				for tileY in range(resource.gridSize.y):
 					columnHeaderControlledTiles.append(Vector2i(x, tileY))
-				_connect_grid_button_events(columnHeaderButton, columnHeaderControlledTiles)
+				_connectGridButtonEvents(columnHeaderButton, columnHeaderControlledTiles)
 			continue
 
 		# Tile buttons
 		for x in range(resource.gridSize.x):
 			var button = BeatmapTileButton.new(self)
 			button.custom_minimum_size = btnSize
-			_connect_grid_button_events(button, [Vector2i(x, y - 1)])
+			_connectGridButtonEvents(button, [Vector2i(x, y - 1)])
 			$%GridContainer.add_child(button)
 
 			var keyframeIndicator := Label.new()
@@ -266,12 +274,12 @@ func _ready() -> void:
 #endregion
 
 	$%ApplyAutoFixButton.pressed.connect(func() -> void:
-		ApplyAutoFix.emit()
+		applyAutoFix.emit()
 	)
 
-	_update_pattern_states()
+	_updatePatternStates()
 
-func _connect_grid_button_events(button: BeatmapTileButton, controlledTiles: Array[Vector2i]) -> void:
+func _connectGridButtonEvents(button: BeatmapTileButton, controlledTiles: Array[Vector2i]) -> void:
 	button.pressed.connect(func() -> void:
 		grab_focus(true)
 	)
@@ -279,7 +287,7 @@ func _connect_grid_button_events(button: BeatmapTileButton, controlledTiles: Arr
 		for tile in controlledTiles:
 			var key = str(tile.x) + "-" + str(tile.y)
 			gridButtons[key].SetState(to)
-			_set_current_tile_state(tile.x, tile.y, to)
+			_setCurrentTileState(tile.x, tile.y, to)
 	)
 	button.MouseDown.connect(func(event: InputEventMouseButton) -> void:
 		dragMode = DragMode.Pattern
@@ -290,10 +298,10 @@ func _connect_grid_button_events(button: BeatmapTileButton, controlledTiles: Arr
 			return
 		if toolMode == TileTool.FullClear:
 			for tile in controlledTiles:
-				_clear_all_tile_patterns(tile.x, tile.y, positionBeats)
+				_clearAllTilePatterns(tile.x, tile.y, positionBeats)
 		elif toolMode == TileTool.FindKeyframe:
 			var tile := controlledTiles[0]
-			_find_keyframe_start_tool(tile.x, tile.y)
+			_findKeyframeTool(tile.x, tile.y)
 	)
 	button.BeforeAltToolInvoked.connect(func() -> void:
 		if controlledTiles.size() == 0:
@@ -303,12 +311,12 @@ func _connect_grid_button_events(button: BeatmapTileButton, controlledTiles: Arr
 		# Right click to clear keyframe
 		if clearKeyframeTools.has(toolMode):
 			for tile in controlledTiles:
-				_clear_current_tile_keyframe_if_present(tile.x, tile.y)
-				_update_single_tile_state(tile.x, tile.y)
+				_clearCurrentTileKeyframeIfPresent(tile.x, tile.y)
+				_updateSingleTileState(tile.x, tile.y)
 
 		if toolMode == TileTool.FindKeyframe:
 			var tile := controlledTiles[0]
-			_find_keyframe_end_tool(tile.x, tile.y)
+			_findKeyframeAltTool(tile.x, tile.y)
 	)
 
 func _hotkey(event: InputEventKey) -> bool:
@@ -328,11 +336,11 @@ func _hotkey(event: InputEventKey) -> bool:
 	elif (event.keycode == Key.KEY_LEFT or event.keycode == Key.KEY_A) and event.pressed:
 		$%OneBack.pressed.emit()
 	elif (event.keycode == Key.KEY_L or event.keycode == Key.KEY_Q) and event.pressed:
-		var percentage: float = positionBeats / _get_song_duration_beats()
-		_set_song_start_position(percentage)
+		var percentage: float = positionBeats / _getSongDurationBeats()
+		_setSongStartPosition(percentage)
 	elif (event.keycode == Key.KEY_P or event.keycode == Key.KEY_E) and event.pressed:
-		var percentage: float = positionBeats / _get_song_duration_beats()
-		_set_song_loop_position(percentage)
+		var percentage: float = positionBeats / _getSongDurationBeats()
+		_setSongLoopPosition(percentage)
 	elif event.keycode == Key.KEY_1 and event.pressed:
 		$%PatternTools/RestoreTile.button_pressed = true
 		$%PatternTools/RestoreTile.pressed.emit()
@@ -356,24 +364,12 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == 1 and not event.pressed:
 		dragMode = DragMode.None
 
-func _seek_relative_beats(beats: float) -> void:
-	_set_song_current_position_beats(positionBeats + beats, false, false)
-	_update_pattern_states()
+func _seekRelativeBeats(beats: float) -> void:
+	_setSongCurrentPositionBeats(positionBeats + beats, false, false)
+	_updatePatternStates()
 
-func _get_current_tile_state(x: int, y: int, default := Beatmap.PatternState.Destroyed) -> Beatmap.PatternState:
-	var time := _get_song_position_beats()
-	var key := str(x) + "-" + str(y)
-	if not resource.patterns.has(key):
-		return default
-
-	var tilePatterns := resource.patterns[key]
-	for tilePattern: BeatmapPatternData in tilePatterns:
-		if tilePattern.startedAt <= time and tilePattern.finishedAt > time:
-			return tilePattern.state
-	return default
-
-func _get_current_tile_data(x: int, y: int) -> BeatmapPatternData:
-	var time := _get_song_position_beats()
+func _getCurrentTileData(x: int, y: int) -> BeatmapPatternData:
+	var time := _getSongPositionBeats()
 	var key := str(x) + "-" + str(y)
 	if not resource.patterns.has(key):
 		return null
@@ -383,25 +379,10 @@ func _get_current_tile_data(x: int, y: int) -> BeatmapPatternData:
 			return tilePattern
 	return null
 
-func _get_next_tile_data(x: int, y: int) -> BeatmapPatternData:
-	var time := _get_song_position_beats()
+func _setCurrentTileState(x: int, y: int, state: Beatmap.PatternState) -> void:
+	var time := _getSongPositionBeats()
 	var key := str(x) + "-" + str(y)
-	var tilePatterns := resource.patterns[key]
-	if tilePatterns == null:
-		return null
-
-	var currentFound := false
-	for tilePattern: BeatmapPatternData in tilePatterns:
-		if currentFound:
-			return tilePattern
-		if tilePattern.startedAt <= time and tilePattern.finishedAt > time:
-			currentFound = true
-	return null
-
-func _set_current_tile_state(x: int, y: int, state: Beatmap.PatternState) -> void:
-	var time := _get_song_position_beats()
-	var key := str(x) + "-" + str(y)
-	var current := _get_current_tile_data(x, y)
+	var current := _getCurrentTileData(x, y)
 	time = max(0.0, time)
 
 	var stateUpdateMessage: String
@@ -428,7 +409,7 @@ func _set_current_tile_state(x: int, y: int, state: Beatmap.PatternState) -> voi
 				resource.patterns[key] = [prevPattern, nextPattern] + resource.patterns[key] as Array
 			else:
 				resource.patterns[key] = [nextPattern] + resource.patterns[key] as Array
-			stateUpdateMessage = "[%s] Add leading keyframe at %d"%[_get_selector(x, y), time]
+			stateUpdateMessage = "[%s] Add leading keyframe at %d"%[_getSelector(x, y), time]
 
 		# Patterns have finished
 		else:
@@ -440,9 +421,9 @@ func _set_current_tile_state(x: int, y: int, state: Beatmap.PatternState) -> voi
 			var nextPattern := BeatmapPatternData.new()
 			nextPattern.state = state
 			nextPattern.startedAt = time
-			nextPattern.finishedAt = _get_song_duration_beats()
+			nextPattern.finishedAt = _getSongDurationBeats()
 			resource.patterns[key] = resource.patterns[key] as Array + [prevPattern, nextPattern]
-			stateUpdateMessage = "[%s] Add trailing keyframe at %d"%[_get_selector(x, y), time]
+			stateUpdateMessage = "[%s] Add trailing keyframe at %d"%[_getSelector(x, y), time]
 
 	# No patterns are defined yet
 	elif not resource.patterns.has(key) or resource.patterns[key].size() == 0:
@@ -457,13 +438,13 @@ func _set_current_tile_state(x: int, y: int, state: Beatmap.PatternState) -> voi
 		var nextPattern := BeatmapPatternData.new()
 		nextPattern.state = state
 		nextPattern.startedAt = time
-		nextPattern.finishedAt = _get_song_duration_beats()
+		nextPattern.finishedAt = _getSongDurationBeats()
 
 		if time > 0.0:
 			resource.patterns[key] = [prevPattern, nextPattern]
 		else:
 			resource.patterns[key] = [nextPattern]
-		stateUpdateMessage = "[%s] Add initial keyframe at beat %s"%[_get_selector(x, y), _format_beat(time)]
+		stateUpdateMessage = "[%s] Add initial keyframe at beat %s"%[_getSelector(x, y), _formatBeatIndex(time)]
 
 	# In the middle of the pattern
 	else:
@@ -474,7 +455,7 @@ func _set_current_tile_state(x: int, y: int, state: Beatmap.PatternState) -> voi
 
 		if current.startedAt == time:
 			current.state = state
-			resource.stateUpdated.emit("[%s] Update keyframe at beat %s"%[_get_selector(x, y), _format_beat(time)])
+			resource.stateUpdated.emit("[%s] Update keyframe at beat %s"%[_getSelector(x, y), _formatBeatIndex(time)])
 			return
 
 		var prevPattern := BeatmapPatternData.new()
@@ -492,12 +473,12 @@ func _set_current_tile_state(x: int, y: int, state: Beatmap.PatternState) -> voi
 		tilePatterns.insert(idx, nextPattern)
 		tilePatterns.insert(idx, prevPattern)
 
-		stateUpdateMessage = "[%s] Split keyframe at %s"%[_get_selector(x, y), _format_beat(time)]
+		stateUpdateMessage = "[%s] Split keyframe at %s"%[_getSelector(x, y), _formatBeatIndex(time)]
 	resource.stateUpdated.emit(stateUpdateMessage)
-	_update_pattern_states()
+	_updatePatternStates()
 
-func _clear_current_tile_keyframe_if_present(x: int, y: int) -> void:
-	var time := _get_song_position_beats()
+func _clearCurrentTileKeyframeIfPresent(x: int, y: int) -> void:
+	var time := _getSongPositionBeats()
 	var key := str(x) + "-" + str(y)
 	if not resource.patterns.has(key):
 		return
@@ -512,36 +493,36 @@ func _clear_current_tile_keyframe_if_present(x: int, y: int) -> void:
 			resource.patterns[key].remove_at(resource.patterns[key].find(tilePattern))
 			if previousPattern:
 				previousPattern.finishedAt = tilePattern.finishedAt
-			resource.stateUpdated.emit("[%s] Remove keyframe at beat %s"%[_get_selector(x, y), _format_beat(time)])
+			resource.stateUpdated.emit("[%s] Remove keyframe at beat %s"%[_getSelector(x, y), _formatBeatIndex(time)])
 			return
 		previousPattern = tilePattern
 
-func _set_song_current_position(percentage: float, allowPlay: bool, force: bool) -> void:
+func _setSongCurrentPosition(percentage: float, allowPlay: bool, force: bool) -> void:
 	if not resource.audioFile:
 		return
 	var offsetPos := percentage * resource.audioFile.get_length()
 	var precisePosition := offsetPos / 60.0 * resource.bpm
-	_set_song_current_position_beats(precisePosition, allowPlay, force)
+	_setSongCurrentPositionBeats(precisePosition, allowPlay, force)
 
-func _set_song_current_position_beats(beats: float, allowPlay: bool, force: bool) -> void:
-	var durationFloored := floorf(_get_song_duration_beats() * 8.0) / 8.0
+func _setSongCurrentPositionBeats(beats: float, allowPlay: bool, force: bool) -> void:
+	var durationFloored := floorf(_getSongDurationBeats() * resource.editorBeatSubdivisions) / resource.editorBeatSubdivisions
 	beats = clamp(beats, 0.0, durationFloored)
-	var oldPositionSeconds: float = $AudioStreamPlayer.get_playback_position()
+	var oldPositionSeconds: float = _getSongPositionSeconds()
 
-	positionBeats = roundf(beats * 8.0) / 8.0
+	positionBeats = roundf(beats * resource.editorBeatSubdivisions) / resource.editorBeatSubdivisions
 	positionSeconds = positionBeats * 60.0 / resource.bpm
 	if positionBeats < startPositionBeats:
-		_set_song_start_position(0.0)
+		_setSongStartPosition(0.0)
 	if positionBeats >= loopPositionBeats:
-		_set_song_loop_position(1.0)
+		_setSongLoopPosition(1.0)
 
-	if allowPlay and not $AudioStreamPlayer.is_playing() and positionBeats < _get_song_duration_beats() - 0.5:
+	if allowPlay and not $AudioStreamPlayer.is_playing() and positionBeats < _getSongDurationBeats() - 0.5:
 		$AudioStreamPlayer.play(startPositionSeconds)
 	if allowPlay and (force or positionSeconds != oldPositionSeconds):
 		$AudioStreamPlayer.seek(positionSeconds)
-	_update_scrubber_pos()
+	_updateScrubberPosition()
 
-func _set_song_start_position(percentage: float) -> void:
+func _setSongStartPosition(percentage: float) -> void:
 	var offsetPos := percentage * resource.audioFile.get_length()
 	var precisePosition := offsetPos / 60.0 * resource.bpm
 
@@ -551,7 +532,7 @@ func _set_song_start_position(percentage: float) -> void:
 	startPositionBeats = roundf(precisePosition / snapTo) * snapTo
 	startPositionSeconds = startPositionBeats * 60.0 / resource.bpm
 	if startPositionBeats >= loopPositionBeats:
-		_set_song_loop_position(1.0)
+		_setSongLoopPosition(1.0)
 
 	var snappedPercentage = startPositionSeconds / resource.audioFile.get_length()
 	if snappedPercentage > 0:
@@ -559,7 +540,7 @@ func _set_song_start_position(percentage: float) -> void:
 	else:
 		$%SongProgress/StartPos.position.x = 9999.0
 
-func _set_song_loop_position(percentage: float) -> void:
+func _setSongLoopPosition(percentage: float) -> void:
 	var offsetPos := percentage * resource.audioFile.get_length()
 	var precisePosition := offsetPos / 60.0 * resource.bpm
 
@@ -567,7 +548,7 @@ func _set_song_loop_position(percentage: float) -> void:
 	loopPositionBeats = roundf(precisePosition / snapTo) * snapTo
 	loopPositionSeconds = loopPositionBeats * 60.0 / resource.bpm
 	if startPositionBeats >= loopPositionBeats:
-		_set_song_start_position(0.0)
+		_setSongStartPosition(0.0)
 
 	var snappedPercentage = loopPositionSeconds / resource.audioFile.get_length()
 	var targetX: float = snappedPercentage * $%SongProgress.size.x
@@ -576,64 +557,67 @@ func _set_song_loop_position(percentage: float) -> void:
 	else:
 		$%SongProgress/EndPos.position.x = 9999.0
 
-func _get_song_position_beats() -> float:
+func _getSongPositionSeconds() -> float:
+	var compensation := AudioServer.get_time_since_last_mix() - AudioServer.get_output_latency()
+	return $AudioStreamPlayer.get_playback_position() + compensation
+
+func _getSongPositionBeats() -> float:
 	if not $AudioStreamPlayer.playing:
 		return positionBeats
 
-	var compensation := AudioServer.get_time_since_last_mix() - AudioServer.get_output_latency()
-	var offsetPos: float = $AudioStreamPlayer.get_playback_position() + compensation
+	var offsetPos: float = _getSongPositionSeconds()
 	var precisePosition := offsetPos / 60.0 * resource.bpm
-	var durationFloored := floorf(_get_song_duration_beats() * 8.0) / 8.0
+	var durationFloored := floorf(_getSongDurationBeats() * resource.editorBeatSubdivisions) / resource.editorBeatSubdivisions
 	var beats := clamp(precisePosition, 0.0, durationFloored)
-	return roundf(beats * 8.0) / 8.0
+	return floorf(beats * resource.editorBeatSubdivisions) / resource.editorBeatSubdivisions
 
-func _get_song_duration_beats() -> float:
+func _getSongDurationBeats() -> float:
 	var length: float = $AudioStreamPlayer.stream.get_length()
 	var precisePosition := length / 60.0 * resource.bpm
-	return floorf(precisePosition * 8.0) / 8.0
+	return floorf(precisePosition * resource.editorBeatSubdivisions) / resource.editorBeatSubdivisions
 
 func _process(_delta: float) -> void:
 	if resource == null or not $AudioStreamPlayer.is_playing():
 		return
-	if $AudioStreamPlayer.is_playing() and $AudioStreamPlayer.get_playback_position() >= _get_song_duration_beats():
+	if $AudioStreamPlayer.is_playing() and _getSongPositionSeconds() >= _getSongDurationBeats():
 		$AudioStreamPlayer.stop()
-	elif $AudioStreamPlayer.is_playing() and $AudioStreamPlayer.get_playback_position() >= loopPositionSeconds:
+	elif $AudioStreamPlayer.is_playing() and _getSongPositionSeconds() >= loopPositionSeconds:
 		$AudioStreamPlayer.seek(startPositionSeconds)
 
-	positionBeats = _get_song_position_beats()
+	positionBeats = _getSongPositionBeats()
 	positionSeconds = positionBeats * 60.0 / resource.bpm
-	_update_scrubber_pos()
-	_update_pattern_states()
+	_updateScrubberPosition()
+	_updatePatternStates()
 
-func _update_scrubber_pos() -> void:
+func _updateScrubberPosition() -> void:
 	if resource.audioFile == null:
 		$%SongProgress/Scrubber.position.x = 0.0
 		return
-	var position := _get_song_position_beats()
+	var position := _getSongPositionBeats()
 	$%BeatIndexLabel.text = str(floori(position))
 	var scrubberPosSeconds := position * 60.0 / resource.bpm
 	var width: float = $%SongProgress.size.x
 	$%SongProgress/Scrubber.position.x = scrubberPosSeconds / resource.audioFile.get_length() * width
 	var fraction := positionBeats - floori(positionBeats)
-	$%SongProgress/FractionTop.text = str(floori(fraction * 8 + 1))
+	$%SongProgress/FractionTop.text = str(roundi(fraction * resource.editorBeatSubdivisions + 1))
 
-func _update_single_tile_state(x: int, y: int) -> void:
+func _updateSingleTileState(x: int, y: int) -> void:
 	var key := str(x) + "-" + str(y)
 	var button: BeatmapTileButton = gridButtons[key]
-	var data := _get_current_tile_data(x, y)
+	var data := _getCurrentTileData(x, y)
 	var state := data.state if data else Beatmap.PatternState.Destroyed
 	var isKeyframe := data.startedAt == positionBeats if data else false
 
 	button.SetState(state)
 	var keyframeIndicator := button.get_child(0) as Label
-	keyframeIndicator.visible = isKeyframe and positionBeats > 0.0
+	keyframeIndicator.visible = isKeyframe or positionBeats == 0.0
 
-func _update_pattern_states() -> void:
+func _updatePatternStates() -> void:
 	for y in range(resource.gridSize.y):
 		for x in range(resource.gridSize.x):
-			_update_single_tile_state(x, y)
+			_updateSingleTileState(x, y)
 
-func _clear_all_tile_patterns(x: int, y: int, startingFrom: float) -> void:
+func _clearAllTilePatterns(x: int, y: int, startingFrom: float) -> void:
 	var time := positionBeats
 	var key := str(x) + "-" + str(y)
 	if not resource.patterns.has(key):
@@ -658,23 +642,23 @@ func _clear_all_tile_patterns(x: int, y: int, startingFrom: float) -> void:
 			patterns.remove_at(i)
 		else:
 			i += 1
-	resource.stateUpdated.emit("[%s] Clear history after beat %s"%[_get_selector(x, y), _format_beat(time)])
+	resource.stateUpdated.emit("[%s] Clear history after beat %s"%[_getSelector(x, y), _formatBeatIndex(time)])
 
-func _find_keyframe_start_tool(x: int, y: int) -> void:
-	var data := _get_current_tile_data(x, y)
+func _findKeyframeTool(x: int, y: int) -> void:
+	var data := _getCurrentTileData(x, y)
 
 	if data:
 		# If we have an active state, start cycling through them
 		if positionBeats > data.startedAt:
-			_set_song_current_position_beats(data.startedAt, false, false)
+			_setSongCurrentPositionBeats(data.startedAt, false, false)
 		else:
 			var key := str(x) + "-" + str(y)
 			var index := resource.patterns[key].find(data)
 			if index <= 0:
-				_set_song_current_position_beats(0.0, false, false)
+				_setSongCurrentPositionBeats(0.0, false, false)
 			else:
 				var previous: BeatmapPatternData = resource.patterns[key][index - 1]
-				_set_song_current_position_beats(previous.startedAt, false, false)
+				_setSongCurrentPositionBeats(previous.startedAt, false, false)
 	else:
 		# Otherwise, either find the first state to the left, or snap to song start
 		var key := str(x) + "-" + str(y)
@@ -683,40 +667,47 @@ func _find_keyframe_start_tool(x: int, y: int) -> void:
 			reversed.reverse()
 			for pattern in reversed:
 				if pattern.finishedAt <= positionBeats:
-					_set_song_current_position_beats(pattern.startedAt, false, false)
+					_setSongCurrentPositionBeats(pattern.startedAt, false, false)
 					break
 		else:
-			_set_song_current_position_beats(0, false, false)
+			_setSongCurrentPositionBeats(0, false, false)
 
-	_update_pattern_states()
+	_updatePatternStates()
 
-func _find_keyframe_end_tool(x: int, y: int) -> void:
-	var data := _get_current_tile_data(x, y)
+func _findKeyframeAltTool(x: int, y: int) -> void:
+	var data := _getCurrentTileData(x, y)
 
 	if data:
 		# If we have an active state, start cycling through them
-		_set_song_current_position_beats(data.finishedAt, false, false)
-		_update_pattern_states()
+		_setSongCurrentPositionBeats(data.finishedAt, false, false)
+		_updatePatternStates()
 	else:
 		# Otherwise, either find the first state to the right, or snap to song end
 		var key := str(x) + "-" + str(y)
 		if resource.patterns.has(key) and resource.patterns[key].size() > 0:
 			for pattern in resource.patterns[key]:
 				if pattern.startedAt > positionBeats:
-					_set_song_current_position_beats(pattern.startedAt, false, false)
+					_setSongCurrentPositionBeats(pattern.startedAt, false, false)
 					break
 		else:
-			_set_song_current_position_beats(_get_song_duration_beats(), false, false)
+			_setSongCurrentPositionBeats(_getSongDurationBeats(), false, false)
 
-	_update_pattern_states()
+	_updatePatternStates()
 
-func _get_selector(x: int, y: int) -> String:
+func _getSelector(x: int, y: int) -> String:
 	return BeatmapLetters.letters[x] + str(y + 1)
 
-func _format_beat(beat: float) -> String:
+func _formatBeatIndex(beat: float) -> String:
 	var wholePart := floori(beat)
 	var fractionalPart := beat - wholePart
 	if fractionalPart == 0:
 		return str(wholePart)
 	else:
-		return str(wholePart) + " " + str(roundi(fractionalPart * 8.0) + 1) + "/8"
+		return str(wholePart) + " " + str(roundi(fractionalPart * resource.editorBeatSubdivisions) + 1) + "/" + str(resource.editorBeatSubdivisions)
+
+func _updatePlaybackSpeed() -> void:
+	$AudioStreamPlayer.pitch_scale = resource.editorPlaybackSpeed
+	if resource.editorPitchCompensation:
+		pitchShiftEffect.pitch_scale = 1.0 / resource.editorPlaybackSpeed
+	else:
+		pitchShiftEffect.pitch_scale = 1.0
