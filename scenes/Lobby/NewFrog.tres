@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="Beatmap" format=3 uid="uid://bojd8cnmrsir5"]
 
 [ext_resource type="AudioStream" uid="uid://4gto3yffcxs3" path="res://scenes/FrogFight/Frogs are Friends 2.ogg" id="1_hy4kh"]
-[ext_resource type="Script" uid="uid://dac2rue52tyom" path="res://systems/Pattern/Beatmap.gd" id="1_susqa"]
-[ext_resource type="Script" uid="uid://b3of2y8w21clc" path="res://systems/Pattern/BeatmapPatternData.gd" id="2_hy4kh"]
+[ext_resource type="Script" uid="uid://dac2rue52tyom" path="res://addons/beatmap-plugin/resources/Beatmap.gd" id="1_susqa"]
+[ext_resource type="Script" uid="uid://b3of2y8w21clc" path="res://addons/beatmap-plugin/resources/BeatmapPatternData.gd" id="2_hy4kh"]
 
 [sub_resource type="Resource" id="Resource_bhljr"]
 script = ExtResource("2_hy4kh")

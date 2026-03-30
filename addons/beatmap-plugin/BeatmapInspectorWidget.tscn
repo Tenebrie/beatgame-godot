@@ -187,6 +187,7 @@ text = "Missing resource!"
 
 [node name="HSeparator" type="HSeparator" parent="MainVBox" unique_id=414142436]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="PatternTools" type="HBoxContainer" parent="MainVBox" unique_id=1122242406]
 unique_name_in_owner = true
@@ -196,6 +197,7 @@ layout_mode = 2
 layout_mode = 2
 tooltip_text = "Restore Tile Tool (1)
 Restore destroyed tile or finish telegraph with an attack"
+focus_mode = 0
 theme_override_constants/icon_max_width = 24
 toggle_mode = true
 icon = ExtResource("7_wgkf7")
@@ -204,6 +206,7 @@ icon = ExtResource("7_wgkf7")
 layout_mode = 2
 tooltip_text = "Telegraph Tool (2)
 Start telegraph at the current time"
+focus_mode = 0
 theme_override_constants/icon_max_width = 24
 toggle_mode = true
 icon = ExtResource("8_1k4n7")
@@ -212,6 +215,7 @@ icon = ExtResource("8_1k4n7")
 layout_mode = 2
 tooltip_text = "Destroy Tile Tool (3)
 Mark tile as destroyed"
+focus_mode = 0
 theme_override_constants/icon_max_width = 24
 toggle_mode = true
 icon = ExtResource("7_88usi")
@@ -219,6 +223,7 @@ icon = ExtResource("7_88usi")
 [node name="Placeholder1" type="Button" parent="MainVBox/PatternTools" unique_id=591761453]
 self_modulate = Color(1, 1, 1, 0)
 layout_mode = 2
+focus_mode = 0
 theme_override_constants/icon_max_width = 24
 toggle_mode = true
 icon = ExtResource("7_88usi")
@@ -228,6 +233,7 @@ layout_mode = 2
 tooltip_text = "Find Keyframe Tool (F)
 Cycle through tile's keyframes
 LMB to go back; RMB to go forward"
+focus_mode = 0
 theme_override_constants/icon_max_width = 24
 toggle_mode = true
 icon = ExtResource("10_vty71")
@@ -235,6 +241,7 @@ icon = ExtResource("10_vty71")
 [node name="Placeholder3" type="Button" parent="MainVBox/PatternTools" unique_id=472839904]
 self_modulate = Color(1, 1, 1, 0)
 layout_mode = 2
+focus_mode = 0
 theme_override_constants/icon_max_width = 24
 toggle_mode = true
 icon = ExtResource("7_88usi")
@@ -242,6 +249,7 @@ icon = ExtResource("7_88usi")
 [node name="Placeholder4" type="Button" parent="MainVBox/PatternTools" unique_id=444667283]
 self_modulate = Color(1, 1, 1, 0)
 layout_mode = 2
+focus_mode = 0
 theme_override_constants/icon_max_width = 24
 toggle_mode = true
 icon = ExtResource("7_88usi")
@@ -249,6 +257,7 @@ icon = ExtResource("7_88usi")
 [node name="Placeholder5" type="Button" parent="MainVBox/PatternTools" unique_id=1918413199]
 self_modulate = Color(1, 1, 1, 0)
 layout_mode = 2
+focus_mode = 0
 theme_override_constants/icon_max_width = 24
 toggle_mode = true
 icon = ExtResource("7_88usi")
@@ -257,6 +266,7 @@ icon = ExtResource("7_88usi")
 layout_mode = 2
 tooltip_text = "Clear History Tool (9)
 Remove ALL patterns on this tile from current time until the end"
+focus_mode = 0
 theme_override_constants/icon_max_width = 24
 toggle_mode = true
 icon = ExtResource("10_1k4n7")

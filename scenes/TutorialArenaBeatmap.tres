@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="Beatmap" format=3 uid="uid://coxsoqosn2v8d"]
 
-[ext_resource type="Script" uid="uid://b3of2y8w21clc" path="res://systems/Pattern/BeatmapPatternData.gd" id="1_fstfi"]
+[ext_resource type="Script" uid="uid://b3of2y8w21clc" path="res://addons/beatmap-plugin/resources/BeatmapPatternData.gd" id="1_fstfi"]
 [ext_resource type="AudioStream" uid="uid://dg8flfg16trk8" path="res://audio/SecretSongShort.ogg" id="1_mhnhn"]
-[ext_resource type="Script" uid="uid://dac2rue52tyom" path="res://systems/Pattern/Beatmap.gd" id="2_mhnhn"]
+[ext_resource type="Script" uid="uid://dac2rue52tyom" path="res://addons/beatmap-plugin/resources/Beatmap.gd" id="2_mhnhn"]
 
 [sub_resource type="Resource" id="Resource_mhnhn"]
 script = ExtResource("1_fstfi")

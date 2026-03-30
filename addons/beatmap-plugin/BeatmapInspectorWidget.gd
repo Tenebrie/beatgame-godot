@@ -37,6 +37,7 @@ enum TileTool { Restore, Telegraph, Destroy, FindKeyframe, FullClear }
 enum DragMode { None, Song, Pattern }
 
 func _ready() -> void:
+#region Validation
 	if resource == null:
 		$%ErrorLabel.text = "Missing resource!"
 		return
@@ -54,14 +55,15 @@ func _ready() -> void:
 		return
 
 	$%ErrorLabel.visible = false
-
+#endregion
+#region Handle hotkeys
 	gui_input.connect(func(event: InputEvent) -> void:
 		if event is InputEventKey:
 			var isHandled := _hotkey(event)
 			if isHandled:
 				accept_event()
 	)
-
+#endregion
 #region Song controls
 	$%SongProgress/StartPos.position.x = 0.0
 	$%SongProgress/EndPos.position.x = 9999.0
@@ -163,8 +165,20 @@ func _ready() -> void:
 		grab_focus(true)
 	)
 #endregion
+#region Audio playback speed
 
-#region Toolbar
+	var audioBus := AudioBus.new()
+	add_child(audioBus)
+	var pitchShiftEffect := AudioEffectPitchShift.new()
+	pitchShiftEffect.pitch_scale = 1.0
+	pitchShiftEffect.resource_name = "Pitch Compensation"
+	audioBus.addEffect(pitchShiftEffect)
+
+	var player: AudioStreamPlayer = $AudioStreamPlayer
+	player.bus = audioBus.getName()
+
+#endregion
+#region Pattern toolbar
 	var buttonGroup := ButtonGroup.new()
 	$%PatternTools/RestoreTile.button_group = buttonGroup
 	$%PatternTools/Telegraph.button_group = buttonGroup
@@ -189,15 +203,19 @@ func _ready() -> void:
 	$%PatternTools/ClearAll.pressed.connect(func() -> void:
 		toolMode = TileTool.FullClear
 	)
-#endregion
 
+	for child in $%PatternTools.get_children():
+		child.pressed.connect(func() -> void:
+			grab_focus(true)
+		)
+#endregion
 #region Pattern grid
 	var btnSize := Vector2(48, 48)
 
 	$%GridContainer.columns = resource.gridSize.x + 1
 	for y in range(resource.gridSize.y + 1):
 		# Row header
-		var rowHeaderButton := PatternTileButton.new(self)
+		var rowHeaderButton := BeatmapTileButton.new(self)
 		$%GridContainer.add_child(rowHeaderButton)
 		if y > 0:
 			rowHeaderButton.text = str(y)
@@ -213,7 +231,7 @@ func _ready() -> void:
 		# Column header
 		if y == 0:
 			for x in range(resource.gridSize.x):
-				var columnHeaderButton := PatternTileButton.new(self)
+				var columnHeaderButton := BeatmapTileButton.new(self)
 				$%GridContainer.add_child(columnHeaderButton)
 				columnHeaderButton.custom_minimum_size = btnSize
 				columnHeaderButton.text = Pattern.letters[x]
@@ -226,7 +244,7 @@ func _ready() -> void:
 
 		# Tile buttons
 		for x in range(resource.gridSize.x):
-			var button = PatternTileButton.new(self)
+			var button = BeatmapTileButton.new(self)
 			button.custom_minimum_size = btnSize
 			_connect_grid_button_events(button, [Vector2i(x, y - 1)])
 			$%GridContainer.add_child(button)
@@ -252,7 +270,7 @@ func _ready() -> void:
 
 	_update_pattern_states()
 
-func _connect_grid_button_events(button: PatternTileButton, controlledTiles: Array[Vector2i]) -> void:
+func _connect_grid_button_events(button: BeatmapTileButton, controlledTiles: Array[Vector2i]) -> void:
 	button.pressed.connect(func() -> void:
 		grab_focus(true)
 	)
@@ -599,7 +617,7 @@ func _update_scrubber_pos() -> void:
 
 func _update_single_tile_state(x: int, y: int) -> void:
 	var key := str(x) + "-" + str(y)
-	var button: PatternTileButton = gridButtons[key]
+	var button: BeatmapTileButton = gridButtons[key]
 	var data := _get_current_tile_data(x, y)
 	var state := data.state if data else Beatmap.PatternState.Destroyed
 	var isKeyframe := data.startedAt == positionBeats if data else false

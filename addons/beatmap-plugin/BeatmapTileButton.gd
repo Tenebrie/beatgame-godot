@@ -1,5 +1,5 @@
 @tool
-class_name PatternTileButton extends Button
+class_name BeatmapTileButton extends Button
 
 var parent: BeatmapInspectorWidget
 
