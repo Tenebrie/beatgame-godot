@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="BeatmapAttack" format=3 uid="uid://c5uv7la1hph4r"]
+
+[ext_resource type="AudioStream" uid="uid://biwp6xutvjg7u" path="res://addons/beatmap-plugin/audio/PlaceholderBeatmapLoop.wav" id="1_cljkw"]
+[ext_resource type="Script" uid="uid://b3of2y8w21clc" path="res://addons/beatmap-plugin/resources/BeatmapPatternData.gd" id="2_hyc87"]
+[ext_resource type="Script" uid="uid://ckjvufiybbr76" path="res://addons/beatmap-plugin/resources/BeatmapAttack.gd" id="3_vbcg7"]
+
+[sub_resource type="Resource" id="Resource_s246d"]
+script = ExtResource("2_hyc87")
+finishedAt = 4.0
+
+[sub_resource type="Resource" id="Resource_747i5"]
+script = ExtResource("2_hyc87")
+state = 1
+finishedAt = 4.0
+
+[sub_resource type="Resource" id="Resource_vp7er"]
+script = ExtResource("2_hyc87")
+state = 1
+finishedAt = 4.0
+
+[sub_resource type="Resource" id="Resource_3rdat"]
+script = ExtResource("2_hyc87")
+state = 1
+finishedAt = 4.0
+
+[resource]
+script = ExtResource("3_vbcg7")
+attackDuration = 4
+gridSize = Vector2i(4, 1)
+patterns = Dictionary[String, Array]({
+"0-0": [SubResource("Resource_s246d")],
+"1-0": [SubResource("Resource_747i5")],
+"2-0": [SubResource("Resource_vp7er")],
+"3-0": [SubResource("Resource_3rdat")]
+})
+metadata/_custom_type_script = "uid://ckjvufiybbr76"

@@ -1,3 +1,4 @@
+@tool
 extends Node
 
 var registeredNodes: Array[Node]
@@ -6,7 +7,7 @@ func Register(node: Node) -> void:
 	Unregister(node.get_script().get_global_name())
 	registeredNodes.append(node)
 
-func Find(type: GDScript) -> Node:
+func find(type: GDScript) -> Node:
 	var found := registeredNodes.filter(func(n: Node) -> bool: return is_instance_of(n, type))
 	if found.size() > 0:
 		return found[0]
@@ -18,13 +19,13 @@ func Unregister(nodeName: String) -> void:
 			registeredNodes.remove_at(i)
 
 func GetPlayer() -> Player:
-	return Find(Player)
+	return find(Player)
 
 func GetBoss() -> Boss:
-	return Find(Boss)
+	return find(Boss)
 
 func GetAudioAgent() -> AudioAgent:
-	return Find(AudioAgent)
+	return find(AudioAgent)
 
 func GetDanceFloor() -> DanceFloor:
-	return Find(DanceFloor)
+	return find(DanceFloor)

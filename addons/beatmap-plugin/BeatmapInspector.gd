@@ -3,7 +3,7 @@ class_name BeatmapInspector extends EditorInspectorPlugin
 var undoRedo: EditorUndoRedoManager
 
 func _can_handle(object: Object) -> bool:
-	return object is Beatmap
+	return object is Beatmap or object is BeatmapAttack
 
 func _parse_begin(object: Object) -> void:
 	var editor = BeatmapEditor.new()

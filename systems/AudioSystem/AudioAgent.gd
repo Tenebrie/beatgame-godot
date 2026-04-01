@@ -1,3 +1,4 @@
+@tool
 class_name AudioAgent extends Node
 
 const positionOffset := 0.0
@@ -74,3 +75,8 @@ func Pause() -> void:
 func Resume() -> void:
 	var player := $AudioStreamPlayer as AudioStreamPlayer
 	player.stream_paused = false
+
+func Reset() -> void:
+	$AudioStreamPlayer.stop()
+	$AudioStreamPlayer.seek(0.0)
+	$AudioStreamPlayer.pitch_scale = 1.0

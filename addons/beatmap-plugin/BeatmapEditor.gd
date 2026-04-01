@@ -33,18 +33,18 @@ func setup(res: Beatmap, newUndoRedo: EditorUndoRedoManager) -> void:
 	)
 	_rebuild()
 
-var debounceTimer: Timer
-func scheduleResourceSave() -> void:
-	if not debounceTimer:
-		debounceTimer = Timer.new()
-		add_child(debounceTimer)
-		debounceTimer.timeout.connect(func() -> void:
+var _debounceTimer: Timer
+func _scheduleResourceSave() -> void:
+	if not _debounceTimer:
+		_debounceTimer = Timer.new()
+		add_child(_debounceTimer)
+		_debounceTimer.timeout.connect(func() -> void:
 			ResourceSaver.save(resource)
 		)
-		debounceTimer.one_shot = true
+		_debounceTimer.one_shot = true
 
-	debounceTimer.stop()
-	debounceTimer.start(0.5)
+	_debounceTimer.stop()
+	_debounceTimer.start(0.5)
 
 func _apply_snapshot(patterns: Dictionary[String, Array]) -> void:
 	_last_patterns_snapshot = _deep_copy_patterns(patterns)
@@ -56,7 +56,7 @@ func _validateAndNotify() -> void:
 	var returnValue := _validateResource()
 	var errorCount := returnValue.x
 	var unmergedPatternCount := returnValue.y
-	scheduleResourceSave()
+	_scheduleResourceSave()
 	if errorCount > 0:
 		ResourceUpdated.emit()
 	FixableErrorsFound.emit(unmergedPatternCount)
@@ -161,7 +161,7 @@ func _rebuild() -> void:
 	add_child(controls)
 	var validationResult := _validateResource()
 	FixableErrorsFound.emit(validationResult.y)
-	controls.ApplyAutoFix.connect(func() -> void:
+	controls.applyAutoFix.connect(func() -> void:
 		var errorCount := _apply_auto_fixes()
 		FixableErrorsFound.emit(0)
 		if errorCount > 0:

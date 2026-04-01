@@ -4,6 +4,7 @@ class_name BeatmapInspectorWidget extends Control
 signal applyAutoFix
 
 var resource: Beatmap
+var isPlaying = false
 var positionBeats := 0.0
 var positionSeconds := 0.0
 var startPositionBeats := 0.0
@@ -72,14 +73,14 @@ func _ready() -> void:
 	_updateScrubberPosition()
 	$%PlayButton.pressed.connect(func() -> void:
 		if $AudioStreamPlayer.playing or Input.is_key_pressed(KEY_SHIFT):
-			$AudioStreamPlayer.play(startPositionSeconds)
+			_startPlaying(startPositionSeconds)
 		else:
-			$AudioStreamPlayer.play(positionSeconds)
+			_startPlaying(positionSeconds)
 		_updatePatternStates()
 		grab_focus(true)
 	)
 	$%PauseButton.pressed.connect(func() -> void:
-		$AudioStreamPlayer.stop()
+		_stopPlaying()
 		_updatePatternStates()
 		grab_focus(true)
 	)
@@ -88,14 +89,14 @@ func _ready() -> void:
 			return
 
 		if event.pressed:
-			$AudioStreamPlayer.play(positionSeconds)
+			_startPlaying(positionSeconds)
 			_updatePatternStates()
 		else:
-			$AudioStreamPlayer.stop()
+			_stopPlaying()
 			_updatePatternStates()
 	)
 	$%StopButton.pressed.connect(func() -> void:
-		$AudioStreamPlayer.stop()
+		_stopPlaying()
 		positionBeats = startPositionBeats
 		positionSeconds = startPositionSeconds
 		_updateScrubberPosition()
@@ -103,13 +104,12 @@ func _ready() -> void:
 		grab_focus(true)
 	)
 	$%OneBackTiny.Nudge.connect(func() -> void:
-		$AudioStreamPlayer.stop()
-		$AudioStreamPlayer.stop()
+		_stopPlaying()
 		_seekRelativeBeats(-1.0 / resource.editorBeatSubdivisions)
 		grab_focus(true)
 	)
 	$%OneBack.Nudge.connect(func() -> void:
-		$AudioStreamPlayer.stop()
+		_stopPlaying()
 		var delta := -1.0
 		if positionBeats - floorf(positionBeats) > 0:
 			delta = -(positionBeats - floorf(positionBeats))
@@ -121,7 +121,7 @@ func _ready() -> void:
 		grab_focus(true)
 	)
 	$%OneForward.Nudge.connect(func() -> void:
-		$AudioStreamPlayer.stop()
+		_stopPlaying()
 		var delta := 1.0
 		if ceil(positionBeats) - positionBeats > 0:
 			delta = ceil(positionBeats) - positionBeats
@@ -132,7 +132,7 @@ func _ready() -> void:
 		grab_focus(true)
 	)
 	$%OneForwardTiny.Nudge.connect(func() -> void:
-		$AudioStreamPlayer.stop()
+		_stopPlaying()
 		_seekRelativeBeats(1.0 / resource.editorBeatSubdivisions)
 		grab_focus(true)
 	)
@@ -155,15 +155,15 @@ func _ready() -> void:
 			_setSongCurrentPosition(percentage, true, true)
 			dragMode = DragMode.Song
 			if not $AudioStreamPlayer.playing:
-				$AudioStreamPlayer.play()
+				_startPlaying()
 		elif event is InputEventMouseMotion and event.button_mask == 1:
 			skipNextLeftClickRelease = false
 			_setSongCurrentPosition(percentage, true, true)
 			if not $AudioStreamPlayer.playing and positionBeats < _getSongDurationBeats():
-				$AudioStreamPlayer.play()
+				_startPlaying()
 		elif event is InputEventMouseButton and event.button_index == 1 and not event.pressed and not skipNextLeftClickRelease:
 			_setSongCurrentPosition(percentage, true, true)
-			$AudioStreamPlayer.stop()
+			_stopPlaying()
 			_updateScrubberPosition()
 		else:
 			skipNextLeftClickRelease = false
@@ -364,6 +364,14 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == 1 and not event.pressed:
 		dragMode = DragMode.None
 
+func _startPlaying(fromPosition: float = 0.0) -> void:
+	isPlaying = true
+	$AudioStreamPlayer.play(fromPosition)
+
+func _stopPlaying() -> void:
+	isPlaying = false
+	$AudioStreamPlayer.stop()
+
 func _seekRelativeBeats(beats: float) -> void:
 	_setSongCurrentPositionBeats(positionBeats + beats, false, false)
 	_updatePatternStates()
@@ -517,7 +525,7 @@ func _setSongCurrentPositionBeats(beats: float, allowPlay: bool, force: bool) ->
 		_setSongLoopPosition(1.0)
 
 	if allowPlay and not $AudioStreamPlayer.is_playing() and positionBeats < _getSongDurationBeats() - 0.5:
-		$AudioStreamPlayer.play(startPositionSeconds)
+		_startPlaying(startPositionSeconds)
 	if allowPlay and (force or positionSeconds != oldPositionSeconds):
 		$AudioStreamPlayer.seek(positionSeconds)
 	_updateScrubberPosition()
@@ -559,7 +567,7 @@ func _setSongLoopPosition(percentage: float) -> void:
 
 func _getSongPositionSeconds() -> float:
 	var compensation := AudioServer.get_time_since_last_mix() - AudioServer.get_output_latency()
-	return $AudioStreamPlayer.get_playback_position() + compensation
+	return $AudioStreamPlayer.get_playback_position() - compensation
 
 func _getSongPositionBeats() -> float:
 	if not $AudioStreamPlayer.playing:
@@ -569,20 +577,34 @@ func _getSongPositionBeats() -> float:
 	var precisePosition := offsetPos / 60.0 * resource.bpm
 	var durationFloored := floorf(_getSongDurationBeats() * resource.editorBeatSubdivisions) / resource.editorBeatSubdivisions
 	var beats := clamp(precisePosition, 0.0, durationFloored)
-	return floorf(beats * resource.editorBeatSubdivisions) / resource.editorBeatSubdivisions
+	return floorf(beats * resource.editorBeatSubdivisions) / resource.editorBeatSubdivisions + resource.beatmapOffset
 
 func _getSongDurationBeats() -> float:
-	var length: float = $AudioStreamPlayer.stream.get_length()
-	var precisePosition := length / 60.0 * resource.bpm
-	return floorf(precisePosition * resource.editorBeatSubdivisions) / resource.editorBeatSubdivisions
+	if resource is BeatmapAttack:
+		return resource.attackDuration
+	var rawLengthSeconds: float = $AudioStreamPlayer.stream.get_length()
+	var preciseDuration := rawLengthSeconds / 60.0 * resource.bpm
+	return floorf(preciseDuration * resource.editorBeatSubdivisions) / resource.editorBeatSubdivisions
 
-func _process(_delta: float) -> void:
-	if resource == null or not $AudioStreamPlayer.is_playing():
+func _getSongDurationSeconds() -> float:
+	if resource is BeatmapAttack:
+		return resource.attackDuration * 60.0 / resource.bpm
+	return $AudioStreamPlayer.stream.get_length()
+
+func _process(delta: float) -> void:
+	if resource == null:
 		return
-	if $AudioStreamPlayer.is_playing() and _getSongPositionSeconds() >= _getSongDurationBeats():
-		$AudioStreamPlayer.stop()
+
+	if _getSongPositionSeconds() >= _getSongDurationSeconds():
+		$AudioStreamPlayer.seek(_getSongDurationSeconds() - _getSongPositionSeconds())
+	elif isPlaying and not $AudioStreamPlayer.is_playing():
+		$AudioStreamPlayer.seek(0.0)
+		$AudioStreamPlayer.play()
 	elif $AudioStreamPlayer.is_playing() and _getSongPositionSeconds() >= loopPositionSeconds:
 		$AudioStreamPlayer.seek(startPositionSeconds)
+
+	if not $AudioStreamPlayer.is_playing():
+		return
 
 	positionBeats = _getSongPositionBeats()
 	positionSeconds = positionBeats * 60.0 / resource.bpm

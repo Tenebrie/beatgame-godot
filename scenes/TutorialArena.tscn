@@ -7,7 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://bmc8tfti12rqu" path="res://boss/Boss.tscn" id="4_adxne"]
 [ext_resource type="Script" uid="uid://b754hdhv5ohci" path="res://scenes/environment/LobbyTileHandler.gd" id="5_eqoqj"]
 [ext_resource type="Script" uid="uid://cihqnnkwn6s0v" path="res://player/camera/MainCamera.gd" id="5_h48qv"]
-[ext_resource type="PackedScene" uid="uid://3qpw055ur5dl" path="res://systems/AudioSystem/AudioAgent.tscn" id="5_vxy8m"]
 [ext_resource type="PackedScene" uid="uid://ceiwb524wex1j" path="res://ui/Playhead/PlayheadWidget.tscn" id="6_3elwe"]
 [ext_resource type="PackedScene" uid="uid://bfh1xks4dsghv" path="res://ui/PerformanceStats/PerformanceStats.tscn" id="7_el274"]
 [ext_resource type="PackedScene" uid="uid://ss1rowstjojq" path="res://ui/BossStatus/BossStatus.tscn" id="8_m7stk"]
@@ -41,8 +40,6 @@ metadata/_custom_type_script = "uid://cihqnnkwn6s0v"
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=711198869]
 transform = Transform3D(1, 0, 0, 0, 0.74301636, 0.66927326, 0, -0.66927326, 0.74301636, 0, 2.491136, 1.1915557)
-
-[node name="AudioAgent" parent="." unique_id=1144407143 instance=ExtResource("5_vxy8m")]
 
 [node name="PlayheadWidget" parent="." unique_id=137896877 instance=ExtResource("6_3elwe")]
 

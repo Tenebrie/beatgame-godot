@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://drs6bsy0hj3dn"]
+
+[ext_resource type="Script" uid="uid://d4j2cb5kamym0" path="res://systems/DanceFloor/DanceFloor.gd" id="1_r2pxj"]
+[ext_resource type="Script" uid="uid://ms1r4tut0rc0" path="res://scenes/Act1/Act1Arena.gd" id="1_yrodo"]
+[ext_resource type="PackedScene" uid="uid://bbvr3ouw6tjd7" path="res://player/Player.tscn" id="2_yrodo"]
+[ext_resource type="PackedScene" uid="uid://d06eira2uwqu" path="res://systems/DanceFloor/DanceTile.tscn" id="3_qf1ly"]
+[ext_resource type="Script" uid="uid://cihqnnkwn6s0v" path="res://player/camera/MainCamera.gd" id="4_nndyp"]
+[ext_resource type="PackedScene" uid="uid://dvgof6uksad15" path="res://dancers/Phalanx/Phalanx.tscn" id="5_rss7n"]
+
+[node name="Act1Arena" type="Node3D" unique_id=1047362742]
+script = ExtResource("1_yrodo")
+
+[node name="DanceFloor" type="Node3D" parent="." unique_id=1702910108]
+script = ExtResource("1_r2pxj")
+TileScene = ExtResource("3_qf1ly")
+metadata/_custom_type_script = "uid://d4j2cb5kamym0"
+
+[node name="Player" parent="DanceFloor" unique_id=241487594 instance=ExtResource("2_yrodo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="Phalanx" parent="DanceFloor" unique_id=854401512 instance=ExtResource("5_rss7n")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.3, 1)
+
+[node name="MainCamera" type="Camera3D" parent="." unique_id=1186241222]
+transform = Transform3D(1, 0, 0, 0, 0.17364822, 0.9848077, 0, -0.9848077, 0.17364822, 0, 4, 1)
+script = ExtResource("4_nndyp")
+metadata/_custom_type_script = "uid://cihqnnkwn6s0v"

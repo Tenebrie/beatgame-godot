@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://bv06ug34nm3hm"]
+
+[ext_resource type="Script" uid="uid://gi67lnlyo8mp" path="res://dancers/Stormbird/Stormbird.gd" id="1_8o5rc"]
+[ext_resource type="Texture2D" uid="uid://bjfc2a5q47l8u" path="res://player/aspects/onyx/sewer-3.png" id="2_6sjal"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5w6hj"]
+height = 4.0
+
+[node name="Stormbird" type="Node3D" unique_id=854401512]
+script = ExtResource("1_8o5rc")
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=1912512195]
+transform = Transform3D(0.17, 0, 0, 0, 0.17, 0, 0, 0, 0.17, 0, 0, 0)
+flip_h = true
+billboard = 1
+texture = ExtResource("2_6sjal")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=1143600091]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=918365067]
+shape = SubResource("CapsuleShape3D_5w6hj")

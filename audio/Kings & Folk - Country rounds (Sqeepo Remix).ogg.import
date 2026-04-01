@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://c2akq3stqm6nj"
+path="res://.godot/imported/Kings & Folk - Country rounds (Sqeepo Remix).ogg-8cdd7c58e588c6b206f4834c450e1849.oggvorbisstr"
+
+[deps]
+
+source_file="res://audio/Kings & Folk - Country rounds (Sqeepo Remix).ogg"
+dest_files=["res://.godot/imported/Kings & Folk - Country rounds (Sqeepo Remix).ogg-8cdd7c58e588c6b206f4834c450e1849.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

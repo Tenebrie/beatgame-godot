@@ -12,11 +12,13 @@ signal stateUpdated(updateType: String)
 
 @export_category("Beatmap Setup")
 ## Song BPM for syncing
-@export var bpm: int = 120
+@export var bpm: int = 112
+## Start offset for syncing, in beats
+@export_range(-1, 1, 0.01) var beatmapOffset: float = 0.0
 ## Maximum grid size the pattern needs
 @export var gridSize: Vector2i = Vector2i(4, 4)
 ## Chill beats to map patterns to
-@export var audioFile: AudioStream
+@export var audioFile: AudioStream = preload("res://addons/beatmap-plugin/audio/PlaceholderBeatmapLoop.wav")
 
 @export_custom(PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NO_EDITOR)
 var patterns: Dictionary[String, Array] # Dictionary["x-y", SortedArray[BeatmapPatternData]]

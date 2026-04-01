@@ -28,15 +28,34 @@ static func Load(resource: Beatmap) -> void:
 			var patterns: Array = resource.patterns[key]
 			LoadTile(x, y, patterns, resource)
 
+static func LoadAttack(resource: BeatmapAttack, position: Vector2i) -> void:
+	var currentTime := maxf(0.0, AudioSystem.get_current_beat())
+	Pattern.Translate(position)
+	Pattern.Advance(currentTime)
+	for x in range(resource.gridSize.x):
+		for y in range(resource.gridSize.y):
+			var key := str(x) + "-" + str(y)
+			if not resource.patterns.has(key):
+				continue
+			var patterns: Array = resource.patterns[key]
+			LoadTile(x, y, patterns, resource)
+	Pattern.Advance(-currentTime)
+	Pattern.Translate(-position)
+
 static func LoadPattern(x: int, y: int, pattern: BeatmapPatternData, lookahead: BeatmapPatternData, _resource: Beatmap) -> void:
+	var currentTime := maxf(0.0, AudioSystem.get_current_beat())
 	if pattern.state == Beatmap.PatternState.Idle:
-		Pattern.SingleIndexed(Vector2i(x, y)).Delay(pattern.startedAt).RestoreTile()
+		Pattern.SingleIndexed(Vector2i(x, y)).Delay(pattern.startedAt + currentTime).RestoreTile()
 	if pattern.state == Beatmap.PatternState.Telegraph:
-		var api := Pattern.SingleIndexed(Vector2i(x, y)).Delay(pattern.finishedAt).Telegraph(pattern.finishedAt - pattern.startedAt)
+		var api := Pattern.SingleIndexed(Vector2i(x, y)).Delay(pattern.finishedAt + currentTime).Telegraph(pattern.finishedAt - pattern.startedAt)
 		if not lookahead:
 			api.DestroyTile()
 	elif pattern.state == Beatmap.PatternState.Destroyed:
-		Pattern.SingleIndexed(Vector2i(x, y)).Delay(pattern.startedAt).DestroyTile()
+		Pattern.SingleIndexed(Vector2i(x, y)).Delay(pattern.startedAt + currentTime).DestroyTile()
+
+static func LoadAttackPattern(x: int, y: int, pattern: BeatmapPatternData, _lookahead: BeatmapPatternData, _resource: Beatmap) -> void:
+	if pattern.state == Beatmap.PatternState.Telegraph:
+		Pattern.SingleIndexed(Vector2i(x, y)).Delay(pattern.finishedAt).Telegraph(pattern.finishedAt - pattern.startedAt)
 
 static func LoadDefaultPattern(x: int, y: int) -> void:
 	Pattern.SingleIndexed(Vector2i(x, y)).DestroyTile()
@@ -44,7 +63,10 @@ static func LoadDefaultPattern(x: int, y: int) -> void:
 static func LoadTile(x: int, y: int, patterns: Array, resource: Beatmap) -> void:
 	for i in range(patterns.size()):
 		var pattern: BeatmapPatternData = patterns[i]
-		if pattern.startedAt == 0:
+		if resource is not BeatmapAttack and pattern.startedAt == 0:
 			continue
 		var lookahead: BeatmapPatternData = patterns[i + 1] if patterns.size() > i + 1 else null
-		LoadPattern(x, y, pattern, lookahead, resource)
+		if resource is BeatmapAttack:
+			LoadAttackPattern(x, y, pattern, lookahead, resource)
+		else:
+			LoadPattern(x, y, pattern, lookahead, resource)

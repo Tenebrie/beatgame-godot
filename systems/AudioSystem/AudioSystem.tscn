@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://btp3esy2cnex2"]
 
 [ext_resource type="Script" uid="uid://bbjai1yktt2c5" path="res://systems/AudioSystem/AudioSystem.gd" id="1_iaxu5"]
+[ext_resource type="PackedScene" uid="uid://3qpw055ur5dl" path="res://systems/AudioSystem/AudioAgent.tscn" id="2_ru6sq"]
 
 [node name="AudioSystem" type="Node" unique_id=1244304516]
 script = ExtResource("1_iaxu5")
@@ -8,3 +9,5 @@ script = ExtResource("1_iaxu5")
 [node name="OneShotTimers" type="Node" parent="." unique_id=1973597463]
 
 [node name="RepeatableTimers" type="Node" parent="." unique_id=199209790]
+
+[node name="AudioAgent" parent="." unique_id=1144407143 instance=ExtResource("2_ru6sq")]

@@ -35,7 +35,7 @@ func _init(newTiles: Array[Vector2i]) -> void:
 
 func Telegraph(delay: float) -> Pattern:
 	telegraphDelayTimer = MusicTimer.Create()
-	telegraphDelayTimer.start(BuilderTime - delay + startDelay, delay)
+	telegraphDelayTimer.start(BuilderTime + startDelay - delay, delay)
 	var offset := BuilderOffset
 	telegraphDelayTimer.timeout.connect(
 		func(_beat: float) -> void:

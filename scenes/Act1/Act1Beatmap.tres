@@ -1,0 +1,335 @@
+[gd_resource type="Resource" script_class="Beatmap" format=3 uid="uid://cyftnj1pxq8ox"]
+
+[ext_resource type="AudioStream" uid="uid://c2akq3stqm6nj" path="res://audio/Kings & Folk - Country rounds (Sqeepo Remix).ogg" id="1_2lipx"]
+[ext_resource type="Script" uid="uid://dac2rue52tyom" path="res://addons/beatmap-plugin/resources/Beatmap.gd" id="2_8ab1g"]
+[ext_resource type="Script" uid="uid://b3of2y8w21clc" path="res://addons/beatmap-plugin/resources/BeatmapPatternData.gd" id="2_gugns"]
+
+[sub_resource type="Resource" id="Resource_8ab1g"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_gugns"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_6xtnj"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_oqrul"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_e15ft"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_1tcwq"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_xedil"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_ny17g"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_8w721"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_tr8vr"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_vubow"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_ysven"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_rrtgb"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_y2bbv"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_0gjy2"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_v717n"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_om4y4"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_5nvno"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_klmyt"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_olqpn"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_iwy35"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_jblb8"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_x2b6k"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_wp1a8"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_2p4mx"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_2jfmf"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_441xq"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_8m1hs"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_7uroy"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_p1vab"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_l75uh"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_ct71s"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_wmlnw"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_00b46"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_vcdjt"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_nt54r"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_a0cea"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_64ymm"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_olkmr"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_qd82r"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_sx0qs"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_bcxrj"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_dixf8"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_esr47"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_wsdl6"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_gt0g0"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_efbb0"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_qako8"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_oi5rd"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_5ltuy"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_ri72m"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_shy6m"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_kkov6"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_byyom"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_g3wb4"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_q0g56"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_8u6ky"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_d0twi"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_br6nn"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_bat4t"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_sm76s"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_43dsd"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_msbbv"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_6bce6"]
+script = ExtResource("2_gugns")
+finishedAt = 390.5
+
+[resource]
+script = ExtResource("2_8ab1g")
+bpm = 105
+beatmapOffset = -0.5
+gridSize = Vector2i(16, 4)
+audioFile = ExtResource("1_2lipx")
+patterns = Dictionary[String, Array]({
+"0-0": [SubResource("Resource_8ab1g")],
+"0-1": [SubResource("Resource_gugns")],
+"0-2": [SubResource("Resource_6xtnj")],
+"0-3": [SubResource("Resource_oqrul")],
+"1-0": [SubResource("Resource_e15ft")],
+"1-1": [SubResource("Resource_1tcwq")],
+"1-2": [SubResource("Resource_xedil")],
+"1-3": [SubResource("Resource_ny17g")],
+"10-0": [SubResource("Resource_8w721")],
+"10-1": [SubResource("Resource_tr8vr")],
+"10-2": [SubResource("Resource_vubow")],
+"10-3": [SubResource("Resource_ysven")],
+"11-0": [SubResource("Resource_rrtgb")],
+"11-1": [SubResource("Resource_y2bbv")],
+"11-2": [SubResource("Resource_0gjy2")],
+"11-3": [SubResource("Resource_v717n")],
+"12-0": [SubResource("Resource_om4y4")],
+"12-1": [SubResource("Resource_5nvno")],
+"12-2": [SubResource("Resource_klmyt")],
+"12-3": [SubResource("Resource_olqpn")],
+"13-0": [SubResource("Resource_iwy35")],
+"13-1": [SubResource("Resource_jblb8")],
+"13-2": [SubResource("Resource_x2b6k")],
+"13-3": [SubResource("Resource_wp1a8")],
+"14-0": [SubResource("Resource_2p4mx")],
+"14-1": [SubResource("Resource_2jfmf")],
+"14-2": [SubResource("Resource_441xq")],
+"14-3": [SubResource("Resource_8m1hs")],
+"15-0": [SubResource("Resource_7uroy")],
+"15-1": [SubResource("Resource_p1vab")],
+"15-2": [SubResource("Resource_l75uh")],
+"15-3": [SubResource("Resource_ct71s")],
+"2-0": [SubResource("Resource_wmlnw")],
+"2-1": [SubResource("Resource_00b46")],
+"2-2": [SubResource("Resource_vcdjt")],
+"2-3": [SubResource("Resource_nt54r")],
+"3-0": [SubResource("Resource_a0cea")],
+"3-1": [SubResource("Resource_64ymm")],
+"3-2": [SubResource("Resource_olkmr")],
+"3-3": [SubResource("Resource_qd82r")],
+"4-0": [SubResource("Resource_sx0qs")],
+"4-1": [SubResource("Resource_bcxrj")],
+"4-2": [SubResource("Resource_dixf8")],
+"4-3": [SubResource("Resource_esr47")],
+"5-0": [SubResource("Resource_wsdl6")],
+"5-1": [SubResource("Resource_gt0g0")],
+"5-2": [SubResource("Resource_efbb0")],
+"5-3": [SubResource("Resource_qako8")],
+"6-0": [SubResource("Resource_oi5rd")],
+"6-1": [SubResource("Resource_5ltuy")],
+"6-2": [SubResource("Resource_ri72m")],
+"6-3": [SubResource("Resource_shy6m")],
+"7-0": [SubResource("Resource_kkov6")],
+"7-1": [SubResource("Resource_byyom")],
+"7-2": [SubResource("Resource_g3wb4")],
+"7-3": [SubResource("Resource_q0g56")],
+"8-0": [SubResource("Resource_8u6ky")],
+"8-1": [SubResource("Resource_d0twi")],
+"8-2": [SubResource("Resource_br6nn")],
+"8-3": [SubResource("Resource_bat4t")],
+"9-0": [SubResource("Resource_sm76s")],
+"9-1": [SubResource("Resource_43dsd")],
+"9-2": [SubResource("Resource_msbbv")],
+"9-3": [SubResource("Resource_6bce6")]
+})
+metadata/_custom_type_script = "uid://dac2rue52tyom"

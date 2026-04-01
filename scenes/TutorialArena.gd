@@ -16,7 +16,6 @@ func _ready() -> void:
 	SignalBus.OnFlushAllTimers.emit()
 
 	GlobalContext.GetBoss().queue_patterns()
-	AudioSystem.SortTimers()
 	print("Maximum theoretical boss damage: " + str(Stats.CalculateOptimalDamage()))
 
 	SignalBus.OnPlayerMove.connect(_trigger_fight)

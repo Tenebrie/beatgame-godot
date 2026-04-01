@@ -1,3 +1,4 @@
+@tool
 class_name MusicTimer extends Node
 
 signal timeout(triggerBeat: float)

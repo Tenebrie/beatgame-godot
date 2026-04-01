@@ -1,0 +1,149 @@
+[gd_resource type="Resource" script_class="BeatmapAttack" format=3 uid="uid://dm3dts2xe1vi2"]
+
+[ext_resource type="AudioStream" uid="uid://biwp6xutvjg7u" path="res://addons/beatmap-plugin/audio/PlaceholderBeatmapLoop.wav" id="1_6yrkp"]
+[ext_resource type="Script" uid="uid://ckjvufiybbr76" path="res://addons/beatmap-plugin/resources/BeatmapAttack.gd" id="1_l5mbh"]
+[ext_resource type="Script" uid="uid://b3of2y8w21clc" path="res://addons/beatmap-plugin/resources/BeatmapPatternData.gd" id="2_3rdat"]
+
+[sub_resource type="Resource" id="Resource_s246d"]
+script = ExtResource("2_3rdat")
+finishedAt = 16.0
+
+[sub_resource type="Resource" id="Resource_747i5"]
+script = ExtResource("2_3rdat")
+state = 1
+finishedAt = 3.0
+
+[sub_resource type="Resource" id="Resource_q06dx"]
+script = ExtResource("2_3rdat")
+startedAt = 3.0
+finishedAt = 5.0
+
+[sub_resource type="Resource" id="Resource_db04o"]
+script = ExtResource("2_3rdat")
+state = 1
+startedAt = 5.0
+finishedAt = 7.0
+
+[sub_resource type="Resource" id="Resource_vrym1"]
+script = ExtResource("2_3rdat")
+startedAt = 7.0
+finishedAt = 8.0
+
+[sub_resource type="Resource" id="Resource_wenlo"]
+script = ExtResource("2_3rdat")
+state = 1
+startedAt = 8.0
+finishedAt = 11.0
+
+[sub_resource type="Resource" id="Resource_m4o8o"]
+script = ExtResource("2_3rdat")
+startedAt = 11.0
+finishedAt = 13.0
+
+[sub_resource type="Resource" id="Resource_g4brk"]
+script = ExtResource("2_3rdat")
+state = 1
+startedAt = 13.0
+finishedAt = 15.0
+
+[sub_resource type="Resource" id="Resource_oepky"]
+script = ExtResource("2_3rdat")
+startedAt = 15.0
+finishedAt = 16.0
+
+[sub_resource type="Resource" id="Resource_vp7er"]
+script = ExtResource("2_3rdat")
+state = 1
+finishedAt = 3.0
+
+[sub_resource type="Resource" id="Resource_7gxpv"]
+script = ExtResource("2_3rdat")
+startedAt = 3.0
+finishedAt = 5.0
+
+[sub_resource type="Resource" id="Resource_pjtgr"]
+script = ExtResource("2_3rdat")
+state = 1
+startedAt = 5.0
+finishedAt = 7.0
+
+[sub_resource type="Resource" id="Resource_3ti1l"]
+script = ExtResource("2_3rdat")
+startedAt = 7.0
+finishedAt = 8.0
+
+[sub_resource type="Resource" id="Resource_gx586"]
+script = ExtResource("2_3rdat")
+state = 1
+startedAt = 8.0
+finishedAt = 11.0
+
+[sub_resource type="Resource" id="Resource_3dtl6"]
+script = ExtResource("2_3rdat")
+startedAt = 11.0
+finishedAt = 13.0
+
+[sub_resource type="Resource" id="Resource_yo1h6"]
+script = ExtResource("2_3rdat")
+state = 1
+startedAt = 13.0
+finishedAt = 15.0
+
+[sub_resource type="Resource" id="Resource_c57qc"]
+script = ExtResource("2_3rdat")
+startedAt = 15.0
+finishedAt = 16.0
+
+[sub_resource type="Resource" id="Resource_3rdat"]
+script = ExtResource("2_3rdat")
+state = 1
+finishedAt = 3.0
+
+[sub_resource type="Resource" id="Resource_x5d6x"]
+script = ExtResource("2_3rdat")
+startedAt = 3.0
+finishedAt = 5.0
+
+[sub_resource type="Resource" id="Resource_hjfl4"]
+script = ExtResource("2_3rdat")
+state = 1
+startedAt = 5.0
+finishedAt = 7.0
+
+[sub_resource type="Resource" id="Resource_pgsqj"]
+script = ExtResource("2_3rdat")
+startedAt = 7.0
+finishedAt = 8.0
+
+[sub_resource type="Resource" id="Resource_20ess"]
+script = ExtResource("2_3rdat")
+state = 1
+startedAt = 8.0
+finishedAt = 11.0
+
+[sub_resource type="Resource" id="Resource_ns8wj"]
+script = ExtResource("2_3rdat")
+startedAt = 11.0
+finishedAt = 13.0
+
+[sub_resource type="Resource" id="Resource_vamng"]
+script = ExtResource("2_3rdat")
+state = 1
+startedAt = 13.0
+finishedAt = 15.0
+
+[sub_resource type="Resource" id="Resource_68ufs"]
+script = ExtResource("2_3rdat")
+startedAt = 15.0
+finishedAt = 16.0
+
+[resource]
+script = ExtResource("1_l5mbh")
+gridSize = Vector2i(4, 1)
+patterns = Dictionary[String, Array]({
+"0-0": [SubResource("Resource_s246d")],
+"1-0": [SubResource("Resource_747i5"), SubResource("Resource_q06dx"), SubResource("Resource_db04o"), SubResource("Resource_vrym1"), SubResource("Resource_wenlo"), SubResource("Resource_m4o8o"), SubResource("Resource_g4brk"), SubResource("Resource_oepky")],
+"2-0": [SubResource("Resource_vp7er"), SubResource("Resource_7gxpv"), SubResource("Resource_pjtgr"), SubResource("Resource_3ti1l"), SubResource("Resource_gx586"), SubResource("Resource_3dtl6"), SubResource("Resource_yo1h6"), SubResource("Resource_c57qc")],
+"3-0": [SubResource("Resource_3rdat"), SubResource("Resource_x5d6x"), SubResource("Resource_hjfl4"), SubResource("Resource_pgsqj"), SubResource("Resource_20ess"), SubResource("Resource_ns8wj"), SubResource("Resource_vamng"), SubResource("Resource_68ufs")]
+})
+metadata/_custom_type_script = "uid://ckjvufiybbr76"

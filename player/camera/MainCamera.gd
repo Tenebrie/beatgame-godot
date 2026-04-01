@@ -2,9 +2,9 @@
 @icon("res://assets/icons/editor/Camera3D")
 class_name MainCamera extends Camera3D
 
-enum CameraMode { None, FollowingPlayer, FollowingDanceFloor }
+enum Mode { None, AutoFollowPlayer, AutoFollowDanceFloor, ForceFollowPlayer }
 
-var mode := CameraMode.FollowingPlayer
+var mode := Mode.AutoFollowPlayer
 
 func _ready() -> void:
 	_update_camera_state()
@@ -16,19 +16,23 @@ func _process(delta: float) -> void:
 
 var desiredTarget := Vector3.ZERO
 func _update_camera_state() -> void:
-	if mode != CameraMode.FollowingDanceFloor and AudioSystem.IsSongStarted():
-		mode = CameraMode.FollowingDanceFloor
-	elif mode != CameraMode.FollowingPlayer and not AudioSystem.IsSongStarted():
-		mode = CameraMode.FollowingPlayer
+	if mode != Mode.ForceFollowPlayer:
+		if mode != Mode.AutoFollowDanceFloor and AudioSystem.IsSongStarted():
+			mode = Mode.AutoFollowDanceFloor
+		elif mode != Mode.AutoFollowPlayer and not AudioSystem.IsSongStarted():
+			mode = Mode.AutoFollowPlayer
 
-	if mode == CameraMode.FollowingDanceFloor:
+	if mode == Mode.AutoFollowDanceFloor:
 		var danceFloor := GlobalContext.GetDanceFloor()
 		if not danceFloor:
 			return
 		var cameraTarget := danceFloor.GetCameraTarget()
 		desiredTarget = cameraTarget + Vector3(0.0, position.y, 1.0)
-	if mode == CameraMode.FollowingPlayer:
+	if mode == Mode.AutoFollowPlayer or mode == Mode.ForceFollowPlayer:
 		var player := GlobalContext.GetPlayer()
 		if player == null:
 			return
 		desiredTarget = Vector3(player.global_position.x, global_position.y, player.global_position.z + 1)
+
+func SetCameraMode(newMode: Mode) -> void:
+	mode = newMode

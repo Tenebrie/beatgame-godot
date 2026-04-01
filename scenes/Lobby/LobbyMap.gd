@@ -11,7 +11,6 @@ func _ready() -> void:
 	BeatmapLoader.LoadInitial(beatmap)
 	SignalBus.OnFlushAllTimers.emit()
 	BeatmapLoader.Load(beatmap)
-	AudioSystem.SortTimers()
 
 	#SignalBus.OnFightBegin.emit()
 

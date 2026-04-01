@@ -8,8 +8,9 @@ func _on_player_death() -> void:
 	var defeatScreen := Asset.Instantiate(DefeatScreen)
 	add_child(defeatScreen)
 	var audioAgent := GlobalContext.GetAudioAgent().find_child(^"AudioStreamPlayer")
-	create_tween().tween_property(audioAgent, ^"pitch_scale", 0.001, 1.0)
-	create_tween().tween_property(audioAgent, ^"volume_linear", 0.5, 1.0)
+	var tween := create_tween().parallel().bind_node(defeatScreen)
+	tween.tween_property(audioAgent, ^"pitch_scale", 0.001, 1.0)
+	tween.tween_property(audioAgent, ^"volume_linear", 0.5, 1.0)
 	await get_tree().create_timer(1.0).timeout
 	GlobalContext.GetAudioAgent().StopPlaying()
 
@@ -17,8 +18,9 @@ func _on_adversary_death() -> void:
 	var victoryScreen := Asset.Instantiate(VictoryScreen)
 	add_child(victoryScreen)
 	var audioAgent := GlobalContext.GetAudioAgent().find_child(^"AudioStreamPlayer")
-	create_tween().tween_property(audioAgent, ^"pitch_scale", 0.001, 1.0)
-	create_tween().tween_property(audioAgent, ^"volume_linear", 0.5, 1.0)
+	var tween := create_tween().parallel().bind_node(victoryScreen)
+	tween.tween_property(audioAgent, ^"pitch_scale", 0.001, 1.0)
+	tween.tween_property(audioAgent, ^"volume_linear", 0.5, 1.0)
 	await get_tree().create_timer(1.0).timeout
 	GlobalContext.GetAudioAgent().StopPlaying()
 

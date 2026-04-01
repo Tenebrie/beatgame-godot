@@ -12,6 +12,7 @@ var held_direction := Vector2i.ZERO
 var repeat_timer := 0.0
 var first_press := true
 var target_position := Vector3.ZERO
+var virtualPosition := Vector3.ZERO
 
 func _grid_to_world(gp: Vector2i) -> Vector3:
 	return Vector3(gp.x, 0.1, gp.y) * GRID_SIZE
@@ -119,13 +120,15 @@ func _process(delta: float) -> void:
 			repeat_timer -= MOVE_REPEAT_DELAY
 			_move(held_direction)
 
-	position = position.lerp(target_position, MOVE_SPEED * delta)
+	virtualPosition = virtualPosition.lerp(target_position, MOVE_SPEED * delta)
+	var height := GlobalContext.GetDanceFloor().GetTileAtPosition(GridPosition).position.y
+	position = Vector3(virtualPosition.x, height + 0.2, virtualPosition.z)
 	damageTaken = maxf(0.0, damageTaken - delta * regeneration)
 
 func _move(dir: Vector2i) -> void:
 	var danceFloor := GlobalContext.GetDanceFloor()
 	var new_pos := GridPosition + dir
-	var targetTile := danceFloor.get_tile_at_position(new_pos)
+	var targetTile := danceFloor.GetTileAtPosition(new_pos)
 	if not targetTile or not targetTile.isAlive:
 		return
 

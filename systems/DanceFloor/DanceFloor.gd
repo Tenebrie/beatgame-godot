@@ -1,3 +1,4 @@
+@tool
 ## Main fight/movement grid
 ##
 ## Call Setup func to provide the starting arguments and initialize the children
@@ -51,7 +52,7 @@ func GetCameraTarget() -> Vector3:
 	var positionSum := Vector2(0.0, 0.0)
 	for x in range(maximumGridSize.x):
 		for y in range(maximumGridSize.y):
-			var tileAtPos := get_tile_at_position(Vector2(x, y))
+			var tileAtPos := GetTileAtPosition(Vector2(x, y))
 			if not tileAtPos or not tileAtPos.isAlive:
 				continue
 
@@ -79,7 +80,7 @@ func _on_telegraph_tile(x: int, y: int) -> void:
 	await get_tree().create_timer(bpmMod).timeout
 	SignalBus.explodeTile.emit(x, y)
 
-func get_tile_at_position(pos: Vector2i) -> DanceTile:
+func GetTileAtPosition(pos: Vector2i) -> DanceTile:
 	if pos.x < 0 or pos.x >= maximumGridSize.x or pos.y < 0 or pos.y >= maximumGridSize.y:
 		return null
 	return tilemap[pos.x][pos.y]

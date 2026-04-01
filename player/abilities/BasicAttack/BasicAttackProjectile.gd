@@ -6,14 +6,16 @@ func _ready() -> void:
 	queue_free()
 
 func OnCollision(other: Area3D) -> void:
-	if other.get_parent() is not Boss:
+	if other.get_parent() is not Boss and other.get_parent() is not Dancer:
 		return
 	isDestroyed = true
 	$GPUParticles3D.emitting = false
 	create_tween().tween_property($OmniLight3D, ^"omni_range", 0.0, 0.5)
 	create_tween().tween_property($MeshInstance3D, ^"scale", Vector3.ZERO, 0.2)
-	var boss := other.get_parent() as Boss
-	boss.DealDamage(1.0)
+
+	if other.get_parent() is Boss:
+		var boss := other.get_parent() as Boss
+		boss.DealDamage(1.0)
 	await get_tree().create_timer(0.5).timeout
 	queue_free()
 
