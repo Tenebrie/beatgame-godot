@@ -28,19 +28,17 @@ static func Load(resource: Beatmap) -> void:
 			var patterns: Array = resource.patterns[key]
 			LoadTile(x, y, patterns, resource)
 
-static func LoadAttack(resource: BeatmapAttack, position: Vector2i) -> void:
-	var currentTime := maxf(0.0, AudioSystem.get_current_beat())
-	Pattern.Translate(position)
-	Pattern.Advance(currentTime)
+static func LoadAttack(resource: BeatmapAttack, transform: BeatmapTransform.Builder) -> void:
+	#Pattern.Translate(transform.GetTranslation() - transform.GetOrigin())
 	for x in range(resource.gridSize.x):
 		for y in range(resource.gridSize.y):
 			var key := str(x) + "-" + str(y)
 			if not resource.patterns.has(key):
 				continue
 			var patterns: Array = resource.patterns[key]
-			LoadTile(x, y, patterns, resource)
-	Pattern.Advance(-currentTime)
-	Pattern.Translate(-position)
+			var transformedTile := transform.ApplyTransformations(Vector2i(x, y))
+			LoadTile(transformedTile.x, transformedTile.y, patterns, resource)
+	#Pattern.Translate(-transform.GetTranslation() + transform.GetOrigin())
 
 static func LoadPattern(x: int, y: int, pattern: BeatmapPatternData, lookahead: BeatmapPatternData, _resource: Beatmap) -> void:
 	var currentTime := maxf(0.0, AudioSystem.get_current_beat())

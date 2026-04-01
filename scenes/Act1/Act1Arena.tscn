@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://bbvr3ouw6tjd7" path="res://player/Player.tscn" id="2_yrodo"]
 [ext_resource type="PackedScene" uid="uid://d06eira2uwqu" path="res://systems/DanceFloor/DanceTile.tscn" id="3_qf1ly"]
 [ext_resource type="Script" uid="uid://cihqnnkwn6s0v" path="res://player/camera/MainCamera.gd" id="4_nndyp"]
-[ext_resource type="PackedScene" uid="uid://dvgof6uksad15" path="res://dancers/Phalanx/Phalanx.tscn" id="5_rss7n"]
+[ext_resource type="PackedScene" uid="uid://bv06ug34nm3hm" path="res://dancers/Stormbird/Stormbird.tscn" id="6_o6nij"]
 
 [node name="Act1Arena" type="Node3D" unique_id=1047362742]
 script = ExtResource("1_yrodo")
@@ -18,8 +18,8 @@ metadata/_custom_type_script = "uid://d4j2cb5kamym0"
 [node name="Player" parent="DanceFloor" unique_id=241487594 instance=ExtResource("2_yrodo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="Phalanx" parent="DanceFloor" unique_id=854401512 instance=ExtResource("5_rss7n")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.3, 1)
+[node name="Stormbird" parent="DanceFloor" unique_id=1450051245 instance=ExtResource("6_o6nij")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.3, 2)
 
 [node name="MainCamera" type="Camera3D" parent="." unique_id=1186241222]
 transform = Transform3D(1, 0, 0, 0, 0.17364822, 0.9848077, 0, -0.9848077, 0.17364822, 0, 4, 1)

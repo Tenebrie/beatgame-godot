@@ -16,7 +16,7 @@ signal stateUpdated(updateType: String)
 ## Start offset for syncing, in beats
 @export_range(-1, 1, 0.01) var beatmapOffset: float = 0.0
 ## Maximum grid size the pattern needs
-@export var gridSize: Vector2i = Vector2i(4, 4)
+@export var gridSize: Vector2i = Vector2i(4, 1)
 ## Chill beats to map patterns to
 @export var audioFile: AudioStream = preload("res://addons/beatmap-plugin/audio/PlaceholderBeatmapLoop.wav")
 

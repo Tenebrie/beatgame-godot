@@ -1,0 +1,67 @@
+[gd_resource type="Resource" script_class="BeatmapAttack" format=3 uid="uid://ctwcybsdybcx5"]
+
+[ext_resource type="AudioStream" uid="uid://biwp6xutvjg7u" path="res://addons/beatmap-plugin/audio/PlaceholderBeatmapLoop.wav" id="1_d4nr1"]
+[ext_resource type="Script" uid="uid://b3of2y8w21clc" path="res://addons/beatmap-plugin/resources/BeatmapPatternData.gd" id="2_tbkdu"]
+[ext_resource type="Script" uid="uid://ckjvufiybbr76" path="res://addons/beatmap-plugin/resources/BeatmapAttack.gd" id="3_kds8d"]
+
+[sub_resource type="Resource" id="Resource_ndw3l"]
+script = ExtResource("2_tbkdu")
+state = 1
+finishedAt = 2.0
+
+[sub_resource type="Resource" id="Resource_ixyoa"]
+script = ExtResource("2_tbkdu")
+state = 1
+finishedAt = 2.0
+
+[sub_resource type="Resource" id="Resource_13xsa"]
+script = ExtResource("2_tbkdu")
+state = 1
+finishedAt = 2.0
+
+[sub_resource type="Resource" id="Resource_d4nr1"]
+script = ExtResource("2_tbkdu")
+state = 1
+finishedAt = 2.0
+
+[sub_resource type="Resource" id="Resource_tbkdu"]
+script = ExtResource("2_tbkdu")
+state = 1
+finishedAt = 2.0
+
+[sub_resource type="Resource" id="Resource_kds8d"]
+script = ExtResource("2_tbkdu")
+state = 1
+finishedAt = 2.0
+
+[sub_resource type="Resource" id="Resource_hdsvi"]
+script = ExtResource("2_tbkdu")
+state = 1
+finishedAt = 2.0
+
+[sub_resource type="Resource" id="Resource_18i2h"]
+script = ExtResource("2_tbkdu")
+state = 1
+finishedAt = 2.0
+
+[sub_resource type="Resource" id="Resource_661bu"]
+script = ExtResource("2_tbkdu")
+state = 1
+finishedAt = 2.0
+
+[resource]
+script = ExtResource("3_kds8d")
+attackDuration = 2
+gridSize = Vector2i(3, 3)
+patterns = Dictionary[String, Array]({
+"0-0": [SubResource("Resource_ndw3l")],
+"0-1": [SubResource("Resource_d4nr1")],
+"0-2": [SubResource("Resource_tbkdu")],
+"1-0": [SubResource("Resource_ixyoa")],
+"1-1": [SubResource("Resource_hdsvi")],
+"1-2": [SubResource("Resource_kds8d")],
+"2-0": [SubResource("Resource_13xsa")],
+"2-1": [SubResource("Resource_18i2h")],
+"2-2": [SubResource("Resource_661bu")]
+})
+metadata/_custom_type_script = "uid://ckjvufiybbr76"

@@ -8,6 +8,9 @@ class_name DanceFloor extends Node3D
 @export_group("Theme Overrides")
 @export var TileScene: PackedScene = Asset.Resolve(DanceTile)
 
+var GridSize: Vector2i:
+	get:
+		return maximumGridSize
 var maximumGridSize := Vector2i(4, 4)
 
 var tilemap: Array[Array] # Array[Array[DanceTile]]

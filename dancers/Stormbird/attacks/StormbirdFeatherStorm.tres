@@ -1,0 +1,205 @@
+[gd_resource type="Resource" script_class="BeatmapAttack" format=3 uid="uid://d26me8qtrfj5k"]
+
+[ext_resource type="AudioStream" uid="uid://biwp6xutvjg7u" path="res://addons/beatmap-plugin/audio/PlaceholderBeatmapLoop.wav" id="1_lyljs"]
+[ext_resource type="Script" uid="uid://ckjvufiybbr76" path="res://addons/beatmap-plugin/resources/BeatmapAttack.gd" id="2_ca1qh"]
+[ext_resource type="Script" uid="uid://b3of2y8w21clc" path="res://addons/beatmap-plugin/resources/BeatmapPatternData.gd" id="2_ufqem"]
+
+[sub_resource type="Resource" id="Resource_wy3i2"]
+script = ExtResource("2_ufqem")
+state = 1
+finishedAt = 4.0
+
+[sub_resource type="Resource" id="Resource_tra5r"]
+script = ExtResource("2_ufqem")
+startedAt = 4.0
+finishedAt = 16.0
+
+[sub_resource type="Resource" id="Resource_ml4nn"]
+script = ExtResource("2_ufqem")
+finishedAt = 16.0
+
+[sub_resource type="Resource" id="Resource_gp2k8"]
+script = ExtResource("2_ufqem")
+state = 1
+finishedAt = 4.0
+
+[sub_resource type="Resource" id="Resource_c2r6m"]
+script = ExtResource("2_ufqem")
+startedAt = 4.0
+finishedAt = 16.0
+
+[sub_resource type="Resource" id="Resource_ca1qh"]
+script = ExtResource("2_ufqem")
+finishedAt = 0.5
+
+[sub_resource type="Resource" id="Resource_ufqem"]
+script = ExtResource("2_ufqem")
+state = 1
+startedAt = 0.5
+finishedAt = 4.5
+
+[sub_resource type="Resource" id="Resource_pfmp0"]
+script = ExtResource("2_ufqem")
+startedAt = 4.5
+finishedAt = 16.0
+
+[sub_resource type="Resource" id="Resource_l73kp"]
+script = ExtResource("2_ufqem")
+finishedAt = 1.0
+
+[sub_resource type="Resource" id="Resource_fgo03"]
+script = ExtResource("2_ufqem")
+state = 1
+startedAt = 1.0
+finishedAt = 5.0
+
+[sub_resource type="Resource" id="Resource_qksgc"]
+script = ExtResource("2_ufqem")
+startedAt = 5.0
+finishedAt = 16.0
+
+[sub_resource type="Resource" id="Resource_4vdv6"]
+script = ExtResource("2_ufqem")
+finishedAt = 1.5
+
+[sub_resource type="Resource" id="Resource_0kpsj"]
+script = ExtResource("2_ufqem")
+state = 1
+startedAt = 1.5
+finishedAt = 5.5
+
+[sub_resource type="Resource" id="Resource_dneqy"]
+script = ExtResource("2_ufqem")
+startedAt = 5.5
+finishedAt = 16.0
+
+[sub_resource type="Resource" id="Resource_nhqnm"]
+script = ExtResource("2_ufqem")
+finishedAt = 16.0
+
+[sub_resource type="Resource" id="Resource_hv5gy"]
+script = ExtResource("2_ufqem")
+finishedAt = 1.5
+
+[sub_resource type="Resource" id="Resource_0jyrk"]
+script = ExtResource("2_ufqem")
+state = 1
+startedAt = 1.5
+finishedAt = 5.5
+
+[sub_resource type="Resource" id="Resource_ij6vv"]
+script = ExtResource("2_ufqem")
+startedAt = 5.5
+finishedAt = 16.0
+
+[sub_resource type="Resource" id="Resource_gjitw"]
+script = ExtResource("2_ufqem")
+finishedAt = 1.0
+
+[sub_resource type="Resource" id="Resource_xawfi"]
+script = ExtResource("2_ufqem")
+state = 1
+startedAt = 1.0
+finishedAt = 5.0
+
+[sub_resource type="Resource" id="Resource_3wccx"]
+script = ExtResource("2_ufqem")
+startedAt = 5.0
+finishedAt = 16.0
+
+[sub_resource type="Resource" id="Resource_nok3a"]
+script = ExtResource("2_ufqem")
+finishedAt = 0.5
+
+[sub_resource type="Resource" id="Resource_jitey"]
+script = ExtResource("2_ufqem")
+state = 1
+startedAt = 0.5
+finishedAt = 4.5
+
+[sub_resource type="Resource" id="Resource_nyv0f"]
+script = ExtResource("2_ufqem")
+startedAt = 4.5
+finishedAt = 16.0
+
+[sub_resource type="Resource" id="Resource_31knn"]
+script = ExtResource("2_ufqem")
+state = 1
+finishedAt = 4.0
+
+[sub_resource type="Resource" id="Resource_fer05"]
+script = ExtResource("2_ufqem")
+startedAt = 4.0
+finishedAt = 16.0
+
+[sub_resource type="Resource" id="Resource_lv4si"]
+script = ExtResource("2_ufqem")
+finishedAt = 0.5
+
+[sub_resource type="Resource" id="Resource_tdrdm"]
+script = ExtResource("2_ufqem")
+state = 1
+startedAt = 0.5
+finishedAt = 4.5
+
+[sub_resource type="Resource" id="Resource_akdb1"]
+script = ExtResource("2_ufqem")
+startedAt = 4.5
+finishedAt = 16.0
+
+[sub_resource type="Resource" id="Resource_2xtog"]
+script = ExtResource("2_ufqem")
+finishedAt = 1.0
+
+[sub_resource type="Resource" id="Resource_7waiv"]
+script = ExtResource("2_ufqem")
+state = 1
+startedAt = 1.0
+finishedAt = 5.0
+
+[sub_resource type="Resource" id="Resource_q50lo"]
+script = ExtResource("2_ufqem")
+startedAt = 5.0
+finishedAt = 16.0
+
+[sub_resource type="Resource" id="Resource_30d6k"]
+script = ExtResource("2_ufqem")
+finishedAt = 1.5
+
+[sub_resource type="Resource" id="Resource_0duxy"]
+script = ExtResource("2_ufqem")
+state = 1
+startedAt = 1.5
+finishedAt = 5.5
+
+[sub_resource type="Resource" id="Resource_wwiis"]
+script = ExtResource("2_ufqem")
+startedAt = 5.5
+finishedAt = 16.0
+
+[sub_resource type="Resource" id="Resource_176q6"]
+script = ExtResource("2_ufqem")
+finishedAt = 16.0
+
+[resource]
+script = ExtResource("2_ca1qh")
+attackDuration = 8
+gridSize = Vector2i(5, 3)
+patterns = Dictionary[String, Array]({
+"0-0": [SubResource("Resource_wy3i2"), SubResource("Resource_tra5r")],
+"0-1": [SubResource("Resource_ml4nn")],
+"0-2": [SubResource("Resource_gp2k8"), SubResource("Resource_c2r6m")],
+"1-0": [SubResource("Resource_lv4si"), SubResource("Resource_tdrdm"), SubResource("Resource_akdb1")],
+"1-1": [SubResource("Resource_31knn"), SubResource("Resource_fer05")],
+"1-2": [SubResource("Resource_ca1qh"), SubResource("Resource_ufqem"), SubResource("Resource_pfmp0")],
+"2-0": [SubResource("Resource_2xtog"), SubResource("Resource_7waiv"), SubResource("Resource_q50lo")],
+"2-1": [SubResource("Resource_nok3a"), SubResource("Resource_jitey"), SubResource("Resource_nyv0f")],
+"2-2": [SubResource("Resource_l73kp"), SubResource("Resource_fgo03"), SubResource("Resource_qksgc")],
+"3-0": [SubResource("Resource_30d6k"), SubResource("Resource_0duxy"), SubResource("Resource_wwiis")],
+"3-1": [SubResource("Resource_gjitw"), SubResource("Resource_xawfi"), SubResource("Resource_3wccx")],
+"3-2": [SubResource("Resource_4vdv6"), SubResource("Resource_0kpsj"), SubResource("Resource_dneqy")],
+"4-0": [SubResource("Resource_176q6")],
+"4-1": [SubResource("Resource_hv5gy"), SubResource("Resource_0jyrk"), SubResource("Resource_ij6vv")],
+"4-2": [SubResource("Resource_nhqnm")]
+})
+metadata/_custom_type_script = "uid://ckjvufiybbr76"

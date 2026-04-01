@@ -5,6 +5,7 @@
 extends PopupPanel
 
 const ADDONS: StringName = &"res://addons"
+const ALLOWED_ADDONS: Array[StringName] = [&"res://addons/asset-plugin", &"res://addons/beatmap-plugin"]
 const SEPARATOR: StringName = &" - "
 const STRUCTURE_START: StringName = &"("
 const STRUCTURE_END: StringName = &")"
@@ -161,7 +162,11 @@ func build_file_cache_dir(dir: EditorFileSystemDirectory):
 	for index: int in dir.get_file_count():
 		var file: String = dir.get_file_path(index)
 		if (search_option_btn.get_selected_id() == 0 && file.begins_with(ADDONS)):
-			continue
+			var is_allowed_addon := ALLOWED_ADDONS.any(func(addon) -> bool:
+				return file.begins_with(addon)
+			)
+			if not is_allowed_addon:
+				continue
 
 		var last_delimiter: int = file.rfind(&"/")
 

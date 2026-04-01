@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://bv06ug34nm3hm"]
 
 [ext_resource type="Script" uid="uid://gi67lnlyo8mp" path="res://dancers/Stormbird/Stormbird.gd" id="1_8o5rc"]
-[ext_resource type="Texture2D" uid="uid://bjfc2a5q47l8u" path="res://player/aspects/onyx/sewer-3.png" id="2_6sjal"]
+[ext_resource type="Texture2D" uid="uid://dpjysd06lud44" path="res://dancers/Stormbird/assets/SpriteStormbird.png" id="2_8o5rc"]
+[ext_resource type="Script" uid="uid://olg4ad5e1h8x" path="res://dancers/DancerPathing.gd" id="3_o7rb5"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5w6hj"]
 height = 4.0
@@ -10,12 +11,16 @@ height = 4.0
 script = ExtResource("1_8o5rc")
 
 [node name="Sprite3D" type="Sprite3D" parent="." unique_id=1912512195]
-transform = Transform3D(0.17, 0, 0, 0, 0.17, 0, 0, 0, 0.17, 0, 0, 0)
-flip_h = true
+transform = Transform3D(0.09, 0, 0, 0, 0.09, 0, 0, 0, 0.09, 0, 0, 0)
 billboard = 1
-texture = ExtResource("2_6sjal")
+shaded = true
+double_sided = false
+texture = ExtResource("2_8o5rc")
 
 [node name="Area3D" type="Area3D" parent="." unique_id=1143600091]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=918365067]
 shape = SubResource("CapsuleShape3D_5w6hj")
+
+[node name="DancerPathing" type="Node" parent="." unique_id=746935520]
+script = ExtResource("3_o7rb5")

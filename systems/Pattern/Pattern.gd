@@ -13,7 +13,10 @@ signal resolved
 const letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 var startDelay := 0.0
 
-static var BuilderTime: float = 0.0
+static var builderTime: float = 0.0
+static var BuilderTime: float:
+	get:
+		return builderTime + maxf(0.0, AudioSystem.get_current_beat())
 static var BuilderOffset: Vector2i = Vector2i.ZERO
 
 func _init(newTiles: Array[Vector2i]) -> void:
@@ -173,7 +176,7 @@ static func Cast(ability: BossCast) -> Pattern:
 	return pattern
 
 static func Advance(beats: float) -> void:
-	BuilderTime += beats
+	builderTime += beats
 
 static func Translate(offset: Vector2i) -> void:
 	BuilderOffset += offset
@@ -182,5 +185,5 @@ static func StartHere() -> void:
 	GlobalContext.GetAudioAgent().set_starting_time(BuilderTime)
 
 static func ResetState() -> void:
-	BuilderTime = 0.0
+	builderTime = 0.0
 	BuilderOffset = Vector2i.ZERO

@@ -26,7 +26,6 @@ finishedAt = 4.0
 [resource]
 script = ExtResource("3_vbcg7")
 attackDuration = 4
-gridSize = Vector2i(4, 1)
 patterns = Dictionary[String, Array]({
 "0-0": [SubResource("Resource_s246d")],
 "1-0": [SubResource("Resource_747i5")],
