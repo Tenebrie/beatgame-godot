@@ -6,7 +6,8 @@ func _ready() -> void:
 	queue_free()
 
 func OnCollision(other: Area3D) -> void:
-	if other.get_parent() is not Boss and other.get_parent() is not Dancer:
+	if other.get_parent() is not Boss and other.get_parent() is not Dancer or other.get_parent() is Player \
+		or not other.get_parent().isAlive:
 		return
 	isDestroyed = true
 	$GPUParticles3D.emitting = false
@@ -16,6 +17,9 @@ func OnCollision(other: Area3D) -> void:
 	if other.get_parent() is Boss:
 		var boss := other.get_parent() as Boss
 		boss.DealDamage(1.0)
+	elif other.get_parent() is Dancer:
+		var dancer := other.get_parent() as Dancer
+		dancer.DealDamage(1.0)
 	await get_tree().create_timer(0.5).timeout
 	queue_free()
 

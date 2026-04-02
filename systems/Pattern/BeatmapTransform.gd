@@ -60,3 +60,8 @@ static func FromOrigin(origin: Vector2i = Vector2i.ZERO) -> Builder:
 	var transform := BeatmapTransform.Builder.new()
 	transform.SetOrigin(origin)
 	return transform
+
+static func FromTranslation(translation: Vector2i = Vector2i.ZERO) -> Builder:
+	var transform := BeatmapTransform.Builder.new()
+	transform.Translate(translation)
+	return transform

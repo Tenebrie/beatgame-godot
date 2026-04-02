@@ -59,7 +59,7 @@ func Push(direction: Vector2i) -> Pattern:
 			var x := tile[0] + offset.x
 			var y := tile[1] + offset.y
 			if player.GridPosition.x == x and player.GridPosition.y == y:
-				player.ForceMoveOnGrid(direction)
+				player.ForceMove(direction)
 				player.DealDamage(1.0)
 	)
 	return self
@@ -135,7 +135,7 @@ static func Row(row: int) -> Pattern:
 	assert(row > 0 && row < 10, "Row must be defined by a single number. Received: " + str(row))
 	var danceFloor := GlobalContext.GetDanceFloor()
 	var newTiles: Array[Vector2i]
-	for i in danceFloor.maximumGridSize.x:
+	for i in range(danceFloor.GridBounds.position.x, danceFloor.GridBounds.width + 1):
 		newTiles.append(Vector2i(i, row - 1))
 	return Pattern.new(newTiles)
 
@@ -143,7 +143,7 @@ static func Column(column: String) -> Pattern:
 	assert(column.length() == 1 && letters.contains(column[0]), "Column string must be defined by a single letter. Received: " + column)
 	var danceFloor := GlobalContext.GetDanceFloor()
 	var newTiles: Array[Vector2i]
-	for i in danceFloor.maximumGridSize.y:
+	for i in range(danceFloor.GridBounds.position.y, danceFloor.GridBounds.height + 1):
 		newTiles.append(Vector2i(letters.find(column), i))
 	return Pattern.new(newTiles)
 

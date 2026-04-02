@@ -5,7 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://bbvr3ouw6tjd7" path="res://player/Player.tscn" id="2_yrodo"]
 [ext_resource type="PackedScene" uid="uid://d06eira2uwqu" path="res://systems/DanceFloor/DanceTile.tscn" id="3_qf1ly"]
 [ext_resource type="Script" uid="uid://cihqnnkwn6s0v" path="res://player/camera/MainCamera.gd" id="4_nndyp"]
-[ext_resource type="PackedScene" uid="uid://bv06ug34nm3hm" path="res://dancers/Stormbird/Stormbird.tscn" id="6_o6nij"]
+[ext_resource type="Script" uid="uid://8dokvkhwr37k" path="res://systems/DanceFloor/DanceFloorPathing.gd" id="5_o6nij"]
+[ext_resource type="Script" uid="uid://x4gs5lrbd8rv" path="res://scenes/components/ActGenerator.gd" id="6_rss7n"]
 
 [node name="Act1Arena" type="Node3D" unique_id=1047362742]
 script = ExtResource("1_yrodo")
@@ -16,12 +17,15 @@ TileScene = ExtResource("3_qf1ly")
 metadata/_custom_type_script = "uid://d4j2cb5kamym0"
 
 [node name="Player" parent="DanceFloor" unique_id=241487594 instance=ExtResource("2_yrodo")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0012023, 0.3, 1.0000336)
 
-[node name="Stormbird" parent="DanceFloor" unique_id=1450051245 instance=ExtResource("6_o6nij")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.3, 2)
+[node name="DanceFloorPathing" type="Node" parent="DanceFloor" unique_id=1821243425]
+script = ExtResource("5_o6nij")
 
 [node name="MainCamera" type="Camera3D" parent="." unique_id=1186241222]
 transform = Transform3D(1, 0, 0, 0, 0.17364822, 0.9848077, 0, -0.9848077, 0.17364822, 0, 4, 1)
 script = ExtResource("4_nndyp")
 metadata/_custom_type_script = "uid://cihqnnkwn6s0v"
+
+[node name="ActGenerator" type="Node" parent="." unique_id=994199760]
+script = ExtResource("6_rss7n")

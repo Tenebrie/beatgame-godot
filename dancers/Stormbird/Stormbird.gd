@@ -2,13 +2,29 @@ class_name Stormbird extends Dancer
 
 func _ready() -> void:
 	super._ready()
+	maximumHealth = 1.0
 	takeTurn.connect(onTakeTurn)
+	onDamageTaken.connect(func(damage: float) -> void:
+		SpriteHitEffect.ApplySpriteDamage($Sprite3D, damage)
+	)
+	onDeath.connect(func() -> void:
+		create_tween().tween_property(self, ^"scale", Vector3(0.001, 0.001, 0.001), 0.3)
+	)
 
 var stunnedUntil := -1.0
+var isAggroed := false
 
 func onTakeTurn(beat: float) -> void:
 	if beat <= stunnedUntil:
 		return
+
+	var player := GlobalContext.GetPlayer()
+	if not isAggroed:
+		var manhattanDistance := absi(GridPosition.x - player.GridPosition.x) + absi(GridPosition.y - player.GridPosition.y)
+		if manhattanDistance > 5:
+			return
+		else:
+			isAggroed = true
 
 	var validPoints: Array[Vector2i] = [Vector2i(-1, 0), Vector2i(1, 0), Vector2i(0, 1), Vector2i(0, -1)]
 	validPoints.append_array([Vector2i(-2, 0), Vector2i(2, 0), Vector2i(0, 2), Vector2i(0, -2)])
@@ -21,7 +37,6 @@ func onTakeTurn(beat: float) -> void:
 		StepTo(navigation.path[0])
 		return
 
-	var player := GlobalContext.GetPlayer()
 	var attack: BeatmapAttack
 	var beatmapTransform: BeatmapTransform.Builder
 	var stunDuration := 2
@@ -60,7 +75,7 @@ func onTakeTurn(beat: float) -> void:
 		Trigger.Execute(func() -> void:
 			for i in range(5):
 				StepTo(GridPosition + direction)
-		).Delay(attack.attackDuration)
+		).Delay(attack.attackDuration).BindTo(self)
 	else:
 		attack = preload("res://dancers/Stormbird/attacks/StormbirdRoundhouseSwipe.tres")
 		stunDuration = attack.attackDuration

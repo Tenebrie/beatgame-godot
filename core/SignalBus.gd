@@ -10,6 +10,7 @@ signal clearTimersBefore(beat: int)
 
 signal OnFightBegin()
 signal OnPlayerMove(to: Vector2i, from: Vector2i)
+signal OnDancerMove(to: Vector2i, from: Vector2i, dancer: Dancer)
 signal OnFlushAllTimers()
 signal OnBasicBeat() # Each basic attack
 signal OnMinorBeat(beat: float) # Each odd beat (1, 3, 5)
@@ -18,6 +19,7 @@ signal OnFullBeat(beat: float) # Each minor and major beat
 signal OnAnyBeat(beat: float) # All registered beats, including fractionals
 signal OnPlayerDeath()
 signal OnAdversaryDeath()
+signal OnDancerDeath(dancer: Dancer)
 
 signal DancerMove(to: Vector2i, from: Vector2i)
 

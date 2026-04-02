@@ -1,9 +1,10 @@
 [gd_scene format=3 uid="uid://dhaxe1mwsrudn"]
 
 [ext_resource type="PackedScene" uid="uid://cs7xdnc23k4he" path="res://systems/DanceFloor/DanceFloor.tscn" id="1_auhpn"]
-[ext_resource type="Script" uid="uid://j0xa7fe7oxv8" path="res://scenes/TutorialArena.gd" id="1_w5bc6"]
+[ext_resource type="Script" uid="uid://j0xa7fe7oxv8" path="res://scenes/TutorialArena/TutorialArena.gd" id="1_w5bc6"]
 [ext_resource type="PackedScene" uid="uid://o3b0w6c0ai85" path="res://scenes/environment/SurpriseParticles.tscn" id="2_4wjo6"]
 [ext_resource type="PackedScene" uid="uid://bbvr3ouw6tjd7" path="res://player/Player.tscn" id="2_auhpn"]
+[ext_resource type="PackedScene" uid="uid://d06eira2uwqu" path="res://systems/DanceFloor/DanceTile.tscn" id="4_4wjo6"]
 [ext_resource type="PackedScene" uid="uid://bmc8tfti12rqu" path="res://boss/Boss.tscn" id="4_adxne"]
 [ext_resource type="Script" uid="uid://b754hdhv5ohci" path="res://scenes/environment/LobbyTileHandler.gd" id="5_eqoqj"]
 [ext_resource type="Script" uid="uid://cihqnnkwn6s0v" path="res://player/camera/MainCamera.gd" id="5_h48qv"]
@@ -24,6 +25,7 @@ script = ExtResource("1_w5bc6")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.689962, -1.4922266, 0)
 
 [node name="DanceFloor" parent="." unique_id=796054563 instance=ExtResource("1_auhpn")]
+TileScene = ExtResource("4_4wjo6")
 
 [node name="Player" parent="DanceFloor" unique_id=241487594 instance=ExtResource("2_auhpn")]
 

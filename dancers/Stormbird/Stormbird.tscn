@@ -3,9 +3,10 @@
 [ext_resource type="Script" uid="uid://gi67lnlyo8mp" path="res://dancers/Stormbird/Stormbird.gd" id="1_8o5rc"]
 [ext_resource type="Texture2D" uid="uid://dpjysd06lud44" path="res://dancers/Stormbird/assets/SpriteStormbird.png" id="2_8o5rc"]
 [ext_resource type="Script" uid="uid://olg4ad5e1h8x" path="res://dancers/DancerPathing.gd" id="3_o7rb5"]
+[ext_resource type="Script" uid="uid://baj6ce53tf1yu" path="res://dancers/DancerSpriteHitEffect.gd" id="4_i4017"]
+[ext_resource type="Texture2D" uid="uid://c3ffxblc18smg" path="res://assets/textures/soft_circle_particle.png" id="5_0hjxh"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5w6hj"]
-height = 4.0
 
 [node name="Stormbird" type="Node3D" unique_id=854401512]
 script = ExtResource("1_8o5rc")
@@ -24,3 +25,12 @@ shape = SubResource("CapsuleShape3D_5w6hj")
 
 [node name="DancerPathing" type="Node" parent="." unique_id=746935520]
 script = ExtResource("3_o7rb5")
+
+[node name="DancerSpriteHitEffect" type="Node" parent="." unique_id=1821820522]
+script = ExtResource("4_i4017")
+
+[node name="ShadowDecal" type="Decal" parent="." unique_id=463782801]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.441, 0.103453934)
+size = Vector3(0.5, 0.7, 0.5)
+texture_albedo = ExtResource("5_0hjxh")
+modulate = Color(0, 0, 0, 1)

@@ -56,41 +56,37 @@ func set_grid_size(size: Vector2i) -> void:
 func move_to_column_top(targetColumn: float) -> void:
 	var topMostActiveTile := INF
 	var tiles := GlobalContext.GetDanceFloor().tilemap
-	for column in tiles:
-		for tile: DanceTile in column:
-			if tile.isAlive and tile.gridY < topMostActiveTile and absf(targetColumn - tile.gridX) <= 0.5:
-				topMostActiveTile = tile.gridY
-
+	for pos: Vector2i in tiles:
+		var tile: DanceTile = tiles[pos]
+		if tile.isAlive and tile.gridY < topMostActiveTile and absf(targetColumn - pos.x) <= 1.5:
+			topMostActiveTile = tile.gridY
 	move_to(Vector2(targetColumn, topMostActiveTile - 1))
 
 func move_to_column_bottom(targetColumn: float) -> void:
 	var bottomMostActiveTile := 0
 	var tiles := GlobalContext.GetDanceFloor().tilemap
-	for column in tiles:
-		for tile: DanceTile in column:
-			if tile.isAlive and tile.gridY > bottomMostActiveTile and absf(targetColumn - tile.gridX) <= 0.5:
-				bottomMostActiveTile = tile.gridY
-
+	for pos: Vector2i in tiles:
+		var tile: DanceTile = tiles[pos]
+		if tile.isAlive and tile.gridY > bottomMostActiveTile and absf(targetColumn - pos.x) <= 1.5:
+			bottomMostActiveTile = tile.gridY
 	move_to(Vector2(targetColumn, bottomMostActiveTile + 1))
 
 func move_to_row_left(row: float) -> void:
 	var leftMostActiveTile := INF
 	var tiles := GlobalContext.GetDanceFloor().tilemap
-	for column in tiles:
-		for tile: DanceTile in column:
-			if tile.isAlive and tile.gridX < leftMostActiveTile and absf(row - tile.gridY) - 1 <= 0.5:
-				leftMostActiveTile = tile.gridX
-
+	for pos: Vector2i in tiles:
+		var tile: DanceTile = tiles[pos]
+		if tile.isAlive and tile.gridX < leftMostActiveTile and absf(row - pos.y) <= 1.5:
+			leftMostActiveTile = tile.gridX
 	move_to(Vector2(leftMostActiveTile - 1, row - 1))
 
 func move_to_row_right(row: float) -> void:
 	var rightMostActiveTile := 0
 	var tiles := GlobalContext.GetDanceFloor().tilemap
-	for column in tiles:
-		for tile: DanceTile in column:
-			if tile.isAlive and tile.gridX > rightMostActiveTile and absf(row - tile.gridY) - 1 <= 0.5:
-				rightMostActiveTile = tile.gridX
-
+	for pos: Vector2i in tiles:
+		var tile: DanceTile = tiles[pos]
+		if tile.isAlive and tile.gridX > rightMostActiveTile and absf(row - pos.y) <= 1.5:
+			rightMostActiveTile = tile.gridX
 	move_to(Vector2(rightMostActiveTile + 1, row - 1))
 
 func move_to(targetPos: Vector2) -> void:

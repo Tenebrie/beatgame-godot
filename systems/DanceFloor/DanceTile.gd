@@ -1,12 +1,12 @@
 @tool
 ## Dynamically generated tile for DanceFloor
-##
-## Not intended for public use
 @icon("res://assets/icons/editor/Cross.svg")
 class_name DanceTile extends Node3D
 
-var gridX: int
-var gridY: int
+signal onDancerEnter(dancer: Dancer)
+signal onDancerLeave(dancer: Dancer)
+
+var GridPosition: Vector2i
 
 var explode: float = 0.0
 
@@ -15,12 +15,14 @@ var isAlive := true
 var beatTween: Tween
 
 func _ready() -> void:
+	GridPosition = Vector2i(roundi(position.x), roundi(position.z))
 	SignalBus.telegraphTile.connect(_onTelegraph)
 	SignalBus.explodeTile.connect(_onExplode)
 	SignalBus.clearAllTiles.connect(_onClearAllTiles)
 	SignalBus.OnRestoreTile.connect(_onRestoreTile)
 	SignalBus.OnDestroyTile.connect(_onDestroyTile)
-	SignalBus.OnPlayerMove.connect(_onPlayerMove)
+	SignalBus.OnDancerMove.connect(_onDancerMove)
+	SignalBus.OnDancerDeath.connect(_onDancerDeath)
 
 	beatTimer = MusicTimer.Create()
 	beatTimer.timeout.connect(_onBeat)
@@ -41,28 +43,28 @@ func _onBeat(triggerBeat: int) -> void:
 		beatTween.tween_property($MeshInstance3D, "scale", Vector3(1.0, 1.0, 1.0), 0.3)
 
 func _onTelegraph(pos: Vector2i, delay: float) -> void:
-	if pos.x != gridX or pos.y != gridY:
+	if pos != GridPosition:
 		return
 
 	var driver := TileDriver.new()
-	driver.Start(Vector2i(gridX, gridY), delay)
+	driver.Start(GridPosition, delay)
 	add_child(driver)
 
 func _onExplode(x: int, y: int) -> void:
-	if x != gridX or y != gridY:
+	if x != GridPosition.x or y != GridPosition.y:
 		return
 
 	explode = 1.0
 
 	var player := GlobalContext.GetPlayer()
-	if not player or player.GridPosition.x != gridX or player.GridPosition.y != gridY:
+	if not player or player.GridPosition != GridPosition:
 		return
 
 	if not is_inside_tree():
 		print("Tile is not inside tree for some reason")
 		return
 	await get_tree().create_timer(0.02).timeout
-	if player.GridPosition.x == gridX and player.GridPosition.y == gridY:
+	if player.GridPosition == GridPosition:
 		player.DealDamage(1.0)
 
 func _onClearAllTiles() -> void:
@@ -73,7 +75,7 @@ func _onClearAllTiles() -> void:
 			child.queue_free()
 
 func _onRestoreTile(x: int, y: int) -> void:
-	if x != gridX or y != gridY:
+	if x != GridPosition.x or y != GridPosition.y:
 		return
 
 	beatTimer.start_repeatable(roundi(AudioSystem.get_current_beat()) + 1)
@@ -82,7 +84,7 @@ func _onRestoreTile(x: int, y: int) -> void:
 	set_process(true)
 
 func _onDestroyTile(x: int, y: int) -> void:
-	if x != gridX or y != gridY:
+	if x != GridPosition.x or y != GridPosition.y:
 		return
 
 	beatTween.stop()
@@ -94,17 +96,23 @@ func _onDestroyTile(x: int, y: int) -> void:
 			set_process(false)
 
 var weightTween: Tween
-func _onPlayerMove(to: Vector2i, from: Vector2i) -> void:
-	if to.x == gridX and to.y == gridY:
-		if weightTween:
-			weightTween.kill()
-		weightTween = create_tween()
-		weightTween.tween_property(self, ^"position", Vector3(position.x, -0.07, position.z), 0.2)
-	elif from.x == gridX and from.y == gridY:
+func _onDancerMove(to: Vector2i, from: Vector2i, dancer: Dancer) -> void:
+	if from == GridPosition:
 		if weightTween:
 			weightTween.kill()
 		weightTween = create_tween()
 		weightTween.tween_property(self, ^"position", Vector3(position.x, 0, position.z), 0.8).set_trans(Tween.TRANS_SPRING)
+		onDancerLeave.emit(dancer)
+	elif to == GridPosition:
+		if weightTween:
+			weightTween.kill()
+		weightTween = create_tween()
+		weightTween.tween_property(self, ^"position", Vector3(position.x, -0.07, position.z), 0.1)
+		onDancerEnter.emit(dancer)
+
+func _onDancerDeath(dancer: Dancer) -> void:
+	if dancer.GridPosition == GridPosition:
+		_onDancerMove(Vector2.ZERO, GridPosition, dancer)
 
 func _process(delta: float) -> void:
 	var telegraph := 0.0

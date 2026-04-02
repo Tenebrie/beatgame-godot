@@ -5,13 +5,9 @@
 [ext_resource type="PackedScene" uid="uid://d3e4saftlukk" path="res://player/abilities/BasicAttack/PlayerFireEffect.tscn" id="4_83hs8"]
 [ext_resource type="PackedScene" uid="uid://dbb5s1t0e30wa" path="res://player/aspects/onyx/OnyxAspectSprite.tscn" id="5_x8kxw"]
 [ext_resource type="PackedScene" uid="uid://i40vqvhvbt8t" path="res://player/aspects/gold/GoldenAspectSprite.tscn" id="6_aqcbf"]
+[ext_resource type="Script" uid="uid://baj6ce53tf1yu" path="res://dancers/DancerSpriteHitEffect.gd" id="7_06mnu"]
 [ext_resource type="PackedScene" uid="uid://be8sowdk4tjfq" path="res://player/abilities/BasicAttack/PlayerOnyxEffect.tscn" id="7_gskgj"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jaxf2"]
-
-[sub_resource type="TextMesh" id="TextMesh_3jo7u"]
-material = SubResource("StandardMaterial3D_jaxf2")
-text = "Dwagon"
+[ext_resource type="Texture2D" uid="uid://c3ffxblc18smg" path="res://assets/textures/soft_circle_particle.png" id="8_06mnu"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_aqcbf"]
 radius = 0.25
@@ -20,11 +16,6 @@ radius = 0.25
 script = ExtResource("1_jaxf2")
 
 [node name="AbilityController" parent="." unique_id=875623621 instance=ExtResource("2_wnvi2")]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1986641348]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
-visible = false
-mesh = SubResource("TextMesh_3jo7u")
 
 [node name="PlayerFireEffect" parent="." unique_id=718987839 instance=ExtResource("4_83hs8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.36021847, 0.01941812, 0)
@@ -42,3 +33,12 @@ visible = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1033201096]
 shape = SubResource("CapsuleShape3D_aqcbf")
+
+[node name="DancerSpriteHitEffect" type="Node" parent="." unique_id=1274858474]
+script = ExtResource("7_06mnu")
+
+[node name="ShadowDecal" type="Decal" parent="." unique_id=1685764202]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.441, 0)
+size = Vector3(0.75, 0.75, 0.75)
+texture_albedo = ExtResource("8_06mnu")
+modulate = Color(0, 0, 0, 1)

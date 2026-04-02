@@ -16,7 +16,7 @@ func _ready() -> void:
 
 	SignalBus.OnPlayerMove.connect(func(to: Vector2i, _from: Vector2i) -> void:
 		if to.x == 2 and to.y == 0:
-			get_tree().change_scene_to_file("res://scenes/TutorialArena.tscn")
+			get_tree().change_scene_to_file("res://scenes/TutorialArena/TutorialArena.tscn")
 		elif to.x == 4 and to.y == 0:
 			get_tree().change_scene_to_file("res://scenes/FrogFight/FrogMap.tscn")
 	)

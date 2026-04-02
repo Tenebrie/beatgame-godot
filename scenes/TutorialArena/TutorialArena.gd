@@ -3,7 +3,7 @@ extends Node
 var isFightTriggered := false
 
 func _ready() -> void:
-	var beatmap: Beatmap = ResourceLoader.load("res://scenes/TutorialArenaBeatmap.tres")
+	var beatmap: Beatmap = ResourceLoader.load("res://scenes/TutorialArena/TutorialArenaBeatmap.tres")
 
 	var args := DanceFloor.InitArgs.new()
 	args.gridSize = beatmap.gridSize
