@@ -26,7 +26,6 @@ func onTakeTurn(beat: float) -> void:
 	var beatmapTransform: BeatmapTransform.Builder
 	var stunDuration := 2
 
-	print(roundi(beat), " - ", roundi(beat) % 8 == 0)
 	if navigation.distance >= 2 and roundi(beat) % 8 == 0:
 		attack = preload("res://dancers/Stormbird/attacks/StormbirdFeatherStorm.tres")
 		stunDuration = 2
