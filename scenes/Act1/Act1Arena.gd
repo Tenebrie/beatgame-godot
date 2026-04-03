@@ -16,12 +16,15 @@ func _ready() -> void:
 	if not Engine.is_editor_hint():
 		firstChunk.onCleared.connect(func() -> void:
 			MessageLog.PrintMessage("The way forward is now open!")
+			GlobalContext.GetPlayer().RefillStamina()
 			var secondChunk := actGenerator.GeneratePath(firstChunk.endPoint)
 			secondChunk.onCleared.connect(func() -> void:
 				MessageLog.PrintMessage("The way forward is now open!")
+				GlobalContext.GetPlayer().RefillStamina()
 				var thirdChunk := actGenerator.GeneratePath(secondChunk.endPoint)
 				thirdChunk.onCleared.connect(func() -> void:
 					MessageLog.PrintMessage("Act 1 cleared, now get to the exit!")
+					GlobalContext.GetPlayer().RefillStamina()
 					actGenerator.GenerateExit(thirdChunk.endPoint)
 				)
 			)

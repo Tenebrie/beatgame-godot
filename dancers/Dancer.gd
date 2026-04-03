@@ -90,18 +90,29 @@ func AddFlags(flags: Array[Flag]) -> void:
 #region Damage
 var isAlive := true
 var isImmortal := false
+
+# Disposable health pool, regenerates in fight
 var damageTaken := 0.0
 var maximumHealth := 5.0
 var regeneration := 0.0
+# Meta damage, persists in the run
+var metaDamageTaken := 0.0
+var maximumMetaHealth := 0.0
 
 func DealDamage(damage: float) -> void:
 	if not isAlive:
 		return
 
+	# Meta health damage overflow
+	if damage > maximumHealth - damageTaken:
+		var damageRemaining := damage - (maximumHealth - damageTaken)
+		metaDamageTaken = minf(metaDamageTaken + damageRemaining, maximumMetaHealth)
+
+	# Normal damage
 	damageTaken = minf(damageTaken + damage, maximumHealth)
 	onDamageTaken.emit(damage)
 
-	if not isImmortal and damageTaken >= maximumHealth:
+	if not isImmortal and damageTaken >= maximumHealth and metaDamageTaken >= maximumMetaHealth:
 		isAlive = false
 		onDeath.emit()
 		SignalBus.OnDancerDeath.emit(self)

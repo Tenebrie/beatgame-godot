@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://olg4ad5e1h8x" path="res://dancers/DancerPathing.gd" id="3_o7rb5"]
 [ext_resource type="Script" uid="uid://baj6ce53tf1yu" path="res://dancers/DancerSpriteHitEffect.gd" id="4_i4017"]
 [ext_resource type="Texture2D" uid="uid://c3ffxblc18smg" path="res://assets/textures/soft_circle_particle.png" id="5_0hjxh"]
+[ext_resource type="PackedScene" uid="uid://b2tilbn0276hj" path="res://dancers/common/DancerAttackChargeEffect.tscn" id="6_oqcnc"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5w6hj"]
 
@@ -34,3 +35,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.441, 0.103453934)
 size = Vector3(0.5, 0.7, 0.5)
 texture_albedo = ExtResource("5_0hjxh")
 modulate = Color(0, 0, 0, 1)
+
+[node name="DancerAttackChargeEffect" parent="." unique_id=2036547396 instance=ExtResource("6_oqcnc")]

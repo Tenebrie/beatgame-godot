@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://cihqnnkwn6s0v" path="res://player/camera/MainCamera.gd" id="4_nndyp"]
 [ext_resource type="Script" uid="uid://8dokvkhwr37k" path="res://systems/DanceFloor/DanceFloorPathing.gd" id="5_o6nij"]
 [ext_resource type="Script" uid="uid://x4gs5lrbd8rv" path="res://scenes/components/ActGenerator.gd" id="6_rss7n"]
+[ext_resource type="PackedScene" uid="uid://tagdgbiaqop6" path="res://ui/PlayerStatus/PlayerStatus.tscn" id="8_nrfpq"]
 
 [node name="Act1Arena" type="Node3D" unique_id=1047362742]
 script = ExtResource("1_yrodo")
@@ -29,3 +30,18 @@ metadata/_custom_type_script = "uid://cihqnnkwn6s0v"
 
 [node name="ActGenerator" type="Node" parent="." unique_id=994199760]
 script = ExtResource("6_rss7n")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=428874576]
+transform = Transform3D(-0.33939472, 0.5137976, -0.78792334, 0, 0.83764243, 0.54621893, 0.940644, 0.18538383, -0.28429142, 0, 0.81200886, 0)
+
+[node name="PlayerStatus" parent="." unique_id=1668244000 instance=ExtResource("8_nrfpq")]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -235.5
+offset_top = -166.0
+offset_right = 235.5
+offset_bottom = 0.0
+grow_vertical = 0

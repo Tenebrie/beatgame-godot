@@ -1,8 +1,10 @@
 class_name Stormbird extends Dancer
 
+@onready var attackChargeEffect: DancerAttackChargeEffect = $DancerAttackChargeEffect
+
 func _ready() -> void:
 	super._ready()
-	maximumHealth = 1.0
+	maximumHealth = 5.0
 	takeTurn.connect(onTakeTurn)
 	onDamageTaken.connect(func(damage: float) -> void:
 		SpriteHitEffect.ApplySpriteDamage($Sprite3D, damage)
@@ -83,3 +85,7 @@ func onTakeTurn(beat: float) -> void:
 
 	BeatmapLoader.LoadAttack(attack, beatmapTransform)
 	stunnedUntil = beat + stunDuration
+	attackChargeEffect.StartCharging()
+	Trigger.Execute(func() -> void:
+		attackChargeEffect.StopCharging()
+	).Delay(attack.attackDuration).BindTo(self)

@@ -1,6 +1,7 @@
 class_name Trigger extends Node
 
 var triggerTimer: MusicTimer
+var boundToNode: bool
 var boundNode: Node
 
 signal onResolve
@@ -12,12 +13,11 @@ func _init() -> void:
 	triggerTimer.start(Pattern.BuilderTime)
 	triggerTimer.timeout.connect(
 		func(_beat: int) -> void:
-			if boundNode != null:
-				if not is_instance_valid(boundNode):
+			if boundToNode:
+				if not boundNode or not is_instance_valid(boundNode):
 					return
 				if boundNode is Dancer and not boundNode.isAlive:
 					return
-
 			onResolve.emit()
 			resolved.emit()
 	)
@@ -27,6 +27,7 @@ func Delay(delay: float) -> Trigger:
 	return self
 
 func BindTo(node: Node) -> Trigger:
+	boundToNode = true
 	boundNode = node
 	return self
 

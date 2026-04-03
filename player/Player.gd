@@ -13,6 +13,8 @@ func _enter_tree() -> void:
 	GlobalContext.Register(self)
 
 func _ready() -> void:
+	maximumHealth = 4.0
+	maximumMetaHealth = 50.0
 	regeneration = 1.0 / 16.0 # 1 hp per 16 seconds
 	GridPosition = Vector2i(roundi(position.x), roundi(position.z))
 	isAlive = false
@@ -21,6 +23,8 @@ func _ready() -> void:
 	isAlive = true
 	SetBasicAttackEffectEmitting(false)
 	SignalBus.OnFightBegin.connect(func() -> void: SetBasicAttackEffectEmitting(true))
+
+	SignalBus.OnFullBeat.connect(_onBeatStaminaRefill)
 
 	onDamageTaken.connect(func(damage: float) -> void:
 		Stats.RecordDamageTaken(damage)
@@ -62,7 +66,32 @@ func _process(delta: float) -> void:
 
 	damageTaken = maxf(0.0, damageTaken - delta * regeneration)
 
+#region Movement
+var staminaUsed := 0.0
+var maximumStamina := 10.0
+var usedStaminaThisBeat := false
+
+func _onBeatStaminaRefill(_beat: float) -> void:
+	var regenValue := 1.0
+	if usedStaminaThisBeat:
+		usedStaminaThisBeat = false
+	else:
+		staminaUsed = maxf(0.0, staminaUsed - regenValue)
+
+func RefillStamina() -> void:
+	staminaUsed = 0.0
+	usedStaminaThisBeat = false
+
 func Step(dir: Vector2i) -> void:
+	if usedStaminaThisBeat and maximumStamina - staminaUsed < 1.0:
+		performBonk(dir)
+		return
+
+	if AudioSystem.IsSongStarted():
+		if usedStaminaThisBeat:
+			staminaUsed += 1.0
+		else:
+			usedStaminaThisBeat = true
 	var oldPos := GridPosition
 	super.Step(dir)
 	var newPos := GridPosition
@@ -81,6 +110,7 @@ func keyToDirection(keycode: Key) -> Vector2i:
 			return Vector2i(1, 0)
 		_:
 			return Vector2i.ZERO
+#endregion
 
 func SetBasicAttackEffectEmitting(emitting: bool) -> void:
 	$PlayerFireEffect/GPUParticles3D.emitting = emitting

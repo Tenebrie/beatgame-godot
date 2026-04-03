@@ -1,0 +1,103 @@
+[gd_scene format=3 uid="uid://b2tilbn0276hj"]
+
+[ext_resource type="Script" uid="uid://diwiumyn42gsb" path="res://dancers/common/DancerAttackChargeEffect.gd" id="1_ebxw1"]
+[ext_resource type="Texture2D" uid="uid://b33eqhik1e1fp" path="res://assets/textures/particle_energy_wisp.png" id="2_ch1tp"]
+
+[sub_resource type="Gradient" id="Gradient_umujp"]
+offsets = PackedFloat32Array(0, 0.11641791, 0.39701492, 0.59402984, 0.8686567, 1)
+colors = PackedColorArray(1, 0, 0.016666412, 0, 1, 0, 0.016666412, 1, 1, 0.08800006, 0.04000002, 1, 1, 0, 0.016666412, 1, 1, 0.49883336, 0.029999971, 1, 1, 0.49883336, 0.029999971, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_3hur5"]
+gradient = SubResource("Gradient_umujp")
+
+[sub_resource type="Curve" id="Curve_5tbnp"]
+_limits = [-22.82, 1.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, -1.6940217), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_so5kx"]
+curve_y = SubResource("Curve_5tbnp")
+
+[sub_resource type="Curve" id="Curve_rytg1"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_3hur5"]
+curve = SubResource("Curve_rytg1")
+
+[sub_resource type="Curve" id="Curve_odceg"]
+_limits = [-20.0, 20.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 20), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ntk3m"]
+curve = SubResource("Curve_odceg")
+
+[sub_resource type="Curve" id="Curve_wgxei"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.9548023, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_4vskb"]
+curve = SubResource("Curve_wgxei")
+
+[sub_resource type="Curve" id="Curve_geh8h"]
+_limits = [-1.0, 1.0, 0.0, 1.0]
+_data = [Vector2(0, 0.564675), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_kb4cb"]
+curve = SubResource("Curve_geh8h")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_bjsq1"]
+lifetime_randomness = 0.5
+particle_flag_align_y = true
+particle_flag_rotate_y = true
+emission_shape = 6
+emission_ring_axis = Vector3(0, 1, 0)
+emission_ring_height = 0.0
+emission_ring_radius = 0.6
+emission_ring_inner_radius = 0.6
+emission_ring_cone_angle = 90.0
+angle_min = 1.0728835e-05
+angle_max = 1.0728835e-05
+directional_velocity_min = 0.0999839
+directional_velocity_max = 0.0999839
+directional_velocity_curve = SubResource("CurveXYZTexture_so5kx")
+radial_velocity_min = -0.25002235
+radial_velocity_max = -0.25002235
+gravity = Vector3(0, 0, 0)
+radial_accel_min = -1.0000023
+radial_accel_max = -0.5000022
+radial_accel_curve = SubResource("CurveTexture_ntk3m")
+tangential_accel_min = 4.9999976
+tangential_accel_max = 4.9999976
+tangential_accel_curve = SubResource("CurveTexture_kb4cb")
+scale_curve = SubResource("CurveTexture_4vskb")
+color_ramp = SubResource("GradientTexture1D_3hur5")
+emission_curve = SubResource("CurveTexture_3hur5")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oqcnc"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("2_ch1tp")
+stencil_flags = 2
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_u7kfr"]
+material = SubResource("StandardMaterial3D_oqcnc")
+size = Vector2(0.2, 0.2)
+orientation = 2
+
+[node name="DancerAttackChargeEffect" type="Node3D" unique_id=2036547396]
+script = ExtResource("1_ebxw1")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="." unique_id=1236403421]
+cast_shadow = 0
+amount = 800
+lifetime = 0.4
+fixed_fps = 120
+transform_align = 3
+process_material = SubResource("ParticleProcessMaterial_bjsq1")
+draw_pass_1 = SubResource("PlaneMesh_u7kfr")
