@@ -16,15 +16,17 @@ func _ready() -> void:
 	parent.TilemapUpdated.connect(func() -> void:
 		isGridValid = false
 	)
-	SignalBus.OnPlayerMove.connect(func(to: Vector2i, from: Vector2i) -> void:
-		initGrid()
-		aStar.set_point_disabled(getTileId(from.x, from.y), false)
-		aStar.set_point_disabled(getTileId(to.x, to.y), true)
-	)
+	#SignalBus.OnPlayerMove.connect(func(to: Vector2i, from: Vector2i) -> void:
+		#initGrid()
+		#aStar.set_point_disabled(getTileId(from.x, from.y), false)
+		#aStar.set_point_disabled(getTileId(to.x, to.y), true)
+	#)
 	SignalBus.OnDancerMove.connect(func(to: Vector2i, from: Vector2i, _dancer: Dancer) -> void:
 		initGrid()
-		aStar.set_point_disabled(getTileId(from.x, from.y), false)
-		aStar.set_point_disabled(getTileId(to.x, to.y), true)
+		if aStar.has_point(getTileId(from.x, from.y)):
+			aStar.set_point_disabled(getTileId(from.x, from.y), false)
+		if aStar.has_point(getTileId(to.x, to.y)):
+			aStar.set_point_disabled(getTileId(to.x, to.y), true)
 	)
 	SignalBus.OnDancerDeath.connect(func(dancer: Dancer) -> void:
 		initGrid()

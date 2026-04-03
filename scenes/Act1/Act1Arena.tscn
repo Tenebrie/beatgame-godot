@@ -12,6 +12,9 @@
 [node name="Act1Arena" type="Node3D" unique_id=1047362742]
 script = ExtResource("1_yrodo")
 
+[node name="ActGenerator" type="Node" parent="." unique_id=994199760]
+script = ExtResource("6_rss7n")
+
 [node name="DanceFloor" type="Node3D" parent="." unique_id=1702910108]
 script = ExtResource("1_r2pxj")
 TileScene = ExtResource("3_qf1ly")
@@ -27,9 +30,6 @@ script = ExtResource("5_o6nij")
 transform = Transform3D(1, 0, 0, 0, 0.17364822, 0.9848077, 0, -0.9848077, 0.17364822, 0, 4, 1)
 script = ExtResource("4_nndyp")
 metadata/_custom_type_script = "uid://cihqnnkwn6s0v"
-
-[node name="ActGenerator" type="Node" parent="." unique_id=994199760]
-script = ExtResource("6_rss7n")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=428874576]
 transform = Transform3D(-0.33939472, 0.5137976, -0.78792334, 0, 0.83764243, 0.54621893, 0.940644, 0.18538383, -0.28429142, 0, 0.81200886, 0)

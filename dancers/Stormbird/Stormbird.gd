@@ -88,4 +88,4 @@ func onTakeTurn(beat: float) -> void:
 	attackChargeEffect.StartCharging()
 	Trigger.Execute(func() -> void:
 		attackChargeEffect.StopCharging()
-	).Delay(attack.attackDuration).BindTo(self)
+	).Delay(stunDuration).BindTo(self)

@@ -33,6 +33,7 @@ func _ready() -> void:
 		await get_tree().create_timer(2.0).timeout
 		queue_free()
 	)
+	SignalBus.OnDancerMove.emit(GridPosition, Vector2i(-1000, -1000), self)
 
 func _process(delta: float) -> void:
 	DancerPosition = position.lerp(DancerTargetPosition, 30.0 * delta)
@@ -89,6 +90,7 @@ func AddFlags(flags: Array[Flag]) -> void:
 #endregion
 #region Damage
 var isAlive := true
+var isImmune := false
 var isImmortal := false
 
 # Disposable health pool, regenerates in fight
@@ -100,7 +102,7 @@ var metaDamageTaken := 0.0
 var maximumMetaHealth := 0.0
 
 func DealDamage(damage: float) -> void:
-	if not isAlive:
+	if not isAlive or isImmune:
 		return
 
 	# Meta health damage overflow
@@ -116,6 +118,12 @@ func DealDamage(damage: float) -> void:
 		isAlive = false
 		onDeath.emit()
 		SignalBus.OnDancerDeath.emit(self)
+
+func MakeImmune() -> void:
+	isImmune = true
+
+func ForfeitImmunity() -> void:
+	isImmune = false
 
 func MakeImmortal() -> void:
 	isImmortal = true

@@ -118,6 +118,13 @@ func IsTileOccupied(pos: Vector2i) -> bool:
 		if child is Dancer and child.GridPosition == pos and child.isAlive:
 			return true
 	return false
+
+func GetAllDancers() -> Array[Dancer]:
+	var dancers: Array[Dancer]
+	for child: Node in get_children():
+		if child is Dancer:
+			dancers.append(child)
+	return dancers
 #endregion
 
 #region Internal

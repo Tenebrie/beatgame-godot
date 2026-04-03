@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cb20f7r21001m"
+path="res://.godot/imported/Mersona - Tidehawk.ogg-d1c36f84094fe9e1fa489d2b5da3eae7.oggvorbisstr"
+
+[deps]
+
+source_file="res://audio/Mersona - Tidehawk.ogg"
+dest_files=["res://.godot/imported/Mersona - Tidehawk.ogg-d1c36f84094fe9e1fa489d2b5da3eae7.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -39,9 +39,19 @@ func set_playback_speed(speed: float) -> void:
 
 func RegisterBeatmap(newBeatmap: Beatmap) -> void:
 	beatmap = newBeatmap
+	$AudioAgent.Reset()
 
 func IsSongStarted() -> bool:
 	return $AudioAgent.IsPlaying()
+
+func Start() -> void:
+	$AudioAgent.StartPlaying()
+
+func StopSongAtBreakpoint() -> void:
+	$AudioAgent.StopPlaying()
+	nextEmittedBeat = 0.0
+	nextEmittedMajorBeat = 0.0
+	nextEmittedMinorBeat = 1.0
 
 func RegisterOneShotTimer(timer: MusicTimer) -> void:
 	$OneShotTimers.add_child(timer)

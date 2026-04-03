@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://b6ffs5gg8enrj"
+path="res://.godot/imported/Mersona - Forge.ogg-f212aa8e1928d159e7b6bba23d4d96d8.oggvorbisstr"
+
+[deps]
+
+source_file="res://audio/Mersona - Forge.ogg"
+dest_files=["res://.godot/imported/Mersona - Forge.ogg-f212aa8e1928d159e7b6bba23d4d96d8.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

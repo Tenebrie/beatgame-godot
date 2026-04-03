@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bbm4dsyilwbgr"
+path="res://.godot/imported/Beat Saber - Commercial Pumping.ogg-1e873c4d051eb41484b0e5922bb4ffe5.oggvorbisstr"
+
+[deps]
+
+source_file="res://audio/Act1Temp/Beat Saber - Commercial Pumping.ogg"
+dest_files=["res://.godot/imported/Beat Saber - Commercial Pumping.ogg-1e873c4d051eb41484b0e5922bb4ffe5.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

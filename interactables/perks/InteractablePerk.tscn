@@ -1,0 +1,196 @@
+[gd_scene format=3 uid="uid://ct1863lst4c5k"]
+
+[ext_resource type="Script" uid="uid://0f7otvdog8ft" path="res://interactables/perks/InteractablePerk.gd" id="1_8fpwc"]
+[ext_resource type="Texture2D" uid="uid://b33eqhik1e1fp" path="res://assets/textures/particle_energy_wisp.png" id="1_vdyem"]
+[ext_resource type="PackedScene" uid="uid://bpynjgugic0on" path="res://interactables/perks/PerkSelectionButton.tscn" id="3_gtv8y"]
+[ext_resource type="Texture2D" uid="uid://cki1dkobqlb7v" path="res://interactables/perks/sprites/hope-golden-aspect-portrait-01.png" id="4_joxuq"]
+[ext_resource type="Script" uid="uid://dktgxlw3cpk3g" path="res://interactables/perks/PerkSelectionContainer.gd" id="4_qabww"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_4pneo"]
+size = Vector3(0.25, 0.5, 0.25)
+
+[sub_resource type="Gradient" id="Gradient_8fpwc"]
+offsets = PackedFloat32Array(0, 0.34776118, 0.6208955, 0.85223883, 1)
+colors = PackedColorArray(0.0333333, 0, 1, 0, 6.9789587e-07, 0.23418728, 0.32268015, 1, 0, 0.44207656, 0.4885171, 1, 0.19999981, 0, 1, 1, 0.35000038, 0, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_gtv8y"]
+gradient = SubResource("Gradient_8fpwc")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_4pneo"]
+emission_shape = 1
+emission_sphere_radius = 0.25
+direction = Vector3(0, 0, 0)
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+radial_accel_min = -2.0000021
+radial_accel_max = -2.0000021
+tangential_accel_min = 0.99999774
+tangential_accel_max = 0.99999774
+damping_min = 1.0
+damping_max = 1.0
+color_ramp = SubResource("GradientTexture1D_gtv8y")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8fpwc"]
+transparency = 1
+blend_mode = 1
+no_depth_test = true
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_vdyem")
+
+[sub_resource type="QuadMesh" id="QuadMesh_gtv8y"]
+material = SubResource("StandardMaterial3D_8fpwc")
+size = Vector2(0.15, 0.15)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_gtv8y"]
+emission_shape = 1
+emission_sphere_radius = 0.25
+direction = Vector3(0, 0, 0)
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+radial_accel_min = -2.0000021
+radial_accel_max = -2.0000021
+tangential_accel_min = 0.99999774
+tangential_accel_max = 0.99999774
+damping_min = 1.0
+damping_max = 1.0
+color_ramp = SubResource("GradientTexture1D_gtv8y")
+hue_variation_min = -0.020000022
+hue_variation_max = 0.019999977
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vdyem"]
+transparency = 1
+no_depth_test = true
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_vdyem")
+
+[sub_resource type="QuadMesh" id="QuadMesh_8fpwc"]
+material = SubResource("StandardMaterial3D_vdyem")
+size = Vector2(0.15, 0.15)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gtv8y"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.1, 0.1, 0.1, 0.96862745)
+corner_detail = 5
+
+[node name="InteractablePerk" type="Node3D" unique_id=1918109184]
+script = ExtResource("1_8fpwc")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1667054000]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+mesh = SubResource("BoxMesh_4pneo")
+
+[node name="GPUParticles3DGlow" type="GPUParticles3D" parent="." unique_id=588677337]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.699877, 0)
+amount = 1000
+lifetime = 2.0
+transform_align = 3
+process_material = SubResource("ParticleProcessMaterial_4pneo")
+draw_pass_1 = SubResource("QuadMesh_gtv8y")
+
+[node name="GPUParticles3DMix" type="GPUParticles3D" parent="." unique_id=443523235]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.699877, 0)
+amount = 1000
+lifetime = 2.0
+transform_align = 3
+process_material = SubResource("ParticleProcessMaterial_gtv8y")
+draw_pass_1 = SubResource("QuadMesh_8fpwc")
+
+[node name="Label3D" type="Label3D" parent="." unique_id=959416459]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.216577)
+pixel_size = 0.0013
+billboard = 1
+text = "F to pick up"
+font_size = 128
+
+[node name="PerksUI" type="CanvasLayer" parent="." unique_id=1585396273]
+
+[node name="Panel" type="Panel" parent="PerksUI" unique_id=1055184149]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_gtv8y")
+metadata/_edit_use_anchors_ = true
+
+[node name="AspectName" type="RichTextLabel" parent="PerksUI/Panel" unique_id=1061056335]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 913.0
+offset_top = -394.0
+offset_right = 2257.0
+offset_bottom = -234.0
+grow_vertical = 0
+theme_override_font_sizes/normal_font_size = 48
+theme_override_font_sizes/bold_font_size = 48
+theme_override_font_sizes/bold_italics_font_size = 48
+theme_override_font_sizes/italics_font_size = 48
+theme_override_font_sizes/mono_font_size = 48
+bbcode_enabled = true
+text = "[font_size=50][color=gold]Lyra[/color][/font_size]
+[font_size=40][color=goldenrod]Hope Incarnate[/color][/font_size]"
+fit_content = true
+
+[node name="AspectText" type="RichTextLabel" parent="PerksUI/Panel" unique_id=1097544555]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 913.0
+offset_top = -242.0
+offset_right = 2257.0
+offset_bottom = -82.0
+grow_vertical = 0
+theme_override_font_sizes/normal_font_size = 32
+theme_override_font_sizes/bold_font_size = 32
+theme_override_font_sizes/bold_italics_font_size = 32
+theme_override_font_sizes/italics_font_size = 32
+theme_override_font_sizes/mono_font_size = 32
+bbcode_enabled = true
+text = "[i]After all, why not? Why wouldn't I give myself a blessing?[/i]"
+fit_content = true
+
+[node name="TextureRect" type="TextureRect" parent="PerksUI/Panel" unique_id=1038061987]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -1024.0
+offset_right = 1024.0
+grow_vertical = 0
+texture = ExtResource("4_joxuq")
+
+[node name="MarginContainer" type="MarginContainer" parent="PerksUI" unique_id=817360247]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -1128.0
+offset_top = 104.0
+offset_bottom = 768.0
+grow_horizontal = 0
+theme_override_constants/margin_right = 128
+
+[node name="CenterContainer" type="CenterContainer" parent="PerksUI/MarginContainer" unique_id=504565482]
+layout_mode = 2
+
+[node name="PerkSelectionContainer" type="VBoxContainer" parent="PerksUI/MarginContainer/CenterContainer" unique_id=1654786422]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 32
+script = ExtResource("4_qabww")
+
+[node name="PerkSelectionButton" parent="PerksUI/MarginContainer/CenterContainer/PerkSelectionContainer" unique_id=1256839752 instance=ExtResource("3_gtv8y")]
+layout_mode = 2
+
+[node name="PerkSelectionButton2" parent="PerksUI/MarginContainer/CenterContainer/PerkSelectionContainer" unique_id=257452013 instance=ExtResource("3_gtv8y")]
+layout_mode = 2
+
+[node name="PerkSelectionButton3" parent="PerksUI/MarginContainer/CenterContainer/PerkSelectionContainer" unique_id=413150159 instance=ExtResource("3_gtv8y")]
+layout_mode = 2

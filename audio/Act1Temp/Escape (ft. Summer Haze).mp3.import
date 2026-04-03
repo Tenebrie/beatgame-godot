@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bgtnjd50wsoxf"
+path="res://.godot/imported/Escape (ft. Summer Haze).mp3-030939f9957ffc8cd0cebfa8e12cf8cb.mp3str"
+
+[deps]
+
+source_file="res://audio/Act1Temp/Escape (ft. Summer Haze).mp3"
+dest_files=["res://.godot/imported/Escape (ft. Summer Haze).mp3-030939f9957ffc8cd0cebfa8e12cf8cb.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

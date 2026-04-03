@@ -3,6 +3,8 @@
 ## Drag .tscn instead of just adding this node
 class_name Player extends Dancer
 
+@onready var abilityController: AbilityController = $AbilityController
+
 const MOVE_REPEAT_DELAY := 0.3
 const MOVE_SPEED := 30.0
 
@@ -16,11 +18,8 @@ func _ready() -> void:
 	maximumHealth = 4.0
 	maximumMetaHealth = 50.0
 	regeneration = 1.0 / 16.0 # 1 hp per 16 seconds
-	GridPosition = Vector2i(roundi(position.x), roundi(position.z))
-	isAlive = false
+	MakeImmune()
 	super._ready()
-	await get_tree().create_timer(0.2).timeout
-	isAlive = true
 	SetBasicAttackEffectEmitting(false)
 	SignalBus.OnFightBegin.connect(func() -> void: SetBasicAttackEffectEmitting(true))
 
@@ -34,8 +33,15 @@ func _ready() -> void:
 		SignalBus.OnPlayerDeath.emit()
 	)
 
+	await get_tree().create_timer(0.01).timeout
+	SignalBus.OnDancerMove.emit(GridPosition, Vector2i(-1000, -1000), self)
+	SignalBus.OnPlayerMove.emit(GridPosition, Vector2i(-1000, -1000))
+
+	await get_tree().create_timer(0.05).timeout
+	ForfeitImmunity()
+
 func _unhandled_input(event: InputEvent) -> void:
-	if not isAlive:
+	if not isAlive or isImmune:
 		return
 
 	if event is InputEventKey:

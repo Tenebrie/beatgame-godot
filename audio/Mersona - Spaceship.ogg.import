@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://c1onhvi7o2vmf"
+path="res://.godot/imported/Mersona - Spaceship.ogg-a4d143b59f9cf489dd1f56bc13b77afe.oggvorbisstr"
+
+[deps]
+
+source_file="res://audio/Mersona - Spaceship.ogg"
+dest_files=["res://.godot/imported/Mersona - Spaceship.ogg-a4d143b59f9cf489dd1f56bc13b77afe.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

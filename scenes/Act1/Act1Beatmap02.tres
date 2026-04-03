@@ -1,0 +1,59 @@
+[gd_resource type="Resource" script_class="Beatmap" format=3 uid="uid://br5tc64vk68f3"]
+
+[ext_resource type="AudioStream" uid="uid://cf56hx7spc8dr" path="res://audio/Mersona - Treant.ogg" id="1_h3nav"]
+[ext_resource type="Script" uid="uid://b3of2y8w21clc" path="res://addons/beatmap-plugin/resources/BeatmapPatternData.gd" id="2_0gwr2"]
+[ext_resource type="Script" uid="uid://dac2rue52tyom" path="res://addons/beatmap-plugin/resources/Beatmap.gd" id="3_xp35g"]
+
+[sub_resource type="Resource" id="Resource_8ab1g"]
+script = ExtResource("2_0gwr2")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_gugns"]
+script = ExtResource("2_0gwr2")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_6xtnj"]
+script = ExtResource("2_0gwr2")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_e15ft"]
+script = ExtResource("2_0gwr2")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_1tcwq"]
+script = ExtResource("2_0gwr2")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_xedil"]
+script = ExtResource("2_0gwr2")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_8w721"]
+script = ExtResource("2_0gwr2")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_tr8vr"]
+script = ExtResource("2_0gwr2")
+finishedAt = 390.5
+
+[sub_resource type="Resource" id="Resource_vubow"]
+script = ExtResource("2_0gwr2")
+finishedAt = 390.5
+
+[resource]
+script = ExtResource("3_xp35g")
+bpm = 72
+gridSize = Vector2i(3, 3)
+audioFile = ExtResource("1_h3nav")
+patterns = Dictionary[String, Array]({
+"0-0": [SubResource("Resource_8ab1g")],
+"0-1": [SubResource("Resource_gugns")],
+"0-2": [SubResource("Resource_6xtnj")],
+"1-0": [SubResource("Resource_e15ft")],
+"1-1": [SubResource("Resource_1tcwq")],
+"1-2": [SubResource("Resource_xedil")],
+"2-0": [SubResource("Resource_8w721")],
+"2-1": [SubResource("Resource_tr8vr")],
+"2-2": [SubResource("Resource_vubow")]
+})
+metadata/_custom_type_script = "uid://dac2rue52tyom"

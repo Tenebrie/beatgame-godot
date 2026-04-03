@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://c22s4f4eod74k"
+path="res://.godot/imported/Mersona - Intermission.ogg-2f1ac2a87257de0291433c0e76ac0197.oggvorbisstr"
+
+[deps]
+
+source_file="res://audio/Mersona - Intermission.ogg"
+dest_files=["res://.godot/imported/Mersona - Intermission.ogg-2f1ac2a87257de0291433c0e76ac0197.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

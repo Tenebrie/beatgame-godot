@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cf56hx7spc8dr"
+path="res://.godot/imported/Mersona - Treant.ogg-b03ab5906d05d17c6b37b9ca4c050bcb.oggvorbisstr"
+
+[deps]
+
+source_file="res://audio/Mersona - Treant.ogg"
+dest_files=["res://.godot/imported/Mersona - Treant.ogg-b03ab5906d05d17c6b37b9ca4c050bcb.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
