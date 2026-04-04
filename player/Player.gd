@@ -3,6 +3,7 @@
 ## Drag .tscn instead of just adding this node
 class_name Player extends Dancer
 
+@onready var combatManager: PlayerCombatManager = $PlayerCombatManager
 @onready var abilityController: AbilityController = $AbilityController
 
 const MOVE_REPEAT_DELAY := 0.3
@@ -88,12 +89,16 @@ func RefillStamina() -> void:
 	staminaUsed = 0.0
 	usedStaminaThisBeat = false
 
+func staminaEnabled() -> bool:
+	#return combatManager.IsInCombat()
+	return true
+
 func Step(dir: Vector2i) -> void:
-	if usedStaminaThisBeat and maximumStamina - staminaUsed < 1.0:
+	if staminaEnabled() and usedStaminaThisBeat and maximumStamina - staminaUsed < 1.0:
 		performBonk(dir)
 		return
 
-	if AudioSystem.IsSongStarted():
+	if staminaEnabled() and AudioSystem.IsSongStarted():
 		if usedStaminaThisBeat:
 			staminaUsed += 1.0
 		else:

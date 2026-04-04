@@ -28,6 +28,12 @@ func _ready() -> void:
 	beatTimer.timeout.connect(_onBeat)
 	beatTimer.start_repeatable(0.0)
 
+	SignalBus.ArenaReset.connect(func() -> void:
+		beatTimer = MusicTimer.Create()
+		beatTimer.timeout.connect(_onBeat)
+		beatTimer.start_repeatable(0.0)
+	)
+
 
 func _onBeat(triggerBeat: int) -> void:
 	if not isAlive:

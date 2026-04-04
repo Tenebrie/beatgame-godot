@@ -7,11 +7,6 @@ func _enter_tree() -> void:
 	GlobalContext.Register(self)
 
 var isStarting := false
-func _ready() -> void:
-	SignalBus.OnFightBegin.connect(func() -> void:
-		StartPlaying()
-	)
-
 func get_bpm() -> float:
 	return AudioSystem.beatmap.bpm
 
@@ -53,6 +48,8 @@ func set_starting_time(beats: float) -> void:
 	starting_time = beats
 
 func StartPlaying() -> void:
+	if not Engine.is_editor_hint():
+		($AudioStreamPlayer as AudioStreamPlayer).bus = AudioSystem.audioBus.getName()
 	$AudioStreamPlayer.stream = AudioSystem.beatmap.audioFile
 	isStarting = true
 	await get_tree().create_timer(0.5).timeout
@@ -80,3 +77,6 @@ func Reset() -> void:
 	$AudioStreamPlayer.stop()
 	$AudioStreamPlayer.seek(0.0)
 	$AudioStreamPlayer.pitch_scale = 1.0
+
+func GetAudioPlayer() -> AudioStreamPlayer:
+	return $AudioStreamPlayer

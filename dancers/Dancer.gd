@@ -9,7 +9,7 @@ var GridPosition := Vector2i.ZERO
 var DancerPosition := Vector3.ZERO
 var DancerTargetPosition := Vector3.ZERO
 
-signal takeTurn(beat: float)
+signal onTakeTurn(beat: float)
 
 signal onDamageTaken(damage: float)
 signal onDeath()
@@ -19,15 +19,15 @@ func _ready() -> void:
 	DancerPosition = GridToWorld(GridPosition)
 	DancerTargetPosition = DancerPosition
 	position = DancerPosition
-	SignalBus.OnAnyBeat.connect(func (beat: float) -> void:
+	SignalBus.AfterAnyBeat.connect(func (beat: float) -> void:
 		if not isAlive:
 			return
 		if is_equal_approx(floorf(beat), beat):
 			if not Flags.has(Flag.Slow) or floori(beat) % 2 == 0:
-				takeTurn.emit(beat)
+				onTakeTurn.emit(beat)
 
 		if Flags.has(Flag.Quick) and is_equal_approx(floorf(beat) + 0.5, beat):
-			takeTurn.emit(beat)
+			onTakeTurn.emit(beat)
 	)
 	onDeath.connect(func() -> void:
 		await get_tree().create_timer(2.0).timeout

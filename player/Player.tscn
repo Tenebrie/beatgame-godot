@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dlqg8ptgam5u1" path="res://player/Player.gd" id="1_jaxf2"]
 [ext_resource type="PackedScene" uid="uid://1ln74qn7kk6a" path="res://player/abilities/AbilityController.tscn" id="2_wnvi2"]
+[ext_resource type="Script" uid="uid://csujwpvhyv4v" path="res://player/PlayerCombatManager.gd" id="3_mhpjh"]
 [ext_resource type="PackedScene" uid="uid://d3e4saftlukk" path="res://player/abilities/BasicAttack/PlayerFireEffect.tscn" id="4_83hs8"]
 [ext_resource type="PackedScene" uid="uid://dbb5s1t0e30wa" path="res://player/aspects/onyx/OnyxAspectSprite.tscn" id="5_x8kxw"]
 [ext_resource type="PackedScene" uid="uid://i40vqvhvbt8t" path="res://player/aspects/gold/GoldenAspectSprite.tscn" id="6_aqcbf"]
@@ -16,6 +17,9 @@ radius = 0.25
 script = ExtResource("1_jaxf2")
 
 [node name="AbilityController" parent="." unique_id=875623621 instance=ExtResource("2_wnvi2")]
+
+[node name="PlayerCombatManager" type="Node" parent="." unique_id=618956227]
+script = ExtResource("3_mhpjh")
 
 [node name="PlayerFireEffect" parent="." unique_id=718987839 instance=ExtResource("4_83hs8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.36021847, 0.01941812, 0)

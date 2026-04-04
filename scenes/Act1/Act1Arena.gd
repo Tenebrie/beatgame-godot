@@ -19,37 +19,8 @@ func _ready() -> void:
 
 	BeatmapLoader.LoadAudio(beatmap)
 	BeatmapLoader.LoadInitial(beatmap)
-	var firstChunk := actGenerator.GeneratePath(Vector2i(3, 1))
-	if not Engine.is_editor_hint():
-		firstChunk.onCleared.connect(func() -> void:
-			MessageLog.PrintMessage("The way forward is now open!")
-			GlobalContext.GetPlayer().RefillStamina()
-			AudioSystem.StopSongAtBreakpoint()
-			SignalBus.clearTimersBefore.emit(99999)
+	CreateChunk(Vector2i(3, 1), 3, beatmaps)
 
-			var secondPerkSelector := Asset.Instantiate(InteractablePerk) as InteractablePerk
-			secondPerkSelector.position = Vector3(firstChunk.endPoint.x, 0, firstChunk.endPoint.y)
-			$DanceFloor.add_child(secondPerkSelector)
-			secondPerkSelector.perkSelected.connect(func() -> void:
-				BeatmapLoader.LoadAudio(beatmaps[1])
-				AudioSystem.Start()
-				for i in range(512):
-					Trigger.BasicAttack().Delay(i)
-
-				var secondChunk := actGenerator.GeneratePath(firstChunk.endPoint)
-				secondChunk.onCleared.connect(func() -> void:
-					MessageLog.PrintMessage("The way forward is now open!")
-					GlobalContext.GetPlayer().RefillStamina()
-					var thirdChunk := actGenerator.GeneratePath(secondChunk.endPoint)
-					thirdChunk.onCleared.connect(func() -> void:
-						MessageLog.PrintMessage("Act 1 cleared, now get to the exit!")
-						GlobalContext.GetPlayer().RefillStamina()
-						actGenerator.GenerateExit(thirdChunk.endPoint)
-					)
-				)
-			)
-
-		)
 	Pattern.SingleIndexed(Vector2i(4, 1)).DestroyTile()
 	SignalBus.OnFlushAllTimers.emit()
 
@@ -69,3 +40,32 @@ func _ready() -> void:
 		Trigger.BasicAttack().Delay(i)
 
 	($MainCamera as MainCamera).SetCameraMode(MainCamera.Mode.ForceFollowPlayer)
+
+func CreateChunk(startPosition: Vector2i, maxDepth: int, beatmaps: Array[Beatmap], depth := 0) -> void:
+	var chunk := actGenerator.GeneratePath(startPosition)
+	if Engine.is_editor_hint():
+		return
+
+	chunk.onCleared.connect(func() -> void:
+		MessageLog.PrintMessage("The way forward is now open!")
+		GlobalContext.GetPlayer().RefillStamina()
+		AudioSystem.StopSongAtBreakpoint()
+
+		if depth + 1 < maxDepth:
+			var perkSelector := Asset.Instantiate(InteractablePerk) as InteractablePerk
+			perkSelector.position = Vector3(chunk.endPoint.x, 0, chunk.endPoint.y)
+			$DanceFloor.add_child(perkSelector)
+
+			perkSelector.perkSelected.connect(func() -> void:
+				await AudioSystem.WaitForBreakpoint()
+				GlobalContext.GetPlayer().RefillStamina()
+				BeatmapLoader.LoadAudio(beatmaps[depth + 1])
+				SignalBus.OnFightBegin.emit()
+				for i in range(512):
+					Trigger.BasicAttack().Delay(i)
+				CreateChunk(chunk.endPoint, maxDepth, beatmaps, depth + 1)
+			)
+		else:
+			MessageLog.PrintMessage("Act 1 cleared, now get to the exit!")
+			actGenerator.GenerateExit(chunk.endPoint)
+	)

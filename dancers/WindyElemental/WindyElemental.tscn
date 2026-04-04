@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://r2ntysoxv7of"]
+
+[ext_resource type="Script" uid="uid://dwy8j2gil1dmv" path="res://dancers/WindyElemental/WindyElemental.gd" id="1_r7267"]
+[ext_resource type="Texture2D" uid="uid://dopg5jifo22al" path="res://dancers/WindyElemental/assets/SpriteWindyElemental.png" id="2_r7267"]
+[ext_resource type="Script" uid="uid://olg4ad5e1h8x" path="res://dancers/DancerPathing.gd" id="3_v6kll"]
+[ext_resource type="Script" uid="uid://baj6ce53tf1yu" path="res://dancers/DancerSpriteHitEffect.gd" id="4_pinln"]
+[ext_resource type="Texture2D" uid="uid://c3ffxblc18smg" path="res://assets/textures/soft_circle_particle.png" id="5_sko76"]
+[ext_resource type="PackedScene" uid="uid://b2tilbn0276hj" path="res://dancers/common/DancerAttackChargeEffect.tscn" id="6_1k47r"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5w6hj"]
+
+[node name="WindyElemental" type="Node3D" unique_id=854401512]
+script = ExtResource("1_r7267")
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=1912512195]
+transform = Transform3D(0.09, 0, 0, 0, 0.09, 0, 0, 0, 0.09, 0, 0, 0)
+flip_h = true
+billboard = 1
+shaded = true
+double_sided = false
+texture = ExtResource("2_r7267")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=1143600091]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=918365067]
+shape = SubResource("CapsuleShape3D_5w6hj")
+
+[node name="DancerPathing" type="Node" parent="." unique_id=746935520]
+script = ExtResource("3_v6kll")
+
+[node name="DancerSpriteHitEffect" type="Node" parent="." unique_id=1821820522]
+script = ExtResource("4_pinln")
+
+[node name="ShadowDecal" type="Decal" parent="." unique_id=463782801]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.441, 0.103453934)
+size = Vector3(0.5, 0.7, 0.5)
+texture_albedo = ExtResource("5_sko76")
+modulate = Color(0, 0, 0, 1)
+
+[node name="DancerAttackChargeEffect" parent="." unique_id=2036547396 instance=ExtResource("6_1k47r")]

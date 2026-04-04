@@ -104,12 +104,15 @@ func spawnElitePackAt(baseDist: int, pathData: PathData) -> void:
 	spawnPack(baseDist, dancerCount, pathData)
 
 func spawnPack(baseDist: int, dancerCount: int, pathData: PathData) -> void:
+	var validDancers: Array[PackedScene]
+	validDancers.append(preload("res://dancers/Stormbird/Stormbird.tscn"))
+	validDancers.append(preload("res://dancers/WindyElemental/WindyElemental.tscn"))
 	var distRange := Vector2i(-2, 1)
 	for d in range(dancerCount):
 		var isSpawned := false
 		for retry in range(3):
 			var distToSpawn := baseDist + randi_range(distRange.x, distRange.y)
-			var dancerScene := preload("res://dancers/Stormbird/Stormbird.tscn")
+			var dancerScene: PackedScene = validDancers.pick_random()
 			var randomTilePosition: Vector2i = tilesAtDistance[distToSpawn].pick_random()
 			if occupiedTiles.has(randomTilePosition):
 				continue

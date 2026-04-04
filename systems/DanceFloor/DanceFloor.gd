@@ -110,6 +110,9 @@ func HasTile(pos: Vector2i) -> bool:
 	return tilemap.has(pos)
 
 func IsTileOccupied(pos: Vector2i) -> bool:
+	if not HasTile(pos):
+		return true
+
 	var player := GlobalContext.GetPlayer()
 	if player.GridPosition == pos:
 		return true
