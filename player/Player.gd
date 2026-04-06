@@ -5,6 +5,7 @@ class_name Player extends Dancer
 
 @onready var combatManager: PlayerCombatManager = $PlayerCombatManager
 @onready var abilityController: AbilityController = $AbilityController
+@onready var perkManager: PlayerPerkManager = $PerkManager
 
 const MOVE_REPEAT_DELAY := 0.3
 const MOVE_SPEED := 30.0

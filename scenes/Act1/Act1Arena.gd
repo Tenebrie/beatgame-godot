@@ -11,7 +11,7 @@ func _ready() -> void:
 		ResourceLoader.load("res://scenes/Act1/Act1Beatmap04.tres")
 	]
 	beatmaps.shuffle()
-	var beatmap: Beatmap = beatmaps[0]
+	var beatmap: Beatmap = beatmaps.pop_front()
 
 	var args := DanceFloor.InitArgs.new()
 	args.gridSize = beatmap.gridSize
@@ -27,13 +27,24 @@ func _ready() -> void:
 	var perkSelector := Asset.Instantiate(InteractablePerk) as InteractablePerk
 	perkSelector.position = Vector3(3, 0, 1)
 	$DanceFloor.add_child(perkSelector)
-	perkSelector.perkSelected.connect(func() -> void:
-		Pattern.SingleIndexed(Vector2i(4, 1)).RestoreTile()
-		SignalBus.OnFightBegin.emit()
-	)
 
 	if Engine.is_editor_hint():
 		return
+
+	perkSelector.perkSelected.connect(func() -> void:
+		Pattern.SingleIndexed(Vector2i(4, 1)).RestoreTile()
+		SignalBus.OnFightBegin.emit()
+		AudioSystem.onSongFinished.connect(func() -> void:
+			if beatmaps.size() == 0:
+				MessageLog.PrintMessage("It seems we ran out of music! That's a defeat, I guess.")
+			var nextBeatmap: Beatmap = beatmaps.pop_front()
+			SignalBus.ArenaReset.emit()
+			BeatmapLoader.LoadAudio(nextBeatmap)
+			SignalBus.OnFightBegin.emit()
+			for i in range(512):
+				Trigger.BasicAttack().Delay(i)
+		)
+	)
 	BeatmapLoader.Load(beatmap)
 
 	for i in range(512):
@@ -59,10 +70,11 @@ func CreateChunk(startPosition: Vector2i, maxDepth: int, beatmaps: Array[Beatmap
 			perkSelector.perkSelected.connect(func() -> void:
 				await AudioSystem.WaitForBreakpoint()
 				GlobalContext.GetPlayer().RefillStamina()
-				BeatmapLoader.LoadAudio(beatmaps[depth + 1])
-				SignalBus.OnFightBegin.emit()
-				for i in range(512):
-					Trigger.BasicAttack().Delay(i)
+				#BeatmapLoader.LoadAudio(beatmaps[depth + 1])
+				#SignalBus.OnFightBegin.emit()
+				AudioSystem.ResumeFromBreakpoint()
+				#for i in range(512):
+					#Trigger.BasicAttack().Delay(i)
 				CreateChunk(chunk.endPoint, maxDepth, beatmaps, depth + 1)
 			)
 		else:

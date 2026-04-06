@@ -1,7 +1,11 @@
 class_name BasicFireballProjectile extends Node3D
 
+var startingPosition: Vector3
+
 func _ready() -> void:
 	$Area3D.area_entered.connect(OnCollision)
+	await get_tree().process_frame
+	startingPosition = global_position
 	await get_tree().create_timer(2.5).timeout
 	queue_free()
 
@@ -9,10 +13,6 @@ func OnCollision(other: Area3D) -> void:
 	if other.get_parent() is not Boss and other.get_parent() is not Dancer or other.get_parent() is Player \
 		or not other.get_parent().isAlive:
 		return
-	isDestroyed = true
-	$GPUParticles3D.emitting = false
-	create_tween().tween_property($OmniLight3D, ^"omni_range", 0.0, 0.5)
-	create_tween().tween_property($MeshInstance3D, ^"scale", Vector3.ZERO, 0.2)
 
 	if other.get_parent() is Boss:
 		var boss := other.get_parent() as Boss
@@ -20,6 +20,14 @@ func OnCollision(other: Area3D) -> void:
 	elif other.get_parent() is Dancer:
 		var dancer := other.get_parent() as Dancer
 		dancer.DealDamage(1.0)
+
+	destroy()
+
+func destroy() -> void:
+	isDestroyed = true
+	$GPUParticles3D.emitting = false
+	create_tween().tween_property($OmniLight3D, ^"omni_range", 0.0, 0.5)
+	create_tween().tween_property($MeshInstance3D, ^"scale", Vector3.ZERO, 0.2)
 	await get_tree().create_timer(0.5).timeout
 	queue_free()
 
@@ -28,5 +36,10 @@ var isDestroyed := false
 func _process(delta: float) -> void:
 	if isDestroyed:
 		return
+
+	if global_position.distance_squared_to(startingPosition) > BasicFireball.MaxRange ** 2:
+		destroy()
+		return
+
 	var forward := -global_transform.basis.z
 	global_position += forward * 12.0 * delta

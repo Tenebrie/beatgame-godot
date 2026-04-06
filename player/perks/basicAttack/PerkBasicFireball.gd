@@ -5,7 +5,7 @@ static func Build() -> Definition:
 		.SetRarity(Perk.Rarity.Unique) \
 		.Name("Fireball") \
 		.Description("Attacks every beat, manifesting a projectile that travels in a straight line.") \
-		.Description("[b]Damage: [/b] 1") \
+		.Description("[b]Damage: [/b] %d"%[BasicFireball.BaseDamage]) \
 		.Description("[b]Range: [/b] 4 tiles") \
 		.ProvidesAbility(BasicFireball) \
 		.ImplementedBy(PerkBasicFireball)

@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://b2tilbn0276hj" path="res://dancers/common/DancerAttackChargeEffect.tscn" id="6_1k47r"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5w6hj"]
+radius = 0.4
 
 [node name="WindyElemental" type="Node3D" unique_id=854401512]
 script = ExtResource("1_r7267")

@@ -39,8 +39,11 @@ class Definition:
 	var rarity: Rarity
 	var perkName: String
 	var perkDescription: String
+	var maxLevel: int = 1
 	var implementation: GDScript
 	var abilities: Array[GDScript]
+	var requiresAbilities: Array[GDScript]
+	var requiresPerks: Array[Array] # Array[Array[GDScript]]
 
 	func SetRarity(value: Rarity) -> Definition:
 		rarity = value
@@ -57,12 +60,28 @@ class Definition:
 			perkDescription = value
 		return self
 
+	func MaxLevel(value: int) -> Definition:
+		maxLevel = value
+		return self
+
 	func ImplementedBy(implClass: GDScript) -> Definition:
 		implementation = implClass
 		return self
 
 	func ProvidesAbility(ability: GDScript) -> Definition:
 		abilities.append(ability)
+		return self
+
+	func RequiresAbility(ability: GDScript) -> Definition:
+		requiresAbilities.append(ability)
+		return self
+
+	func RequiresPerk(perk: GDScript) -> Definition:
+		requiresPerks.append([perk])
+		return self
+
+	func RequiresAnyPerk(perks: Array[GDScript]) -> Definition:
+		requiresPerks.append(perks as Array)
 		return self
 
 	func InstantiateForPlayer() -> Perk:
@@ -73,7 +92,7 @@ class Definition:
 		else:
 			instance = Perk.new()
 		instance.definition = self
-		forPlayer.add_child(instance)
+		forPlayer.perkManager.AddPerk(instance)
 		return instance
 
 static func Build() -> Definition:

@@ -13,6 +13,18 @@
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_aqcbf"]
 radius = 0.25
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mhpjh"]
+shading_mode = 0
+vertex_color_use_as_albedo = true
+
+[sub_resource type="Curve" id="Curve_5qrx2"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.05908324, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_ndjxb"]
+offsets = PackedFloat32Array(0, 0.2890411, 0.739726, 1)
+colors = PackedColorArray(0.58, 0.36733332, 0, 0, 0.68, 0.442, 0, 1, 0.6784314, 0.44313726, 0, 1, 0, 0, 0, 0)
+
 [node name="Player" type="CharacterBody3D" unique_id=241487594]
 script = ExtResource("1_jaxf2")
 
@@ -22,12 +34,13 @@ script = ExtResource("1_jaxf2")
 script = ExtResource("3_mhpjh")
 
 [node name="PlayerFireEffect" parent="." unique_id=718987839 instance=ExtResource("4_83hs8")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.36021847, 0.01941812, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.27585143, 0.01941812, 0)
 
 [node name="OnyxAspectSprite" parent="." unique_id=857837674 instance=ExtResource("5_x8kxw")]
 visible = false
 
 [node name="GoldenAspectSprite" parent="." unique_id=1106510460 instance=ExtResource("6_aqcbf")]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
 
 [node name="PlayerOnyxEffect" parent="." unique_id=853868488 instance=ExtResource("7_gskgj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.06216886, 0, 0.060293525)
@@ -43,6 +56,42 @@ script = ExtResource("7_06mnu")
 
 [node name="ShadowDecal" type="Decal" parent="." unique_id=1685764202]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.441, 0)
-size = Vector3(0.75, 0.75, 0.75)
+size = Vector3(0.6, 0.6, 0.6)
 texture_albedo = ExtResource("8_06mnu")
 modulate = Color(0, 0, 0, 1)
+
+[node name="VaporTrail" type="VaporTrail" parent="." unique_id=22320599]
+num_points = 20
+update_interval = 0.001
+material = SubResource("StandardMaterial3D_mhpjh")
+size = 0.05
+size_curve = SubResource("Curve_5qrx2")
+color_gradient = SubResource("Gradient_ndjxb")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.125, -0.15, 0.125)
+
+[node name="VaporTrail2" type="VaporTrail" parent="." unique_id=420043621]
+num_points = 20
+update_interval = 0.001
+material = SubResource("StandardMaterial3D_mhpjh")
+size = 0.05
+size_curve = SubResource("Curve_5qrx2")
+color_gradient = SubResource("Gradient_ndjxb")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.125, -0.15, 0.125)
+
+[node name="VaporTrail3" type="VaporTrail" parent="." unique_id=1481649219]
+num_points = 20
+update_interval = 0.001
+material = SubResource("StandardMaterial3D_mhpjh")
+size = 0.05
+size_curve = SubResource("Curve_5qrx2")
+color_gradient = SubResource("Gradient_ndjxb")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.125, -0.15, -0.125)
+
+[node name="VaporTrail4" type="VaporTrail" parent="." unique_id=1107952688]
+num_points = 20
+update_interval = 0.001
+material = SubResource("StandardMaterial3D_mhpjh")
+size = 0.05
+size_curve = SubResource("Curve_5qrx2")
+color_gradient = SubResource("Gradient_ndjxb")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.125, -0.15, -0.125)

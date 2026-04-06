@@ -1,6 +1,8 @@
 @tool
 extends Node
 
+signal onSongFinished
+
 var beatmap: Beatmap
 var isTimerOrderDirty := false
 
@@ -62,6 +64,7 @@ func IsSongStarted() -> bool:
 var fadeOutTween: Tween
 
 func Start() -> void:
+	var agent: AudioAgent = $AudioAgent
 	$AudioAgent.StartPlaying()
 	if fadeOutTween:
 		fadeOutTween.kill()
@@ -69,10 +72,26 @@ func Start() -> void:
 	fadeOutReverbEffect.wet = 0.0
 	$AudioAgent.GetAudioPlayer().volume_linear = 0.7
 
+	var duration := agent.getDurationBeats()
+	var timer := MusicTimer.Create()
+	timer.start(duration)
+	timer.timeout.connect(func(_beat: float) -> void:
+		onSongFinished.emit()
+	)
+
 var breakpointTimer: MusicTimer
 func WaitForBreakpoint() -> void:
 	if breakpointTimer and not breakpointTimer.is_passed():
 		await breakpointTimer.timeout
+
+func ResumeFromBreakpoint() -> void:
+	var audioAgent: AudioAgent = $AudioAgent
+	var player := audioAgent.GetAudioPlayer()
+	fadeOutReverbEffect.dry = 1
+	fadeOutReverbEffect.wet = 0
+	audioAgent.Resume()
+	fadeOutTween = create_tween()
+	fadeOutTween.tween_property(player, ^"volume_linear", 0.7, 2.0)
 
 func StopSongAtBreakpoint() -> void:
 	var audioAgent: AudioAgent = $AudioAgent
@@ -92,8 +111,8 @@ func StopSongAtBreakpoint() -> void:
 	breakpointTimer = timer
 	timer.start(nextBreakpoint)
 	timer.timeout.connect(func(_beat: float) -> void:
-		$AudioAgent.StopPlaying()
-		SignalBus.ArenaReset.emit()
+		$AudioAgent.Pause()
+		#SignalBus.ArenaReset.emit()
 	)
 
 func RegisterOneShotTimer(timer: MusicTimer) -> void:

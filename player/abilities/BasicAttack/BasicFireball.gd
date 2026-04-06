@@ -2,13 +2,31 @@ class_name BasicFireball extends Ability
 
 var targetDirection := Vector3.RIGHT
 
+static var BaseDamage := 1
+static var MaxRange := 4 # tiles
+
+static func GetDamage() -> float:
+	return BaseDamage
+
+static func GetPiercing() -> int:
+	var perkManager := GlobalContext.GetPlayer().perkManager
+	var value := 1
+	if perkManager.Has(PerkPiercingFireball):
+		value = 100
+	return value
+
+static func GetBounce() -> int:
+	var perkManager := GlobalContext.GetPlayer().perkManager
+	var value := 1 + perkManager.Count(PerkPiercingFireball)
+	return value
+
 func _ready() -> void:
 	SignalBus.OnBasicBeat.connect(on_basic_beat)
 
 func on_basic_beat() -> void:
 	var projectile := Asset.Instantiate(BasicFireballProjectile) as BasicFireballProjectile
 	get_tree().root.add_child(projectile)
-	projectile.global_position = GlobalContext.GetPlayer().global_position + Vector3(0.35, -0.08, -0.05)
+	projectile.global_position = GlobalContext.GetPlayer().global_position + Vector3(0.3, -0.08, -0.05)
 	projectile.look_at(projectile.global_position + targetDirection * 90.0)
 	if isAutoAim:
 		projectile.look_at(GlobalContext.GetBoss().global_position)

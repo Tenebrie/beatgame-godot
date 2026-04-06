@@ -26,6 +26,10 @@ func get_duration_seconds() -> float:
 	var player := $AudioStreamPlayer as AudioStreamPlayer
 	return player.stream.get_length()
 
+func getDurationBeats() -> float:
+	var seconds := get_duration_seconds()
+	return seconds / 60.0 * get_bpm()
+
 func fast_forward(beats: float) -> void:
 	var current := get_position_beats()
 	var target := current + beats - 4
