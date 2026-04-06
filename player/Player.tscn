@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://1ln74qn7kk6a" path="res://player/abilities/AbilityController.tscn" id="2_wnvi2"]
 [ext_resource type="Script" uid="uid://csujwpvhyv4v" path="res://player/PlayerCombatManager.gd" id="3_mhpjh"]
 [ext_resource type="PackedScene" uid="uid://d3e4saftlukk" path="res://player/abilities/BasicAttack/PlayerFireEffect.tscn" id="4_83hs8"]
+[ext_resource type="Script" uid="uid://bsecxursdgkmy" path="res://player/PlayerPerkManager.gd" id="4_ndjxb"]
 [ext_resource type="PackedScene" uid="uid://dbb5s1t0e30wa" path="res://player/aspects/onyx/OnyxAspectSprite.tscn" id="5_x8kxw"]
 [ext_resource type="PackedScene" uid="uid://i40vqvhvbt8t" path="res://player/aspects/gold/GoldenAspectSprite.tscn" id="6_aqcbf"]
 [ext_resource type="Script" uid="uid://baj6ce53tf1yu" path="res://dancers/DancerSpriteHitEffect.gd" id="7_06mnu"]
@@ -32,6 +33,9 @@ script = ExtResource("1_jaxf2")
 
 [node name="PlayerCombatManager" type="Node" parent="." unique_id=618956227]
 script = ExtResource("3_mhpjh")
+
+[node name="PlayerPerkManager" type="Node" parent="." unique_id=920526834]
+script = ExtResource("4_ndjxb")
 
 [node name="PlayerFireEffect" parent="." unique_id=718987839 instance=ExtResource("4_83hs8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.27585143, 0.01941812, 0)

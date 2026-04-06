@@ -1,5 +1,7 @@
 class_name PlayerPerkManager extends Node
 
+@onready var player: Player = get_parent()
+
 func Add(perk: Perk) -> void:
 	add_child(perk)
 

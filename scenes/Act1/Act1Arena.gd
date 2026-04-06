@@ -19,7 +19,7 @@ func _ready() -> void:
 
 	BeatmapLoader.LoadAudio(beatmap)
 	BeatmapLoader.LoadInitial(beatmap)
-	CreateChunk(Vector2i(3, 1), 3, beatmaps)
+	CreateChunk(Vector2i(3, 1), 5, beatmaps)
 
 	Pattern.SingleIndexed(Vector2i(4, 1)).DestroyTile()
 	SignalBus.OnFlushAllTimers.emit()

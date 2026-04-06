@@ -1,6 +1,7 @@
 class_name Perk extends Node
 
-@onready var player: Player = get_parent()
+@onready var perkManager: PlayerPerkManager = get_parent()
+@onready var player: Player = perkManager.player
 
 var definition: Definition
 
@@ -92,7 +93,7 @@ class Definition:
 		else:
 			instance = Perk.new()
 		instance.definition = self
-		forPlayer.perkManager.AddPerk(instance)
+		forPlayer.perkManager.Add(instance)
 		return instance
 
 static func Build() -> Definition:
