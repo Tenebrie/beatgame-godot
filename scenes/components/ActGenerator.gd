@@ -16,7 +16,7 @@ class PathData:
 	var adversariesRemaining: int
 	var adversaries: Array[Dancer]
 
-func GeneratePath(origin: Vector2i, steps: int = 40) -> PathData:
+func GeneratePath(origin: Vector2i, steps: int = 40, difficulty: float = 1.0) -> PathData:
 	var position := origin
 	var pathData := PathData.new()
 
@@ -37,13 +37,13 @@ func GeneratePath(origin: Vector2i, steps: int = 40) -> PathData:
 	var dancerPackCount := 3
 	for i in range(1, dancerPackCount + 1):
 		var baseDistToSpawn := i * floori(steps / float(dancerPackCount))
-		spawnNormalPackAt(baseDistToSpawn, pathData)
+		spawnNormalPackAt(baseDistToSpawn, pathData, difficulty)
 
 	var sortedKeys := tilesAtDistance.keys()
 	sortedKeys.sort()
 	var furthestTile: int = sortedKeys[-1]
 
-	spawnElitePackAt(furthestTile - 3, pathData)
+	spawnElitePackAt(furthestTile - 3, pathData, difficulty)
 
 	pathData.endPoint = position + Vector2i(3, 0)
 	if not Engine.is_editor_hint():
@@ -95,15 +95,15 @@ func generatePathSegment(position: Vector2i, steps: int) -> Vector2i:
 		position += Vector2i(roundi(dir.x), roundi(dir.y))
 	return position
 
-func spawnNormalPackAt(baseDist: int, pathData: PathData) -> void:
+func spawnNormalPackAt(baseDist: int, pathData: PathData, difficulty: float) -> void:
 	var dancerCount := randi_range(2, 3)
-	spawnPack(baseDist, dancerCount, pathData)
+	spawnPack(baseDist, dancerCount, pathData, difficulty)
 
-func spawnElitePackAt(baseDist: int, pathData: PathData) -> void:
+func spawnElitePackAt(baseDist: int, pathData: PathData, difficulty: float) -> void:
 	var dancerCount := randi_range(3, 4)
-	spawnPack(baseDist, dancerCount, pathData)
+	spawnPack(baseDist, dancerCount, pathData, difficulty * 1.3 + 0.2)
 
-func spawnPack(baseDist: int, dancerCount: int, pathData: PathData) -> void:
+func spawnPack(baseDist: int, dancerCount: int, pathData: PathData, difficulty: float) -> void:
 	var validDancers: Array[PackedScene]
 	validDancers.append(preload("res://dancers/Stormbird/Stormbird.tscn"))
 	validDancers.append(preload("res://dancers/WindyElemental/WindyElemental.tscn"))
@@ -119,6 +119,7 @@ func spawnPack(baseDist: int, dancerCount: int, pathData: PathData) -> void:
 			var dancer: Dancer = dancerScene.instantiate()
 			dancer.position = Vector3(randomTilePosition.x, 0.2, randomTilePosition.y)
 			danceFloor.add_child(dancer)
+			dancer.maximumHealth *= difficulty
 			pathData.adversaries.append(dancer)
 			occupiedTiles.append(randomTilePosition)
 			isSpawned = true

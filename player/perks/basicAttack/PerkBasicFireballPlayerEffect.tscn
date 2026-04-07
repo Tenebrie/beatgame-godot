@@ -1,13 +1,8 @@
 [gd_scene format=3 uid="uid://d3e4saftlukk"]
 
-[ext_resource type="Texture2D" uid="uid://c3ffxblc18smg" path="res://assets/textures/soft_circle_particle.png" id="1_8m2qw"]
-
-[sub_resource type="Gradient" id="Gradient_po1l0"]
-offsets = PackedFloat32Array(0, 0.23961353, 0.6599034, 1)
-colors = PackedColorArray(1, 1, 1, 1, 0.92156863, 0.89411765, 0, 1, 0.9411765, 0.3529412, 0, 1, 1, 0, 0, 0)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_tet52"]
-gradient = SubResource("Gradient_po1l0")
+[ext_resource type="Script" uid="uid://cbt05hun18fnp" path="res://player/perks/basicAttack/PerkBasicFireballPlayerEffect.gd" id="1_n7hiy"]
+[ext_resource type="Texture2D" uid="uid://c3ffxblc18smg" path="res://assets/textures/soft_circle_particle.png" id="1_sad1p"]
+[ext_resource type="Texture2D" uid="uid://dtaijurdg211w" path="res://effects/FireColorRamp.tres" id="2_8sc8h"]
 
 [sub_resource type="Curve" id="Curve_an3vp"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -25,7 +20,7 @@ gravity = Vector3(0, 3, 0)
 scale_min = 0.14999999
 scale_max = 0.14999999
 scale_curve = SubResource("CurveTexture_nxwxy")
-color_ramp = SubResource("GradientTexture1D_tet52")
+color_ramp = ExtResource("2_8sc8h")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rsj54"]
 transparency = 1
@@ -33,7 +28,7 @@ blend_mode = 1
 shading_mode = 0
 vertex_color_use_as_albedo = true
 albedo_color = Color(1, 0.39215687, 0, 1)
-albedo_texture = ExtResource("1_8m2qw")
+albedo_texture = ExtResource("1_sad1p")
 billboard_mode = 3
 particles_anim_h_frames = 1
 particles_anim_v_frames = 1
@@ -43,7 +38,8 @@ particles_anim_loop = false
 material = SubResource("StandardMaterial3D_rsj54")
 size = Vector2(0.05, 0.05)
 
-[node name="PlayerFireEffect" type="Node3D" unique_id=718987839]
+[node name="PerkBasicFireballPlayerEffect" type="Node3D" unique_id=718987839]
+script = ExtResource("1_n7hiy")
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="." unique_id=510271887]
 amount = 25

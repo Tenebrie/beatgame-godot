@@ -37,9 +37,10 @@ func DisableInteraction() -> void:
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	var player := GlobalContext.GetPlayer()
-	if not player or not player.isAlive:
+	if not player or not player.isAlive or not interactionEnabled:
 		return
 
 	if event is InputEventKey and event.keycode == Key.KEY_F and event.pressed \
 				 and player.GridPosition.distance_to(GridPosition) <= ActivationDistance:
 		onActivated.emit()
+		get_viewport().set_input_as_handled()

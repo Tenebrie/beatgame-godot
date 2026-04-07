@@ -4,7 +4,7 @@ class_name WindyElemental extends Dancer
 
 func _ready() -> void:
 	super._ready()
-	maximumHealth = 5.0
+	maximumHealth = 4.0
 	onTakeTurn.connect(_onTakeTurn)
 	onDamageTaken.connect(func(damage: float) -> void:
 		SpriteHitEffect.ApplySpriteDamage($Sprite3D, damage)

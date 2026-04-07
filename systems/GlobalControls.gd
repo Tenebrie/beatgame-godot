@@ -38,6 +38,3 @@ func _unhandled_input(rawEvent: InputEvent) -> void:
 
 	if not event.pressed:
 		return
-
-	if event.keycode == KEY_0:
-		print(AudioSystem.get_current_beat())

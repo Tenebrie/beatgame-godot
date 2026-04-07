@@ -17,6 +17,7 @@ func _ready() -> void:
 		nextEmittedBeat = 0.0
 		nextEmittedMajorBeat = 0.0
 		nextEmittedMinorBeat = 1.0
+		nextEmittedHalfBeat = 0.5
 		$AudioAgent.Reset()
 		while $OneShotTimers.get_child_count() > 0:
 			var child := $OneShotTimers.get_child(0)
@@ -72,7 +73,7 @@ func Start() -> void:
 	fadeOutReverbEffect.wet = 0.0
 	$AudioAgent.GetAudioPlayer().volume_linear = 0.7
 
-	var duration := agent.getDurationBeats()
+	var duration := agent.getDurationBeats() - 1.0
 	var timer := MusicTimer.Create()
 	timer.start(duration)
 	timer.timeout.connect(func(_beat: float) -> void:
@@ -134,6 +135,7 @@ func sortTimers() -> void:
 var nextEmittedBeat := 0.0
 var nextEmittedMajorBeat := 0.0
 var nextEmittedMinorBeat := 1.0
+var nextEmittedHalfBeat := 0.5
 
 func _process(_delta: float) -> void:
 	var audioAgent: AudioAgent = $AudioAgent
@@ -153,6 +155,9 @@ func _process(_delta: float) -> void:
 			SignalBus.OnMinorBeat.emit(currentTime)
 			SignalBus.OnFullBeat.emit(currentTime)
 			nextEmittedMinorBeat = floorf(currentTime) + 2.0
+		if currentTime >= nextEmittedHalfBeat:
+			SignalBus.OnHalfBeat.emit(currentTime)
+			nextEmittedHalfBeat = ceilf(currentTime) + 0.5
 
 	if isTimerOrderDirty:
 		sortTimers()

@@ -25,7 +25,7 @@ func _ready() -> void:
 	SignalBus.OnFlushAllTimers.emit()
 
 	var perkSelector := Asset.Instantiate(InteractablePerk) as InteractablePerk
-	perkSelector.position = Vector3(3, 0, 1)
+	perkSelector.position = Vector3(4, 0, 1)
 	$DanceFloor.add_child(perkSelector)
 
 	if Engine.is_editor_hint():
@@ -41,19 +41,14 @@ func _ready() -> void:
 			SignalBus.ArenaReset.emit()
 			BeatmapLoader.LoadAudio(nextBeatmap)
 			SignalBus.OnFightBegin.emit()
-			for i in range(512):
-				Trigger.BasicAttack().Delay(i)
 		)
 	)
 	BeatmapLoader.Load(beatmap)
 
-	for i in range(512):
-		Trigger.BasicAttack().Delay(i)
-
 	($MainCamera as MainCamera).SetCameraMode(MainCamera.Mode.ForceFollowPlayer)
 
 func CreateChunk(startPosition: Vector2i, maxDepth: int, beatmaps: Array[Beatmap], depth := 0) -> void:
-	var chunk := actGenerator.GeneratePath(startPosition)
+	var chunk := actGenerator.GeneratePath(startPosition, 40, 1.0 + depth * 0.5)
 	if Engine.is_editor_hint():
 		return
 
@@ -81,3 +76,24 @@ func CreateChunk(startPosition: Vector2i, maxDepth: int, beatmaps: Array[Beatmap
 			MessageLog.PrintMessage("Act 1 cleared, now get to the exit!")
 			actGenerator.GenerateExit(chunk.endPoint)
 	)
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.keycode == Key.KEY_L and event.pressed:
+		createCheatArea()
+
+func createCheatArea() -> void:
+	var danceFloor := GlobalContext.GetDanceFloor()
+	var width := 4
+	for x in range(width):
+		for y in range(7):
+			danceFloor.InjectTile(Vector2i(x, y) - Vector2i(width + 1, 2))
+
+	danceFloor.InjectTile(Vector2i(-1, 1))
+
+	for i in range(4):
+		var extraPerkSelector := Asset.Instantiate(InteractablePerk) as InteractablePerk
+		extraPerkSelector.position = Vector3(i - width - 1, 0, -1)
+		$DanceFloor.add_child(extraPerkSelector)
+		extraPerkSelector = Asset.Instantiate(InteractablePerk) as InteractablePerk
+		extraPerkSelector.position = Vector3(i - width - 1, 0, 2)
+		$DanceFloor.add_child(extraPerkSelector)

@@ -1,4 +1,4 @@
-class_name Perk extends Node
+class_name Perk extends Node3D
 
 @onready var perkManager: PlayerPerkManager = get_parent()
 @onready var player: Player = perkManager.player
@@ -36,6 +36,10 @@ enum Rarity {
 	Unique = 5
 }
 
+enum Tag {
+	BasicAttack,
+}
+
 class Definition:
 	var rarity: Rarity
 	var perkName: String
@@ -44,7 +48,10 @@ class Definition:
 	var implementation: GDScript
 	var abilities: Array[GDScript]
 	var requiresAbilities: Array[GDScript]
-	var requiresPerks: Array[Array] # Array[Array[GDScript]]
+	var requiresPerks: Array[Array] # Array[Array[GDScript]], parsed as `and[or[Perk]]`
+	var providesTags: Array[Tag]
+	var requiresTags: Array[Array] # Array[Array[Tag]], parsed as `and[or[Tag]]`
+	var avoidsTags: Array[Array] # Array[Array[Tag]], parsed as `and[or[Tag]]`
 
 	func SetRarity(value: Rarity) -> Definition:
 		rarity = value
@@ -85,9 +92,27 @@ class Definition:
 		requiresPerks.append(perks as Array)
 		return self
 
+	func ProvidesTag(tag: Tag) -> Definition:
+		providesTags.append(tag)
+		return self
+
+	func RequiresTag(tag: Tag) -> Definition:
+		requiresTags.append([tag])
+		return self
+
+	func AvoidsTag(tag: Tag) -> Definition:
+		avoidsTags.append([tag])
+		return self
+
+	func Update() -> Definition:
+		var newCopy: Definition = implementation.Build()
+		newCopy.implementation = implementation
+		return newCopy
+
 	func InstantiateForPlayer() -> Perk:
 		var instance: Perk
 		var forPlayer := GlobalContext.GetPlayer()
+
 		if implementation:
 			instance = implementation.new()
 		else:
@@ -95,6 +120,46 @@ class Definition:
 		instance.definition = self
 		forPlayer.perkManager.Add(instance)
 		return instance
+
+	func isAvailable(player: Player) -> bool:
+		if not implementation or player.perkManager.Count(implementation) >= maxLevel:
+			return false
+
+		var abilitiesPresent := requiresAbilities.all(func(ability: GDScript) -> bool:
+			return player.abilityController.Has(ability)
+		)
+		if not abilitiesPresent:
+			return false
+
+		var perksPresent := requiresPerks.all(func(perkArray: Array) -> bool:
+			return perkArray.any(func(perk: GDScript) -> bool:
+				return player.abilityController.Has(perk)
+			)
+		)
+		if not perksPresent:
+			return false
+
+		var currentTags := player.perkManager.CurrentTags
+		var requiredTagsPresent := requiresTags.all(func(tagArray: Array) -> bool:
+			return tagArray.any(func(tag: Tag) -> bool:
+				return currentTags.has(tag)
+			)
+		)
+		if not requiredTagsPresent:
+			return false
+
+		var avoidedTagsPresent := avoidsTags.all(func(tagArray: Array) -> bool:
+			return tagArray.any(func(tag: Tag) -> bool:
+				return currentTags.has(tag)
+			)
+		)
+		if avoidsTags.size() > 0 and avoidedTagsPresent:
+			return false
+
+		return true
+
+	func _to_string() -> String:
+		return "<Perk.Definition perkName=%s>"%[perkName]
 
 static func Build() -> Definition:
 	return Definition.new()

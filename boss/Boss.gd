@@ -358,8 +358,6 @@ func queue_patterns() -> void:
 	Pattern.Advance(4)
 
 	# Beat 192 -> Arena swap
-	Trigger.Execute(func() -> void: GlobalContext.GetPlayer().SetBasicAttackEffectEmitting(false))
-
 	Trigger.EnemyMoveToRowRight(2.5)
 	Pattern.Advance(6.0)
 	var firstWing := $WingSwipeLeft
@@ -434,7 +432,6 @@ func queue_patterns() -> void:
 
 	Trigger.Execute(func() -> void:
 		var player := GlobalContext.GetPlayer()
-		player.SetBasicAttackEffectEmitting(true)
 		player.SetBasicAttackTargetingBoss(true)
 	)
 

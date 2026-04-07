@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://cpx3fdaddu0m1"]
+
+[ext_resource type="Curve" uid="uid://bsh27ycl170va" path="res://player/abilities/BasicClaws/BasicClawsStrikeTrailCurve.tres" id="1_evhac"]
+[ext_resource type="Gradient" uid="uid://db7fmslslsskh" path="res://player/abilities/BasicClaws/BasicClawsStrikeTrailTimeGradient.tres" id="2_evhac"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_evhac"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+
+[node name="PlayerClawEffect" type="Node3D" unique_id=278413532]
+
+[node name="VaporTrail" type="VaporTrail" parent="." unique_id=236675587]
+num_points = 32
+update_interval = 0.003
+material = SubResource("StandardMaterial3D_evhac")
+size = 0.05
+size_curve = ExtResource("1_evhac")
+color_gradient = ExtResource("2_evhac")

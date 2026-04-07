@@ -94,7 +94,7 @@ func initGrid() -> void:
 	isGridValid = true
 
 func getTileId(x: int, y: int) -> int:
-	return x * 100000 + y
+	return (x + 1000) * 100000 + y
 
 func getNeighbourTileIds(gridSize: Vector2i, x: int, y: int) -> Array[int]:
 	var result: Array[int] = []

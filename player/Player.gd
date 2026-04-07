@@ -22,10 +22,9 @@ func _ready() -> void:
 	regeneration = 1.0 / 16.0 # 1 hp per 16 seconds
 	MakeImmune()
 	super._ready()
-	SetBasicAttackEffectEmitting(false)
-	SignalBus.OnFightBegin.connect(func() -> void: SetBasicAttackEffectEmitting(true))
 
 	SignalBus.OnFullBeat.connect(_onBeatStaminaRefill)
+	SignalBus.OnHalfBeat.connect(_onHalfBeatStaminaRefill)
 
 	onDamageTaken.connect(func(damage: float) -> void:
 		Stats.RecordDamageTaken(damage)
@@ -86,6 +85,10 @@ func _onBeatStaminaRefill(_beat: float) -> void:
 	else:
 		staminaUsed = maxf(0.0, staminaUsed - regenValue)
 
+func _onHalfBeatStaminaRefill(beat: float) -> void:
+	if HasPerk(PerkDoubleTime):
+		_onBeatStaminaRefill(beat)
+
 func RefillStamina() -> void:
 	staminaUsed = 0.0
 	usedStaminaThisBeat = false
@@ -129,3 +132,14 @@ func SetBasicAttackEffectEmitting(emitting: bool) -> void:
 
 func SetBasicAttackTargetingBoss(value: bool) -> void:
 	$AbilityController.basicAttack.SetAutoAim(value)
+
+static func AddPerk(perkClass: GDScript) -> Perk.Definition:
+	var perk: Perk.Definition = perkClass.Build().ImplementedBy(perkClass)
+	perk.InstantiateForPlayer()
+	return perk
+
+static func HasPerk(perk: GDScript) -> int:
+	return GlobalContext.GetPlayer().perkManager.Has(perk)
+
+static func CountPerk(perk: GDScript) -> int:
+	return GlobalContext.GetPlayer().perkManager.Count(perk)

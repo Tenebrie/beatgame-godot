@@ -2,6 +2,25 @@ class_name AbilityController extends Node
 
 @onready var parent: Player = get_parent()
 
+func Add(ability: Ability) -> void:
+	add_child(ability)
+
+func Has(ability: GDScript) -> bool:
+	for child in get_children():
+		if is_instance_of(child, ability):
+			return true
+
+	return false
+
+func Count(ability: GDScript) -> int:
+	var count := 0
+	for child in get_children():
+		if is_instance_of(child, ability):
+			count += 1
+
+	return count
+
+
 func GetMouseWorldPlanePosition() -> Vector3:
 	var camera := get_viewport().get_camera_3d()
 	var mouse_pos := get_viewport().get_mouse_position()

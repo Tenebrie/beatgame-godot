@@ -4,6 +4,8 @@ class_name Dancer extends Node3D
 @onready var Pathing: DancerPathing = get_node_or_null(^"DancerPathing")
 @onready var SpriteHitEffect: DancerSpriteHitEffect = get_node_or_null(^"DancerSpriteHitEffect")
 
+var buffManager: DancerBuffManager
+
 var Flags: Array[Flag]
 var GridPosition := Vector2i.ZERO
 var DancerPosition := Vector3.ZERO
@@ -34,6 +36,9 @@ func _ready() -> void:
 		queue_free()
 	)
 	SignalBus.OnDancerMove.emit(GridPosition, Vector2i(-1000, -1000), self)
+
+	buffManager = DancerBuffManager.new()
+	add_child(buffManager)
 
 func _process(delta: float) -> void:
 	DancerPosition = position.lerp(DancerTargetPosition, 30.0 * delta)
@@ -102,7 +107,7 @@ var metaDamageTaken := 0.0
 var maximumMetaHealth := 0.0
 
 func DealDamage(damage: float) -> void:
-	if not isAlive or isImmune:
+	if not isAlive or isImmune or damage <= 0.0:
 		return
 
 	# Meta health damage overflow
@@ -118,6 +123,12 @@ func DealDamage(damage: float) -> void:
 		isAlive = false
 		onDeath.emit()
 		SignalBus.OnDancerDeath.emit(self)
+
+func RestoreHealth(healing: float) -> void:
+	if not isAlive or healing <= 0.0:
+		return
+
+	damageTaken = maxf(damageTaken - healing, 0.0)
 
 func MakeImmune() -> void:
 	isImmune = true

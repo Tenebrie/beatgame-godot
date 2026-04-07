@@ -2,30 +2,47 @@ class_name BasicFireball extends Ability
 
 var targetDirection := Vector3.RIGHT
 
-static var BaseDamage := 1
+static var BaseDamage := 1.0
 static var MaxRange := 4 # tiles
 
 static func GetDamage() -> float:
-	return BaseDamage
-
-static func GetPiercing() -> int:
 	var perkManager := GlobalContext.GetPlayer().perkManager
-	var value := 1
+	var damage := BaseDamage
+	if perkManager.Has(PerkRapidFireFireball):
+		damage *= PerkRapidFireFireball.DamageMultiplier
+	return damage
+
+static func GetBurnDamage() -> float:
+	var perkManager := GlobalContext.GetPlayer().perkManager
+	return PerkIgnitingFireball.BaseDamage if perkManager.Has(PerkIgnitingFireball) else 0.0
+
+static func GetPierce() -> int:
+	var perkManager := GlobalContext.GetPlayer().perkManager
+	var value := 0
 	if perkManager.Has(PerkPiercingFireball):
 		value = 100
 	return value
 
 static func GetBounce() -> int:
 	var perkManager := GlobalContext.GetPlayer().perkManager
-	var value := 1 + perkManager.Count(PerkPiercingFireball)
+	var value := perkManager.Count(PerkBouncingFireball)
 	return value
 
 func _ready() -> void:
-	SignalBus.OnBasicBeat.connect(on_basic_beat)
+	SignalBus.OnFullBeat.connect(createProjectile)
+	SignalBus.OnHalfBeat.connect(createProjectileIfHasRapidFire)
 
-func on_basic_beat() -> void:
+func createProjectileIfHasRapidFire(beat: float) -> void:
+	if GlobalContext.GetPlayer().perkManager.Has(PerkRapidFireFireball):
+		createProjectile(beat)
+
+func createProjectile(_beat: float) -> void:
 	var projectile := Asset.Instantiate(BasicFireballProjectile) as BasicFireballProjectile
 	get_tree().root.add_child(projectile)
+	projectile.Damage = GetDamage()
+	projectile.BurnIntensity = GetBurnDamage()
+	projectile.MaximumBounce = GetBounce()
+	projectile.MaximumTargets = GetPierce() + 1
 	projectile.global_position = GlobalContext.GetPlayer().global_position + Vector3(0.3, -0.08, -0.05)
 	projectile.look_at(projectile.global_position + targetDirection * 90.0)
 	if isAutoAim:

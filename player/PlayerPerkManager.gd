@@ -1,8 +1,19 @@
-class_name PlayerPerkManager extends Node
+class_name PlayerPerkManager extends Node3D
 
 @onready var player: Player = get_parent()
 
+var CurrentTags: Array[Perk.Tag]:
+	get:
+		var result: Array[Perk.Tag]
+		for child in get_children():
+			if child is not Perk or not child.definition:
+				continue
+			var perk: Perk = child
+			result.append_array(perk.definition.providesTags)
+		return result
+
 func Add(perk: Perk) -> void:
+	MessageLog.PrintMessage("Added perk: %s"%[perk.definition.perkName])
 	add_child(perk)
 
 func Has(perk: GDScript) -> bool:

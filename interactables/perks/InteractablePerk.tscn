@@ -70,6 +70,7 @@ material = SubResource("StandardMaterial3D_vdyem")
 size = Vector2(0.15, 0.15)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gtv8y"]
+resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
 content_margin_right = 0.0
@@ -82,10 +83,11 @@ script = ExtResource("1_8fpwc")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1667054000]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+visible = false
 mesh = SubResource("BoxMesh_4pneo")
 
 [node name="GPUParticles3DGlow" type="GPUParticles3D" parent="." unique_id=588677337]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.699877, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.71980697, 0)
 amount = 1000
 lifetime = 2.0
 transform_align = 3
@@ -109,7 +111,8 @@ font_size = 128
 
 [node name="PerksUI" type="CanvasLayer" parent="." unique_id=1585396273]
 
-[node name="Panel" type="Panel" parent="PerksUI" unique_id=1055184149]
+[node name="PerksPanel" type="Panel" parent="PerksUI" unique_id=1055184149]
+unique_name_in_owner = true
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -118,7 +121,8 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_gtv8y")
 metadata/_edit_use_anchors_ = true
 
-[node name="AspectName" type="RichTextLabel" parent="PerksUI/Panel" unique_id=1061056335]
+[node name="AspectName" type="RichTextLabel" parent="PerksUI/PerksPanel" unique_id=1061056335]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -128,17 +132,39 @@ offset_top = -394.0
 offset_right = 2257.0
 offset_bottom = -234.0
 grow_vertical = 0
+mouse_filter = 2
 theme_override_font_sizes/normal_font_size = 48
 theme_override_font_sizes/bold_font_size = 48
 theme_override_font_sizes/bold_italics_font_size = 48
 theme_override_font_sizes/italics_font_size = 48
 theme_override_font_sizes/mono_font_size = 48
 bbcode_enabled = true
-text = "[font_size=50][color=gold]Lyra[/color][/font_size]
-[font_size=40][color=goldenrod]Hope Incarnate[/color][/font_size]"
+text = "[font_size=50][color=gold]Lyra[/color][/font_size]"
 fit_content = true
 
-[node name="AspectText" type="RichTextLabel" parent="PerksUI/Panel" unique_id=1097544555]
+[node name="AspectTitle" type="RichTextLabel" parent="PerksUI/PerksPanel" unique_id=104316865]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 913.0
+offset_top = -324.0
+offset_right = 2257.0
+offset_bottom = -234.0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_font_sizes/normal_font_size = 48
+theme_override_font_sizes/bold_font_size = 48
+theme_override_font_sizes/bold_italics_font_size = 48
+theme_override_font_sizes/italics_font_size = 48
+theme_override_font_sizes/mono_font_size = 48
+bbcode_enabled = true
+text = "[font_size=40][color=goldenrod]Hope Incarnate[/color][/font_size]"
+fit_content = true
+
+[node name="AspectText" type="RichTextLabel" parent="PerksUI/PerksPanel" unique_id=1097544555]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -148,6 +174,7 @@ offset_top = -242.0
 offset_right = 2257.0
 offset_bottom = -82.0
 grow_vertical = 0
+mouse_filter = 2
 theme_override_font_sizes/normal_font_size = 32
 theme_override_font_sizes/bold_font_size = 32
 theme_override_font_sizes/bold_italics_font_size = 32
@@ -157,7 +184,8 @@ bbcode_enabled = true
 text = "[i]After all, why not? Why wouldn't I give myself a blessing?[/i]"
 fit_content = true
 
-[node name="TextureRect" type="TextureRect" parent="PerksUI/Panel" unique_id=1038061987]
+[node name="AspectAvatar" type="TextureRect" parent="PerksUI/PerksPanel" unique_id=1038061987]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
