@@ -99,14 +99,18 @@ func staminaEnabled() -> bool:
 
 func Step(dir: Vector2i) -> void:
 	if staminaEnabled() and usedStaminaThisBeat and maximumStamina - staminaUsed < 1.0:
-		performBonk(dir)
-		return
+		if HasPerk(PerkBloodyTime):
+			DealDamage(1.0)
+		else:
+			performBonk(dir)
+			return
 
 	if staminaEnabled() and AudioSystem.IsSongStarted():
 		if usedStaminaThisBeat:
-			staminaUsed += 1.0
+			staminaUsed = minf(staminaUsed + 1.0, maximumStamina)
 		else:
 			usedStaminaThisBeat = true
+
 	var oldPos := GridPosition
 	super.Step(dir)
 	var newPos := GridPosition
@@ -143,3 +147,6 @@ static func HasPerk(perk: GDScript) -> int:
 
 static func CountPerk(perk: GDScript) -> int:
 	return GlobalContext.GetPlayer().perkManager.Count(perk)
+
+static func GetPerk(perk: GDScript) -> Perk:
+	return GlobalContext.GetPlayer().perkManager.Get(perk)

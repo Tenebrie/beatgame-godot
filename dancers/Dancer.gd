@@ -60,6 +60,12 @@ func StepTo(newGridPosition: Vector2i) -> void:
 		performBonk((newGridPosition - GridPosition))
 		return
 
+	SignalBus.BeforeDancerMove.emit(newGridPosition, GridPosition, self)
+
+	if buffManager.Has(BuffRooted):
+		performBonk((newGridPosition - GridPosition))
+		return
+
 	if bonkTween:
 		bonkTween.kill()
 	var oldPos := GridPosition
@@ -109,6 +115,9 @@ var maximumMetaHealth := 0.0
 func DealDamage(damage: float) -> void:
 	if not isAlive or isImmune or damage <= 0.0:
 		return
+
+	if buffManager.Has(BuffDamageResist):
+		damage *= 0.5
 
 	# Meta health damage overflow
 	if damage > maximumHealth - damageTaken:

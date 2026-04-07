@@ -87,7 +87,7 @@ visible = false
 mesh = SubResource("BoxMesh_4pneo")
 
 [node name="GPUParticles3DGlow" type="GPUParticles3D" parent="." unique_id=588677337]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.71980697, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.08846396, 0)
 amount = 1000
 lifetime = 2.0
 transform_align = 3
@@ -95,7 +95,7 @@ process_material = SubResource("ParticleProcessMaterial_4pneo")
 draw_pass_1 = SubResource("QuadMesh_gtv8y")
 
 [node name="GPUParticles3DMix" type="GPUParticles3D" parent="." unique_id=443523235]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.699877, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.06853402, 0)
 amount = 1000
 lifetime = 2.0
 transform_align = 3
@@ -103,7 +103,7 @@ process_material = SubResource("ParticleProcessMaterial_gtv8y")
 draw_pass_1 = SubResource("QuadMesh_8fpwc")
 
 [node name="Label3D" type="Label3D" parent="." unique_id=959416459]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.216577)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.368657, -0.216577)
 pixel_size = 0.0013
 billboard = 1
 text = "F to pick up"

@@ -35,7 +35,6 @@ PerkLibrary="*uid://cfb66mpuqu7bb"
 [debug]
 
 gdscript/warnings/unused_signal=0
-gdscript/warnings/untyped_declaration=2
 
 [display]
 

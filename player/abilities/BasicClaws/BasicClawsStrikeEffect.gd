@@ -7,8 +7,8 @@ var hello_world := func() -> void:
 
 var duration: float = 0.3
 
-func _ready() -> void:
-	Play()
+#func _ready() -> void:
+	#Play()
 
 func Play() -> void:
 	createSwipeTrail(Vector3(-0.3, 0, -0.33), Vector3(0.2, 0, 0.2), 0.1)
@@ -16,6 +16,13 @@ func Play() -> void:
 	createSwipeTrail(Vector3(-0.25, 0, -0.36), Vector3(0.24, 0, 0.1), 0.08)
 	await get_tree().create_timer(0.01).timeout
 	createSwipeTrail(Vector3(-0.2, 0, -0.39), Vector3(0.28, 0, 0.0), 0.05)
+
+func PlayInverted() -> void:
+	createSwipeTrail(Vector3(-0.3, 0, -0.33), Vector3(0.2, 0, 0.2), -0.1)
+	await get_tree().create_timer(0.01).timeout
+	createSwipeTrail(Vector3(-0.25, 0, -0.36), Vector3(0.24, 0, 0.1), -0.08)
+	await get_tree().create_timer(0.01).timeout
+	createSwipeTrail(Vector3(-0.2, 0, -0.39), Vector3(0.28, 0, 0.0), -0.05)
 
 func createSwipeTrail(from: Vector3, to: Vector3, arc: float) -> void:
 	var trail := VaporTrail.new()

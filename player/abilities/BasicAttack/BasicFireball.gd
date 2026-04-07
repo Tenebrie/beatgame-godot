@@ -2,7 +2,7 @@ class_name BasicFireball extends Ability
 
 var targetDirection := Vector3.RIGHT
 
-static var BaseDamage := 1.0
+static var BaseDamage := 0.75
 static var MaxRange := 4 # tiles
 
 static func GetDamage() -> float:
@@ -14,7 +14,7 @@ static func GetDamage() -> float:
 
 static func GetBurnDamage() -> float:
 	var perkManager := GlobalContext.GetPlayer().perkManager
-	return PerkIgnitingFireball.BaseDamage if perkManager.Has(PerkIgnitingFireball) else 0.0
+	return BuffIgnite.GetDamage() if perkManager.Has(PerkIgnitingFireball) else 0.0
 
 static func GetPierce() -> int:
 	var perkManager := GlobalContext.GetPlayer().perkManager

@@ -1,5 +1,7 @@
 class_name AbilityController extends Node
 
+#signal onCast(ability: Ability)
+
 @onready var parent: Player = get_parent()
 
 func Add(ability: Ability) -> void:
@@ -20,6 +22,12 @@ func Count(ability: GDScript) -> int:
 
 	return count
 
+func Get(ability: GDScript) -> Ability:
+	for child in get_children():
+		if is_instance_of(child, ability):
+			return child
+
+	return null
 
 func GetMouseWorldPlanePosition() -> Vector3:
 	var camera := get_viewport().get_camera_3d()

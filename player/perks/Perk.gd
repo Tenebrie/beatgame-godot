@@ -37,6 +37,7 @@ enum Rarity {
 }
 
 enum Tag {
+	Damage,
 	BasicAttack,
 }
 
@@ -133,7 +134,7 @@ class Definition:
 
 		var perksPresent := requiresPerks.all(func(perkArray: Array) -> bool:
 			return perkArray.any(func(perk: GDScript) -> bool:
-				return player.abilityController.Has(perk)
+				return player.perkManager.Has(perk)
 			)
 		)
 		if not perksPresent:

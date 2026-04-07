@@ -1,6 +1,6 @@
 class_name PerkImmolation extends Perk
 
-static var BaseDamage := 1.0
+static var BaseDamage := 0.6
 
 func _ready() -> void:
 	super._ready()
@@ -27,5 +27,6 @@ static func Build() -> Definition:
 	return Definition.new() \
 		.SetRarity(Perk.Rarity.Common) \
 		.Name("Immolation") \
-		.Description("On your turn, deal damage to all enemies in melee range, including diagonals.") \
-		.Description("[b]Damage per beat: [/b] %.2f"%[BaseDamage])
+		.Description("Once per beat, deal damage to all enemies in melee range, including diagonals.") \
+		.Description("[b]Damage: [/b] %.2f"%[BaseDamage]) \
+		.ProvidesTag(Perk.Tag.Damage) \

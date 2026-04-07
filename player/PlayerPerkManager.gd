@@ -30,3 +30,10 @@ func Count(perk: GDScript) -> int:
 			count += 1
 
 	return count
+
+func Get(perk: GDScript) -> Perk:
+	for child in get_children():
+		if is_instance_of(child, perk):
+			return child
+
+	return null

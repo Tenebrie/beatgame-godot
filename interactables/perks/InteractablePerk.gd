@@ -148,5 +148,8 @@ func getLyraLines() -> Array[String]:
 		return ["Oh, hello there! I don't believe we've met. I'm Lyra, nice to meet you!\nWhat is it going to be? Claws or fire?"]
 
 	return [
-		"After all, why not? Why wouldn't I give myself a blessing?"
+		"After all, why not? Why wouldn't I give myself a blessing?",
+		"This place is strangely empty, don't you think?",
+		"Have you seen Rue anywhere? I hope she's not up to more mischief again.",
+		"These windy elementals are quite annoying. Hard to fly in such stormy weather!"
 	]

@@ -8,6 +8,8 @@ signal OnDestroyTile(x: int, y: int)
 signal clearAllTiles()
 signal clearTimersBefore(beat: int)
 
+signal BeforeDancerMove(to: Vector2i, from: Vector2i, dancer: Dancer)
+
 signal OnFightBegin()
 signal OnPlayerMove(to: Vector2i, from: Vector2i)
 signal OnDancerMove(to: Vector2i, from: Vector2i, dancer: Dancer)

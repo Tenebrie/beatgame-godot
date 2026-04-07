@@ -8,8 +8,8 @@ func Register(node: Node) -> void:
 	registeredNodes.append(node)
 
 func find(type: GDScript) -> Node:
-	var found := registeredNodes.filter(func(n: Node) -> bool:
-		return is_instance_valid(n) and is_instance_of(n, type)
+	var found := registeredNodes.filter(func(n) -> bool:
+		return n and is_instance_valid(n) and is_instance_of(n, type)
 	)
 	if found.size() > 0:
 		return found[0]

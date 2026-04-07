@@ -88,6 +88,8 @@ func WaitForBreakpoint() -> void:
 func ResumeFromBreakpoint() -> void:
 	var audioAgent: AudioAgent = $AudioAgent
 	var player := audioAgent.GetAudioPlayer()
+	if fadeOutTween:
+		fadeOutTween.kill()
 	fadeOutReverbEffect.dry = 1
 	fadeOutReverbEffect.wet = 0
 	audioAgent.Resume()

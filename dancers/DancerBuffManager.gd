@@ -1,5 +1,7 @@
 class_name DancerBuffManager extends Node3D
 
+@onready var dancer: Dancer = get_parent()
+
 func Add(buff: Buff) -> void:
 	add_child(buff)
 

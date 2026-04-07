@@ -15,4 +15,5 @@ static func Build() -> Definition:
 		.Description("[b]Range: [/b] %d tiles"%[BasicFireball.MaxRange]) \
 		.ProvidesAbility(BasicFireball) \
 		.ProvidesTag(Perk.Tag.BasicAttack) \
+		.ProvidesTag(Perk.Tag.Damage) \
 		.AvoidsTag(Perk.Tag.BasicAttack)

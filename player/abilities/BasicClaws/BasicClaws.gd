@@ -1,16 +1,23 @@
 class_name BasicClaws extends Ability
 
-static var BaseDamage := 1.5
-static var MaxRange := 1.0 # tiles
+static var BaseDamage := 1.0
+static var BaseRange := 1.0 # tiles
 
 static func GetDamage() -> float:
 	var damage := BaseDamage
+	damage += Player.CountPerk(PerkClawSharpening) * PerkClawSharpening.BonusDamage
 	return damage
 
-func _ready() -> void:
-	SignalBus.OnBasicBeat.connect(onBasicBeat)
+static func GetRange() -> float:
+	var attackRange := BaseRange
+	if Player.HasPerk(PerkLongClawOfTheLaw):
+		attackRange += PerkLongClawOfTheLaw.ExtraRangePerLevel * Player.CountPerk(PerkLongClawOfTheLaw)
+	return attackRange
 
-func onBasicBeat() -> void:
+func _ready() -> void:
+	SignalBus.OnFullBeat.connect(onBasicBeat)
+
+func onBasicBeat(_beat: float) -> void:
 	var danceFloor := GlobalContext.GetDanceFloor()
 	var dancers := danceFloor.GetAllDancers()
 	for dancer: Dancer in dancers:
@@ -18,14 +25,49 @@ func onBasicBeat() -> void:
 			continue
 
 		var distance := dancer.GridPosition.distance_to(player.GridPosition)
-		if distance > 1.0:
+		if distance > GetRange():
 			continue
 
-		dancer.DealDamage(GetDamage())
+		Strike(dancer)
+		if not Player.HasPerk(PerkRoundhouseSwipe):
+			return
 
-		var effect := Asset.Instantiate(BasicClawsStrikeEffect) as BasicClawsStrikeEffect
-		effect.position = dancer.global_position + Vector3(0, 0.1, 0)
-		effect.rotate(Vector3.UP, -PI / 2.0)
+func Strike(dancer: Dancer) -> void:
+	dancer.DealDamage(GetDamage())
+
+	var effect := Asset.Instantiate(BasicClawsStrikeEffect) as BasicClawsStrikeEffect
+	effect.rotate(Vector3.UP, -PI / 2.0)
+	if dancer.isAlive:
+		dancer.add_child(effect)
+		effect.position = Vector3(0, 0.1, 0)
+	else:
 		get_tree().root.add_child(effect)
-		effect.Play()
-		return
+		effect.position = dancer.global_position + Vector3(0, 0.1, 0)
+	effect.Play()
+
+	# Best Defense perk
+	if Player.HasPerk(PerkBestDefense):
+		Buff.Apply(BuffDamageResist, player)
+
+	# Critical
+	if Player.HasPerk(PerkCriticalRend):
+		var perk: PerkCriticalRend = Player.GetPerk(PerkCriticalRend)
+		var perkCount := Player.CountPerk(PerkCriticalRend)
+		perk.critAccumulator += PerkCriticalRend.CritHitChance * perkCount
+		if perk.critAccumulator >= 1:
+			return
+
+		for i in range(floori(perk.critAccumulator)):
+			perk.critAccumulator -= 1
+			dancer.DealDamage(GetDamage())
+
+		await get_tree().create_timer(0.1).timeout
+		effect = Asset.Instantiate(BasicClawsStrikeEffect) as BasicClawsStrikeEffect
+		effect.rotate(Vector3.UP, 0.0)
+		if dancer.isAlive:
+			dancer.add_child(effect)
+			effect.position = Vector3(0, 0.1, 0.15)
+		else:
+			get_tree().root.add_child(effect)
+			effect.position = dancer.global_position + Vector3(0, 0.1, 0.15)
+		effect.PlayInverted()

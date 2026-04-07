@@ -72,7 +72,7 @@ func _onTakeTurn(beat: float) -> void:
 		for x in range(-4, 4):
 			for y in range(-4, 4):
 				var length := Vector2(x, y).length()
-				if length >= 3 and length <= 4 and not danceFloor.IsTileOccupied(Vector2i(x, y)):
+				if length >= 2 and length <= 4 and not danceFloor.IsTileOccupied(Vector2i(x, y)):
 					validPoints.append(Vector2i(x, y))
 
 		var navigation := Pathing.NavigateToPlayer(validPoints)

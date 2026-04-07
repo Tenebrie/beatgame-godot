@@ -23,7 +23,7 @@ func _ready() -> void:
 		panelOffsetTween.tween_property(container, "position", Vector2(-50.0, 0.0), 1.0).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
 		var stylebox := container.get_theme_stylebox("panel") as StyleBoxFlat
 		panelOffsetTween \
-			.tween_property(stylebox, "border_color", rarityToHighlight(perkDefinition.rarity), 0.05) \
+			.tween_property(stylebox, "border_color", getHighlightColor(), 0.05) \
 			.set_ease(Tween.EASE_OUT)
 	)
 	mouse_exited.connect(func() -> void:
@@ -37,7 +37,7 @@ func _ready() -> void:
 		panelOffsetTween.tween_property(container, "position", Vector2(0, 0), 1.0).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
 		var stylebox := container.get_theme_stylebox("panel") as StyleBoxFlat
 		panelOffsetTween \
-			.tween_property(stylebox, ^"border_color", rarityToBackground(perkDefinition.rarity), 0.1) \
+			.tween_property(stylebox, ^"border_color", getBorderColor(), 0.1) \
 			.set_ease(Tween.EASE_OUT)
 	)
 
@@ -61,10 +61,27 @@ func Setup(definition: Perk.Definition) -> void:
 	perkDefinition = definition
 	nameLabel.text = definition.perkName
 	descriptionLabel.text = definition.perkDescription
-	rarityLabel.text = rarityToString(definition.rarity)
 	var stylebox := container.get_theme_stylebox("panel") as StyleBoxFlat
-	stylebox.bg_color = rarityToBackground(definition.rarity)
-	stylebox.border_color = rarityToBackground(definition.rarity)
+	if definition.providesTags.has(Perk.Tag.BasicAttack):
+		rarityLabel.text = "Primary"
+		stylebox.bg_color = Color(0.25, 0.22, 0.28)
+		stylebox.border_color = Color(0.25, 0.22, 0.28)
+	else:
+		rarityLabel.text = rarityToString(definition.rarity)
+		stylebox.bg_color = rarityToBackground(definition.rarity)
+		stylebox.border_color = rarityToBackground(definition.rarity)
+
+func getBorderColor() -> Color:
+	if perkDefinition.providesTags.has(Perk.Tag.BasicAttack):
+		return Color(0.25, 0.22, 0.28)
+	else:
+		return rarityToBackground(perkDefinition.rarity)
+
+func getHighlightColor() -> Color:
+	if perkDefinition.providesTags.has(Perk.Tag.BasicAttack):
+		return Color(0.55, 0.42, 0.58)
+	else:
+		return rarityToHighlight(perkDefinition.rarity)
 
 func rarityToString(rarity: Perk.Rarity) -> String:
 	if rarity == Perk.Rarity.Common:

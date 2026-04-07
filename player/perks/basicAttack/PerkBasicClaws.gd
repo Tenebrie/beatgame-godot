@@ -6,6 +6,8 @@ static func Build() -> Definition:
 		.Name("Dragon Claws") \
 		.Description("Attacks every beat, targeting one enemy in melee range.") \
 		.Description("[b]Damage: [/b] %.2f"%[BasicClaws.GetDamage()]) \
+		.Description("[b]Range:[/b] %.f"%[BasicClaws.GetRange()]) \
 		.ProvidesAbility(BasicClaws) \
 		.ProvidesTag(Perk.Tag.BasicAttack) \
-		.AvoidsTag(Perk.Tag.BasicAttack)
+		.ProvidesTag(Perk.Tag.Damage) \
+		.AvoidsTag(Perk.Tag.BasicAttack) \
