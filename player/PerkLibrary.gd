@@ -13,21 +13,12 @@ func _ready() -> void:
 	scanDirectory("res://player/perks")
 
 func scanDirectory(path: String) -> void:
-	var dir := DirAccess.open(path)
-	if not dir:
-		return
-
-	dir.list_dir_begin()
-	var fileName := dir.get_next()
-
-	while fileName != "":
-		if dir.current_is_dir():
-			scanDirectory(path.path_join(fileName))
-		elif isScriptFile(fileName):
-			tryRegister(path.path_join(fileName))
-		fileName = dir.get_next()
-
-	dir.list_dir_end()
+	for entry in ResourceLoader.list_directory(path):
+		var fullPath := path.path_join(entry)
+		if entry.ends_with("/"):
+			scanDirectory(fullPath.trim_suffix("/"))
+		elif isScriptFile(entry):
+			tryRegister(fullPath)
 
 func isScriptFile(fileName: String) -> bool:
 	return fileName.ends_with(".gd") or fileName.ends_with(".gdc")

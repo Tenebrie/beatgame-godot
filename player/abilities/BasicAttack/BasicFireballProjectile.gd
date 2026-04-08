@@ -25,7 +25,7 @@ func OnCollision(other: Area3D) -> void:
 		return
 
 	targetsHit.append(dancer)
-	dancer.DealDamage(1.0)
+	dancer.DealDamage(BasicFireball.GetDamage())
 
 	if BurnIntensity > 0.0 and dancer.isAlive:
 		applyBurn(dancer)
@@ -37,8 +37,7 @@ func OnCollision(other: Area3D) -> void:
 		destroy()
 
 func applyBurn(target: Dancer) -> void:
-	var instance: BuffIgnite = Buff.Apply(BuffIgnite, target)
-	instance.Damage = BurnIntensity
+	Buff.Apply(BuffIgnite, target)
 
 func createBounceProjectile(latestTarget: Dancer) -> void:
 	var bouncedProjectile: BasicFireballProjectile = Asset.Instantiate(BasicFireballProjectile)
@@ -57,13 +56,15 @@ func createBounceProjectile(latestTarget: Dancer) -> void:
 			continue
 
 		var distanceToCurrent := dancer.global_position.distance_squared_to(global_position)
-		if not closestDancer or distanceToCurrentClosest > distanceToCurrent:
+		if distanceToCurrent <= BasicFireball.MaxRange and (not closestDancer or distanceToCurrentClosest > distanceToCurrent):
 			closestDancer = dancer
 			distanceToCurrentClosest = distanceToCurrent
 
 	if not closestDancer:
+		bouncedProjectile.queue_free()
 		return
-	bouncedProjectile.look_at(closestDancer.global_position)
+	else:
+		bouncedProjectile.look_at(closestDancer.global_position)
 
 func destroy() -> void:
 	isDestroyed = true

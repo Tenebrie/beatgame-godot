@@ -107,6 +107,8 @@ func spawnPack(baseDist: int, dancerCount: int, pathData: PathData, difficulty: 
 	var validDancers: Array[PackedScene]
 	validDancers.append(preload("res://dancers/Stormbird/Stormbird.tscn"))
 	validDancers.append(preload("res://dancers/WindyElemental/WindyElemental.tscn"))
+
+	var spawned: Array[Dancer]
 	var distRange := Vector2i(-2, 1)
 	for d in range(dancerCount):
 		var isSpawned := false
@@ -117,15 +119,26 @@ func spawnPack(baseDist: int, dancerCount: int, pathData: PathData, difficulty: 
 			if occupiedTiles.has(randomTilePosition):
 				continue
 			var dancer: Dancer = dancerScene.instantiate()
+			spawned.append(dancer)
 			dancer.position = Vector3(randomTilePosition.x, 0.2, randomTilePosition.y)
 			danceFloor.add_child(dancer)
-			dancer.maximumHealth *= difficulty
+			if not Engine.is_editor_hint():
+				dancer.maximumHealth *= difficulty
 			pathData.adversaries.append(dancer)
 			occupiedTiles.append(randomTilePosition)
 			isSpawned = true
 			break
 		if not isSpawned:
 			printerr("Failed to spawn a dancer at range [%d-%d]"%[baseDist + distRange.x, baseDist + distRange.y])
+
+	# TODO: Proper aggro management
+	for dancer: Dancer in spawned:
+		dancer.onAggro.connect(func() -> void:
+			for packMember: Dancer in spawned:
+				if is_instance_valid(packMember):
+					packMember.isAggroed = true
+					GlobalContext.GetPlayer().combatManager.RegisterAggro(packMember)
+		)
 
 func calculateDistances(origin: Vector2i) -> void:
 	var queue: Array[Vector2i] = [origin]

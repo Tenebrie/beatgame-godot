@@ -13,13 +13,15 @@ func _ready() -> void:
 	beatmaps.shuffle()
 	var beatmap: Beatmap = beatmaps.pop_front()
 
+	## Play Intermission here
+
 	var args := DanceFloor.InitArgs.new()
 	args.gridSize = beatmap.gridSize
 	$DanceFloor.Setup(args)
 
 	BeatmapLoader.LoadAudio(beatmap)
 	BeatmapLoader.LoadInitial(beatmap)
-	CreateChunk(Vector2i(3, 1), 5, beatmaps)
+	CreateChunk(Vector2i(3, 1), 6, beatmaps)
 
 	Pattern.SingleIndexed(Vector2i(4, 1)).DestroyTile()
 	SignalBus.OnFlushAllTimers.emit()
@@ -48,7 +50,7 @@ func _ready() -> void:
 	($MainCamera as MainCamera).SetCameraMode(MainCamera.Mode.ForceFollowPlayer)
 
 func CreateChunk(startPosition: Vector2i, maxDepth: int, beatmaps: Array[Beatmap], depth := 0) -> void:
-	var chunk := actGenerator.GeneratePath(startPosition, 40, 1.0 + depth * 0.5)
+	var chunk := actGenerator.GeneratePath(startPosition, 40, 0.6 + depth * 0.5)
 	if Engine.is_editor_hint():
 		return
 

@@ -12,7 +12,8 @@ func _ready() -> void:
 
 func _exit_tree() -> void:
 	AudioServer.remove_bus(getBusIndex())
-	ResourceSaver.save(AudioServer.generate_bus_layout(), "res://default_bus_layout.tres")
+	#if Engine.is_editor_hint():
+		#ResourceSaver.save(AudioServer.generate_bus_layout(), "res://default_bus_layout.tres")
 
 func forceRefresh() -> void:
 	var busCount := AudioServer.bus_count

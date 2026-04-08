@@ -12,6 +12,9 @@ func _ready() -> void:
 	onDeath.connect(func() -> void:
 		create_tween().tween_property(self, ^"scale", Vector3(0.001, 0.001, 0.001), 0.3)
 	)
+	SignalBus.OnFightBegin.connect(func() -> void:
+		stunnedUntil = -1
+	)
 
 var stunnedUntil := -1.0
 var isAggroed := false
@@ -28,6 +31,7 @@ func _onTakeTurn(beat: float) -> void:
 		else:
 			isAggroed = true
 			player.combatManager.RegisterAggro(self)
+			onAggro.emit()
 
 	var attack: BeatmapAttack
 	var beatmapTransform: BeatmapTransform.Builder

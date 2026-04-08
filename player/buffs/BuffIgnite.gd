@@ -9,10 +9,10 @@ func _ready() -> void:
 	add_child(effect)
 	position = Vector3(randf_range(-0.125, 0.125), 0.0, randf_range(-0.125, 0.125))
 
-	parent.onDeath.connect(func() -> void:
+	dancer.onDeath.connect(func() -> void:
 		effect.get_child(0).emitting = false
 	)
 
 func onBeat(beat: float) -> void:
 	if is_equal_approx(beat - floorf(beat), 0.5):
-		parent.DealDamage(GetDamage())
+		dancer.DealDamage(GetDamage())

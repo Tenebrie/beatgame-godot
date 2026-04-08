@@ -54,12 +54,12 @@ func Strike(dancer: Dancer) -> void:
 		var perk: PerkCriticalRend = Player.GetPerk(PerkCriticalRend)
 		var perkCount := Player.CountPerk(PerkCriticalRend)
 		perk.critAccumulator += PerkCriticalRend.CritHitChance * perkCount
-		if perk.critAccumulator >= 1:
+		if perk.critAccumulator < 1:
 			return
 
 		for i in range(floori(perk.critAccumulator)):
 			perk.critAccumulator -= 1
-			dancer.DealDamage(GetDamage())
+			dancer.DealDamage(GetDamage() * PerkCriticalRend.CritHitDamage)
 
 		await get_tree().create_timer(0.1).timeout
 		effect = Asset.Instantiate(BasicClawsStrikeEffect) as BasicClawsStrikeEffect

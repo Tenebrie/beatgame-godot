@@ -9,6 +9,7 @@ func OnCollision(other: Area3D) -> void:
 	if other.get_parent() is not Player or not other.get_parent().isAlive:
 		return
 	isDestroyed = true
+	$GPUParticles3D.emitting = false
 	create_tween().tween_property($MeshInstance3D, ^"scale", Vector3.ZERO, 0.2)
 
 	(other.get_parent() as Dancer).DealDamage(1.0)

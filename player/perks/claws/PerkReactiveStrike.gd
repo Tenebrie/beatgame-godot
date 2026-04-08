@@ -12,4 +12,5 @@ static func Build() -> Definition:
 		.SetRarity(Perk.Rarity.Common) \
 		.Name("Reactive Strike") \
 		.Description("If an enemy tries to move away from melee range, you immediately attack them with your claws.") \
-		.RequiresAbility(BasicClaws)
+		.RequiresAbility(BasicClaws) \
+		.RequiresPerk(PerkBasicClaws)

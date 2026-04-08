@@ -15,6 +15,7 @@ signal onTakeTurn(beat: float)
 
 signal onDamageTaken(damage: float)
 signal onDeath()
+signal onAggro()
 
 func _ready() -> void:
 	GridPosition = Vector2i(roundi(position.x), roundi(position.z))
@@ -132,6 +133,8 @@ func DealDamage(damage: float) -> void:
 		isAlive = false
 		onDeath.emit()
 		SignalBus.OnDancerDeath.emit(self)
+	elif self is not Player:
+		onAggro.emit()
 
 func RestoreHealth(healing: float) -> void:
 	if not isAlive or healing <= 0.0:

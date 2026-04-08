@@ -17,8 +17,8 @@ func _enter_tree() -> void:
 	GlobalContext.Register(self)
 
 func _ready() -> void:
-	maximumHealth = 4.0
-	maximumMetaHealth = 50.0
+	maximumHealth = 10.0
+	maximumMetaHealth = 20.0
 	regeneration = 1.0 / 16.0 # 1 hp per 16 seconds
 	MakeImmune()
 	super._ready()
