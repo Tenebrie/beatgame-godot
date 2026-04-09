@@ -59,20 +59,20 @@ shader_parameter/Brightness = 24.9999994412
 shader_parameter/ExtraBrightness = 1.0
 shader_parameter/Coverage = 0.78999998234192
 shader_parameter/CloudSharpness = 2.0
-shader_parameter/StepSize = 2.749999938532
+shader_parameter/StepSize = 0.049999998882400004
 shader_parameter/SamplerScale = 3.5
 shader_parameter/WindStrength = 0.0499999988824
 shader_parameter/LayerSpeedDifference = 0.30000000447036
 shader_parameter/Tint = Color(1, 1, 1, 1)
 shader_parameter/DenseTint = Color(1, 1, 1, 1)
 shader_parameter/DenseTintModifier = 1.0
-shader_parameter/BoxHalfSize = Vector3(22.8825, 0.8905, 24.1575)
+shader_parameter/BoxHalfSize = Vector3(22.8825, 3.668243, 24.1575)
 shader_parameter/WindDirection = Vector3(1, 0, 0)
 
 [sub_resource type="BoxMesh" id="BoxMesh_olv3e"]
 resource_local_to_scene = true
 material = SubResource("ShaderMaterial_eo15j")
-size = Vector3(45.765, 1.781, 48.315)
+size = Vector3(45.765, 7.336486, 48.315)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_olv3e"]
 albedo_color = Color(1.732707e-06, 0.4006006, 0.5789716, 1)
@@ -122,10 +122,10 @@ script = ExtResource("4_nndyp")
 metadata/_custom_type_script = "uid://cihqnnkwn6s0v"
 
 [node name="CloudCover2" type="MeshInstance3D" parent="MainCamera" unique_id=490472644]
-transform = Transform3D(1, 0, 0, 0, 0.17364813, -0.9848067, 0, 0.9848067, 0.17364813, 0.87727165, -2.0401535, -11.8148)
+transform = Transform3D(1, 0, 0, 0, 0.17364813, -0.9848067, 0, 0.9848067, 0.17364813, 0.87727165, -1.5578041, -9.07926)
 mesh = SubResource("BoxMesh_olv3e")
 script = ExtResource("9_eo15j")
-Size = Vector3(45.765, 1.781, 48.315)
+Size = Vector3(45.765, 7.336486, 48.315)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="MainCamera" unique_id=1622724181]
 transform = Transform3D(1, 0, 0, 0, 0.17364821, -0.9848076, 0, 0.9848076, 0.17364821, 0, -3.1258366, -23.486261)
