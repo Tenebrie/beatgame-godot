@@ -140,7 +140,7 @@ var nextEmittedMinorBeat := 1.0
 var nextEmittedHalfBeat := 0.5
 
 func _process(_delta: float) -> void:
-	var audioAgent: AudioAgent = $AudioAgent
+	var audioAgent = $AudioAgent
 
 	var currentTime: float = roundf(audioAgent.get_position_beats() * 8.0) / 8.0
 

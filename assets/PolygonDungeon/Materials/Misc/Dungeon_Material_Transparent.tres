@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://cajxkgjp8ipum"]
+
+[ext_resource type="Texture2D" uid="uid://c5p714hmii2hg" path="res://assets/PolygonDungeon/Textures/Dungeons_Texture_01.png" id="1_iyxob"]
+
+[resource]
+resource_name = "Dungeon_Material_Transparent"
+albedo_color = Color(1, 1, 1, 0.439216)
+albedo_texture = ExtResource("1_iyxob")
+emission = Color(0, 0, 0, 0)

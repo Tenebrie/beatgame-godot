@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://cq76gtfakynvg"]
+
+[ext_resource type="Script" uid="uid://dsoo5ha66s1m5" path="res://systems/DanceFloor/DanceTile.gd" id="1_fwvwm"]
+[ext_resource type="Shader" uid="uid://qbpr5hmbtnks" path="res://systems/DanceFloor/DanceTile.gdshader" id="2_er2h0"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4x8n6"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("2_er2h0")
+shader_parameter/ImpactProgress = 0.0
+shader_parameter/TelegraphProgress = 0.0
+shader_parameter/BaseColor = Color(0.8, 0.8, 0.8, 1)
+shader_parameter/TelegraphColor = Color(0.5, 0.3, 0.1, 1)
+shader_parameter/ImpactColor = Color(0.4, 0.05, 0.05, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_fgx0k"]
+resource_local_to_scene = true
+material = SubResource("ShaderMaterial_4x8n6")
+size = Vector3(0.75, 0.5, 0.75)
+
+[node name="DanceTile" type="Node3D" unique_id=1066141023]
+script = ExtResource("1_fwvwm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1538493470]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+cast_shadow = 0
+mesh = SubResource("BoxMesh_fgx0k")

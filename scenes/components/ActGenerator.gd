@@ -55,6 +55,48 @@ func GeneratePath(origin: Vector2i, steps: int = 40, difficulty: float = 1.0) ->
 			)
 	return pathData
 
+func GenerateDungeonStructural():
+	var tiles: Array[DanceTile] = danceFloor.tilemap.values()
+	var wallCandidates: Array[Vector2i] = [Vector2i(-1, 0), Vector2i(1, 0), Vector2i(0, -1), Vector2i(0, 1)]
+	var columnPositions: Dictionary = {} # track to avoid duplicates
+
+	for tile in tiles:
+		var floorInstance: Node3D = preload("res://scenes/Act1/structural/Floor01.tscn").instantiate()
+		danceFloor.add_child(floorInstance)
+		floorInstance.position = tile.position - Vector3(0, 0.2, 0)
+
+		for offset in wallCandidates:
+			var targetGridPosition := tile.GridPosition + offset
+			if danceFloor.tilemap.has(targetGridPosition):
+				continue
+			var wall: Node3D = preload("res://scenes/Act1/structural/Wall01.tscn").instantiate()
+			danceFloor.add_child(wall)
+			wall.position = tile.position + Vector3(offset.x * 0.5, -0.2, offset.y * 0.5)
+			if offset.x > 0:
+				wall.rotate(Vector3.UP, PI / 2.0)
+			if offset.x < 0:
+				wall.rotate(Vector3.UP, -PI / 2.0)
+			if offset.y > 0:
+				wall.rotate(Vector3.UP, PI)
+
+		# Columns at diagonal corners
+		var diagonals: Array[Vector2i] = [Vector2i(-1, -1), Vector2i(1, -1), Vector2i(-1, 1), Vector2i(1, 1)]
+		for diag in diagonals:
+			var cornerGridPos := tile.GridPosition + diag
+			if columnPositions.has(cornerGridPos):
+				continue
+			var adjA := tile.GridPosition + Vector2i(diag.x, 0)
+			var adjB := tile.GridPosition + Vector2i(0, diag.y)
+			var hasA := danceFloor.tilemap.has(adjA)
+			var hasB := danceFloor.tilemap.has(adjB)
+			var hasDiag := danceFloor.tilemap.has(cornerGridPos)
+			if (not hasA and not hasB) or (hasA and hasB and not hasDiag):
+				columnPositions[cornerGridPos] = true
+				var column: Node3D = preload("res://scenes/Act1/structural/Column01.tscn").instantiate()
+				danceFloor.add_child(column)
+				column.position = tile.position + Vector3(diag.x * 0.5, -0.2, diag.y * 0.5)
+
+
 func GenerateExit(origin: Vector2i) -> void:
 	var position := origin
 	for i in range(3):
@@ -131,6 +173,8 @@ func spawnPack(baseDist: int, dancerCount: int, pathData: PathData, difficulty: 
 		if not isSpawned:
 			printerr("Failed to spawn a dancer at range [%d-%d]"%[baseDist + distRange.x, baseDist + distRange.y])
 
+	if Engine.is_editor_hint():
+		return
 	# TODO: Proper aggro management
 	for dancer: Dancer in spawned:
 		dancer.onAggro.connect(func() -> void:

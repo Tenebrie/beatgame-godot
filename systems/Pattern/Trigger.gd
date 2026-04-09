@@ -12,7 +12,7 @@ func _init() -> void:
 	triggerTimer = MusicTimer.Create()
 	triggerTimer.start(Pattern.BuilderTime)
 	triggerTimer.timeout.connect(
-		func(_beat: int) -> void:
+		func() -> void:
 			if boundToNode:
 				if not boundNode or not is_instance_valid(boundNode):
 					return

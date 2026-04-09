@@ -32,11 +32,11 @@ func _ready() -> void:
 	SignalBus.OnFullBeat.connect(createProjectile)
 	SignalBus.OnHalfBeat.connect(createProjectileIfHasRapidFire)
 
-func createProjectileIfHasRapidFire(beat: float) -> void:
+func createProjectileIfHasRapidFire() -> void:
 	if GlobalContext.GetPlayer().perkManager.Has(PerkRapidFireFireball):
-		createProjectile(beat)
+		createProjectile()
 
-func createProjectile(_beat: float) -> void:
+func createProjectile() -> void:
 	var projectile := Asset.Instantiate(BasicFireballProjectile) as BasicFireballProjectile
 	get_tree().root.add_child(projectile)
 	projectile.Damage = GetDamage()

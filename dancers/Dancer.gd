@@ -22,7 +22,7 @@ func _ready() -> void:
 	DancerPosition = GridToWorld(GridPosition)
 	DancerTargetPosition = DancerPosition
 	position = DancerPosition
-	SignalBus.AfterAnyBeat.connect(func (beat: float) -> void:
+	SignalBus.AfterAnyBeat.connect(func (beat):
 		if not isAlive:
 			return
 		if is_equal_approx(floorf(beat), beat):
@@ -37,6 +37,10 @@ func _ready() -> void:
 		queue_free()
 	)
 	SignalBus.OnDancerMove.emit(GridPosition, Vector2i(-1000, -1000), self)
+
+
+
+
 
 	buffManager = DancerBuffManager.new()
 	add_child(buffManager)

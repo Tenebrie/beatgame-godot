@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://dmwqhiyffjvob"]
+
+[ext_resource type="Texture2D" uid="uid://clm0svovi6r6y" path="res://assets/PolygonDungeon/Textures/Misc/Dungeons_Texture_Soft_Particle.png" id="1_177cp"]
+
+[resource]
+resource_name = "Dungeons_Material_Dust_Soft"
+albedo_texture = ExtResource("1_177cp")
+emission = Color(0, 0, 0, 0)

@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[resource]
+resource_name = "Dungeons_Material_Lava"
+albedo_color = Color(1, 0.584314, 0.270588, 1)
+emission = Color(0.617647, 0.265655, 0, 1)

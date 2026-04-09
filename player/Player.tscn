@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://i40vqvhvbt8t" path="res://player/aspects/gold/GoldenAspectSprite.tscn" id="6_aqcbf"]
 [ext_resource type="Script" uid="uid://baj6ce53tf1yu" path="res://dancers/DancerSpriteHitEffect.gd" id="7_06mnu"]
 [ext_resource type="Texture2D" uid="uid://c3ffxblc18smg" path="res://assets/textures/soft_circle_particle.png" id="8_06mnu"]
+[ext_resource type="PackedScene" uid="uid://b3dsbxjr3v6ui" path="res://player/aspects/gold/hope_golden_aspect-mod.tscn" id="8_mhpjh"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_aqcbf"]
 radius = 0.25
@@ -23,7 +24,7 @@ point_count = 2
 offsets = PackedFloat32Array(0, 0.2890411, 0.739726, 1)
 colors = PackedColorArray(0.58, 0.36733332, 0, 0, 0.68, 0.442, 0, 1, 0.6784314, 0.44313726, 0, 1, 0, 0, 0, 0)
 
-[node name="Player" type="CharacterBody3D" unique_id=241487594]
+[node name="Player" type="Node3D" unique_id=1422793646]
 script = ExtResource("1_jaxf2")
 
 [node name="AbilityController" parent="." unique_id=875623621 instance=ExtResource("2_wnvi2")]
@@ -86,3 +87,7 @@ size = 0.05
 size_curve = SubResource("Curve_5qrx2")
 color_gradient = SubResource("Gradient_ndjxb")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.125, -0.15, -0.125)
+
+[node name="hope-golden-aspect2" parent="." unique_id=1131577373 instance=ExtResource("8_mhpjh")]
+transform = Transform3D(-1.3113416e-08, 0, 0.3, 0, 0.29999998, 0, -0.29999998, 0, -1.3113417e-08, 0, 0.046269566, 0)
+visible = false

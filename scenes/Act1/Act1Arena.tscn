@@ -3,11 +3,32 @@
 [ext_resource type="Script" uid="uid://d4j2cb5kamym0" path="res://systems/DanceFloor/DanceFloor.gd" id="1_r2pxj"]
 [ext_resource type="Script" uid="uid://ms1r4tut0rc0" path="res://scenes/Act1/Act1Arena.gd" id="1_yrodo"]
 [ext_resource type="PackedScene" uid="uid://bbvr3ouw6tjd7" path="res://player/Player.tscn" id="2_yrodo"]
-[ext_resource type="PackedScene" uid="uid://d06eira2uwqu" path="res://systems/DanceFloor/DanceTile.tscn" id="3_qf1ly"]
+[ext_resource type="PackedScene" uid="uid://d06eira2uwqu" path="res://systems/DanceFloor/DanceTile.tscn" id="4_b30y1"]
 [ext_resource type="Script" uid="uid://cihqnnkwn6s0v" path="res://player/camera/MainCamera.gd" id="4_nndyp"]
 [ext_resource type="Script" uid="uid://8dokvkhwr37k" path="res://systems/DanceFloor/DanceFloorPathing.gd" id="5_o6nij"]
 [ext_resource type="Script" uid="uid://x4gs5lrbd8rv" path="res://scenes/components/ActGenerator.gd" id="6_rss7n"]
 [ext_resource type="PackedScene" uid="uid://tagdgbiaqop6" path="res://ui/PlayerStatus/PlayerStatus.tscn" id="8_nrfpq"]
+[ext_resource type="PackedScene" uid="uid://k0prwpoxdlwp" path="res://assets/meshes/dummy01.tscn" id="9_0li8h"]
+[ext_resource type="PackedScene" uid="uid://bfh1xks4dsghv" path="res://ui/PerformanceStats/PerformanceStats.tscn" id="10_0li8h"]
+
+[sub_resource type="GDScript" id="GDScript_nrfpq"]
+script/source = "extends OmniLight3D
+
+func _process(delta: float) -> void:
+	var player := GlobalContext.GetPlayer()
+	if not player:
+		return
+
+	var target = player.position + Vector3(0, 0.1, 0)
+	position += (target - position) * 10.0 * delta
+"
+
+[sub_resource type="Sky" id="Sky_0li8h"]
+
+[sub_resource type="Environment" id="Environment_nrfpq"]
+background_mode = 2
+sky = SubResource("Sky_0li8h")
+volumetric_fog_density = 0.0
 
 [node name="Act1Arena" type="Node3D" unique_id=1047362742]
 script = ExtResource("1_yrodo")
@@ -17,7 +38,7 @@ script = ExtResource("6_rss7n")
 
 [node name="DanceFloor" type="Node3D" parent="." unique_id=1702910108]
 script = ExtResource("1_r2pxj")
-TileScene = ExtResource("3_qf1ly")
+TileScene = ExtResource("4_b30y1")
 metadata/_custom_type_script = "uid://d4j2cb5kamym0"
 
 [node name="Player" parent="DanceFloor" unique_id=241487594 instance=ExtResource("2_yrodo")]
@@ -26,13 +47,24 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0012023, 0.3, 1.0000336)
 [node name="DanceFloorPathing" type="Node" parent="DanceFloor" unique_id=1821243425]
 script = ExtResource("5_o6nij")
 
+[node name="OmniLight3D" type="OmniLight3D" parent="DanceFloor" unique_id=1221625678]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.7295959, 1)
+light_color = Color(0.93, 0.83514, 0.7626, 1)
+light_cull_mask = 4293918721
+shadow_enabled = true
+shadow_blur = 5.025
+shadow_caster_mask = 4293918722
+script = SubResource("GDScript_nrfpq")
+
 [node name="MainCamera" type="Camera3D" parent="." unique_id=1186241222]
 transform = Transform3D(1, 0, 0, 0, 0.17364822, 0.9848077, 0, -0.9848077, 0.17364822, 0, 4, 1)
+current = true
 script = ExtResource("4_nndyp")
 metadata/_custom_type_script = "uid://cihqnnkwn6s0v"
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=428874576]
 transform = Transform3D(-0.33939472, 0.5137976, -0.78792334, 0, 0.83764243, 0.54621893, 0.940644, 0.18538383, -0.28429142, 0, 0.81200886, 0)
+visible = false
 
 [node name="PlayerStatus" parent="." unique_id=1668244000 instance=ExtResource("8_nrfpq")]
 anchors_preset = 7
@@ -45,3 +77,15 @@ offset_top = -166.0
 offset_right = 235.5
 offset_bottom = 0.0
 grow_vertical = 0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1852736443]
+environment = SubResource("Environment_nrfpq")
+
+[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="." unique_id=1176602751]
+transform = Transform3D(1, 0, 0, 0, 0.7604526, 0.64939344, 0, -0.64939344, 0.7604526, 0, 2.0431721, 0)
+light_energy = 0.03
+
+[node name="DummyMesh" parent="." unique_id=1190131787 instance=ExtResource("9_0li8h")]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 1, 0, 0)
+
+[node name="PerformanceStats" parent="." unique_id=1063591855 instance=ExtResource("10_0li8h")]

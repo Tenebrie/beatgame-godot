@@ -1,0 +1,7 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://hrprhmwst7jk"]
+
+[ext_resource type="Shader" uid="uid://bdf3v6knchlu" path="res://assets/materials/HoverableUnitShader.tres" id="1_us7pj"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_us7pj")

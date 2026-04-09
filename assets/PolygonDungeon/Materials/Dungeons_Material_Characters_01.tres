@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://c3xg28fkmvve7"]
+
+[ext_resource type="Texture2D" uid="uid://c5p714hmii2hg" path="res://assets/PolygonDungeon/Textures/Dungeons_Texture_01.png" id="1_8pgmc"]
+[ext_resource type="Material" uid="uid://hrprhmwst7jk" path="res://assets/materials/HoverableUnitMaterial.tres" id="2_bsurk"]
+
+[resource]
+resource_name = "Dungeons_Material_Characters_01"
+next_pass = ExtResource("2_bsurk")
+albedo_texture = ExtResource("1_8pgmc")
+emission = Color(0, 0, 0, 0)

@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[resource]
+resource_name = "FX_CandleFlame"
+albedo_color = Color(0.992647, 0.970499, 0.84667, 1)
+emission = Color(1, 0.738235, 0.345588, 1)

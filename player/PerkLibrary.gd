@@ -10,6 +10,9 @@ var Available: Array[Perk.Definition]:
 
 func _ready() -> void:
 	await get_tree().process_frame
+	var danceFloor := GlobalContext.GetDanceFloor()
+	if not danceFloor:
+		return
 	scanDirectory("res://player/perks")
 
 func scanDirectory(path: String) -> void:

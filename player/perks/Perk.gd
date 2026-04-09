@@ -10,7 +10,7 @@ func _ready() -> void:
 		printerr("PlayerPerk created without definition class!")
 		return
 
-	for abilityClass: GDScript in definition.abilities:
+	for abilityClass in definition.abilities:
 		var ability: Ability = abilityClass.new()
 		player.abilityController.add_child(ability)
 
@@ -46,13 +46,13 @@ class Definition:
 	var perkName: String
 	var perkDescription: String
 	var maxLevel: int = 1
-	var implementation: GDScript
-	var abilities: Array[GDScript]
-	var requiresAbilities: Array[GDScript]
-	var requiresPerks: Array[Array] # Array[Array[GDScript]], parsed as `and[or[Perk]]`
+	var implementation: GDScript[Perk]
+	var abilities: Array[GDScript[Ability]]
+	var requiresAbilities: Array[GDScript[Ability]]
+	var requiresPerks: Array[Array[GDScript[Perk]]] # Parsed as `and[or[Perk]]`
 	var providesTags: Array[Tag]
-	var requiresTags: Array[Array] # Array[Array[Tag]], parsed as `and[or[Tag]]`
-	var avoidsTags: Array[Array] # Array[Array[Tag]], parsed as `and[or[Tag]]`
+	var requiresTags: Array[Array[Tag]] # Parsed as `and[or[Tag]]`
+	var avoidsTags: Array[Array[Tag]] # Parsed as `and[or[Tag]]`
 
 	func SetRarity(value: Rarity) -> Definition:
 		rarity = value
@@ -73,24 +73,24 @@ class Definition:
 		maxLevel = value
 		return self
 
-	func ImplementedBy(implClass: GDScript) -> Definition:
+	func ImplementedBy(implClass: GDScript[Perk]) -> Definition:
 		implementation = implClass
 		return self
 
-	func ProvidesAbility(ability: GDScript) -> Definition:
+	func ProvidesAbility(ability: GDScript[Ability]) -> Definition:
 		abilities.append(ability)
 		return self
 
-	func RequiresAbility(ability: GDScript) -> Definition:
+	func RequiresAbility(ability: GDScript[Ability]) -> Definition:
 		requiresAbilities.append(ability)
 		return self
 
-	func RequiresPerk(perk: GDScript) -> Definition:
+	func RequiresPerk(perk: GDScript[Perk]) -> Definition:
 		requiresPerks.append([perk])
 		return self
 
-	func RequiresAnyPerk(perks: Array[GDScript]) -> Definition:
-		requiresPerks.append(perks as Array)
+	func RequiresAnyPerk(perks: Array[GDScript[Perk]]) -> Definition:
+		requiresPerks.append(perks)
 		return self
 
 	func ProvidesTag(tag: Tag) -> Definition:
@@ -126,14 +126,14 @@ class Definition:
 		if not implementation or player.perkManager.Count(implementation) >= maxLevel:
 			return false
 
-		var abilitiesPresent := requiresAbilities.all(func(ability: GDScript) -> bool:
+		var abilitiesPresent := requiresAbilities.all(func(ability):
 			return player.abilityController.Has(ability)
 		)
 		if not abilitiesPresent:
 			return false
 
-		var perksPresent := requiresPerks.all(func(perkArray: Array) -> bool:
-			return perkArray.any(func(perk: GDScript) -> bool:
+		var perksPresent := requiresPerks.all(func(perkArray):
+			return perkArray.any(func(perk):
 				return player.perkManager.Has(perk)
 			)
 		)
@@ -141,16 +141,16 @@ class Definition:
 			return false
 
 		var currentTags := player.perkManager.CurrentTags
-		var requiredTagsPresent := requiresTags.all(func(tagArray: Array) -> bool:
-			return tagArray.any(func(tag: Tag) -> bool:
+		var requiredTagsPresent := requiresTags.all(func(tagArray):
+			return tagArray.any(func(tag):
 				return currentTags.has(tag)
 			)
 		)
 		if not requiredTagsPresent:
 			return false
 
-		var avoidedTagsPresent := avoidsTags.all(func(tagArray: Array) -> bool:
-			return tagArray.any(func(tag: Tag) -> bool:
+		var avoidedTagsPresent := avoidsTags.all(func(tagArray):
+			return tagArray.any(func(tag):
 				return currentTags.has(tag)
 			)
 		)

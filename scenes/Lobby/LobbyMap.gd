@@ -3,7 +3,7 @@ extends Node3D
 func _ready() -> void:
 	var beatmap: Beatmap = ResourceLoader.load("res://scenes/Lobby/LobbyMapGridSetup.tres")
 
-	var args := DanceFloor.InitArgs.new()
+	var args = DanceFloor.InitArgs.new()
 	args.gridSize = beatmap.gridSize
 	$DanceFloor.Setup(args)
 
@@ -14,7 +14,7 @@ func _ready() -> void:
 
 	#SignalBus.OnFightBegin.emit()
 
-	SignalBus.OnPlayerMove.connect(func(to: Vector2i, _from: Vector2i) -> void:
+	SignalBus.OnPlayerMove.connect(func(to):
 		if to.x == 2 and to.y == 0:
 			get_tree().change_scene_to_file("res://scenes/TutorialArena/TutorialArena.tscn")
 		elif to.x == 4 and to.y == 0:

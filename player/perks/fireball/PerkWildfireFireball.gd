@@ -15,11 +15,11 @@ func _ready() -> void:
 	)
 
 static func Build() -> Definition:
-	return Definition.new() \
-		.SetRarity(Perk.Rarity.Rare) \
-		.Name("Wildfire Fireball") \
-		.Description("When a burning enemy dies, all enemies in range also start burning!") \
-		.Description("[b]Damage per beat: [/b] %.2f"%[BuffIgnite.GetDamage()]) \
-		.Description("[b]Range: [/b] %.2f"%[MaxRange]) \
-		.RequiresAbility(BasicFireball) \
+	return Definition.new()
+		.SetRarity(Perk.Rarity.Rare)
+		.Name("Wildfire Fireball")
+		.Description("When a burning enemy dies, all enemies in range also start burning!")
+		.Description("[b]Damage per beat: [/b] %.2f"%[BuffIgnite.GetDamage()])
+		.Description("[b]Range: [/b] %.2f"%[MaxRange])
+		.RequiresAbility(BasicFireball)
 		.RequiresPerk(PerkIgnitingFireball)

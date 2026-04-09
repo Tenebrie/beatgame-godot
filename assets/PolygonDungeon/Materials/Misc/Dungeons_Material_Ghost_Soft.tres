@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[resource]
+resource_name = "Dungeons_Material_Ghost_Soft"
+albedo_color = Color(0.0735294, 1, 0.922794, 1)
+emission = Color(0.298039, 0.898039, 0.85098, 1)

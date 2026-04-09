@@ -11,7 +11,7 @@ func _ready() -> void:
 		ResourceLoader.load("res://scenes/Act1/Act1Beatmap04.tres")
 	]
 	beatmaps.shuffle()
-	var beatmap: Beatmap = beatmaps.pop_front()
+	var beatmap := beatmaps.pop_front()
 
 	## Play Intermission here
 
@@ -51,6 +51,7 @@ func _ready() -> void:
 
 func CreateChunk(startPosition: Vector2i, maxDepth: int, beatmaps: Array[Beatmap], depth := 0) -> void:
 	var chunk := actGenerator.GeneratePath(startPosition, 40, 0.6 + depth * 0.5)
+	actGenerator.GenerateDungeonStructural()
 	if Engine.is_editor_hint():
 		return
 
@@ -99,3 +100,9 @@ func createCheatArea() -> void:
 		extraPerkSelector = Asset.Instantiate(InteractablePerk) as InteractablePerk
 		extraPerkSelector.position = Vector3(i - width - 1, 0, 2)
 		$DanceFloor.add_child(extraPerkSelector)
+#
+#func _ready() -> void:
+	#MyFunction() # Callsite
+	#
+#func MyFunction() -> void: #Definition site
+	#pass

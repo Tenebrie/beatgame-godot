@@ -1,0 +1,72 @@
+[gd_scene load_steps=14 format=3 uid="uid://k0prwpoxdlwp"]
+
+[ext_resource type="PackedScene" uid="uid://cjwroydhrme57" path="res://assets/meshes/dummy01.glb" id="1_3wltk"]
+[ext_resource type="Material" uid="uid://dtiin7xhovkuw" path="res://assets/PolygonDungeon/Materials/Alternatives/Dungeon_Material_01_A.tres" id="2_ifas1"]
+[ext_resource type="Script" path="res://scripts/AnimationController.cs" id="3_x4cjk"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_47q3r"]
+animation = &"Idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pi5a5"]
+animation = &"Whirlwind"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_6dd0c"]
+animation = &"WhirlwindEnd"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_avw4y"]
+animation = &"WhirlwindStart"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_g030v"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7c6j2"]
+xfade_time = 0.5
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_qkkwr"]
+break_loop_at_end = true
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_erk2o"]
+break_loop_at_end = true
+switch_mode = 2
+advance_mode = 2
+advance_expression = "true"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_85hpt"]
+xfade_time = 0.5
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_4jjpa"]
+states/Idle/node = SubResource("AnimationNodeAnimation_47q3r")
+states/Idle/position = Vector2(401, 100)
+states/Start/position = Vector2(201, 100)
+states/Whirlwind/node = SubResource("AnimationNodeAnimation_pi5a5")
+states/Whirlwind/position = Vector2(401, 251)
+states/WhirlwindEnd/node = SubResource("AnimationNodeAnimation_6dd0c")
+states/WhirlwindEnd/position = Vector2(576, 251)
+states/WhirlwindStart/node = SubResource("AnimationNodeAnimation_avw4y")
+states/WhirlwindStart/position = Vector2(249, 251)
+transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_g030v"), "Idle", "WhirlwindStart", SubResource("AnimationNodeStateMachineTransition_7c6j2"), "WhirlwindStart", "Whirlwind", SubResource("AnimationNodeStateMachineTransition_qkkwr"), "Whirlwind", "WhirlwindEnd", SubResource("AnimationNodeStateMachineTransition_erk2o"), "WhirlwindEnd", "Idle", SubResource("AnimationNodeStateMachineTransition_85hpt")]
+graph_offset = Vector2(-300, -13)
+
+[node name="DummyMesh" instance=ExtResource("1_3wltk")]
+
+[node name="Skeleton3D" parent="Armature" index="0"]
+bones/0/position = Vector3(0.0025876, -0.18056, -0.0311699)
+bones/0/rotation = Quaternion(-2.98023e-08, 3.17865e-08, 5.2108e-15, 1)
+bones/1/rotation = Quaternion(0.00391739, -9.99965e-08, -0.00186837, 0.999991)
+bones/2/rotation = Quaternion(-0.00391739, -1.92123e-08, 0.00186838, 0.999991)
+bones/3/rotation = Quaternion(-0.00669622, 3.90926e-08, 0.00319372, 0.999972)
+bones/3/scale = Vector3(1, 1, 1)
+bones/4/rotation = Quaternion(-0.000726288, -0.000814081, 0.70961, 0.704594)
+bones/5/rotation = Quaternion(-0.000853431, 0.000928981, -0.705757, 0.708453)
+
+[node name="Cylinder" parent="Armature/Skeleton3D" index="0"]
+surface_material_override/0 = ExtResource("2_ifas1")
+
+[node name="AnimationTree" type="AnimationTree" parent="." index="2"]
+tree_root = SubResource("AnimationNodeStateMachine_4jjpa")
+anim_player = NodePath("../AnimationPlayer")
+script = ExtResource("3_x4cjk")

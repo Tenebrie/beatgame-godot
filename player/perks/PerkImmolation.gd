@@ -6,7 +6,7 @@ func _ready() -> void:
 	super._ready()
 	player.onTakeTurn.connect(_onTakeTurn)
 
-func _onTakeTurn(_beat: float) -> void:
+func _onTakeTurn() -> void:
 	var effect := preload("res://player/perks/PerkImmolationEffect.tscn").instantiate()
 	add_child(effect)
 	var dancers := GlobalContext.GetDanceFloor().GetAllDancers()

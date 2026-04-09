@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://b3dsbxjr3v6ui"]
+
+[ext_resource type="PackedScene" uid="uid://c5gq2d5vabo7x" path="res://player/aspects/gold/hope-golden-aspect.glb" id="1_8jcvv"]
+
+[node name="hope-golden-aspect" unique_id=1131577373 instance=ExtResource("1_8jcvv")]

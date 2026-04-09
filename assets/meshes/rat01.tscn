@@ -1,0 +1,67 @@
+[gd_scene load_steps=13 format=3 uid="uid://lihr8jy1v2vh"]
+
+[ext_resource type="PackedScene" uid="uid://c7rid6ibnj3ch" path="res://assets/meshes/rat01.glb" id="1_h5w1q"]
+[ext_resource type="Material" uid="uid://dtiin7xhovkuw" path="res://assets/PolygonDungeon/Materials/Alternatives/Dungeon_Material_01_A.tres" id="2_5p6ak"]
+[ext_resource type="Script" path="res://scripts/AnimationController.cs" id="3_hhcwh"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_eflhq"]
+animation = &"Bite"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qk0v8"]
+animation = &"Idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_1i3s4"]
+animation = &"Walk"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_twnbj"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_qw1eb"]
+xfade_time = 0.5
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_73msl"]
+xfade_time = 0.5
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xsdgm"]
+xfade_time = 0.5
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_cusfp"]
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_y31j4"]
+states/Bite/node = SubResource("AnimationNodeAnimation_eflhq")
+states/Bite/position = Vector2(594, 1)
+states/Idle/node = SubResource("AnimationNodeAnimation_qk0v8")
+states/Idle/position = Vector2(461, 94)
+states/Start/position = Vector2(239, 94)
+states/Walk/node = SubResource("AnimationNodeAnimation_1i3s4")
+states/Walk/position = Vector2(461, 225)
+transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_twnbj"), "Idle", "Bite", SubResource("AnimationNodeStateMachineTransition_qw1eb"), "Bite", "Idle", SubResource("AnimationNodeStateMachineTransition_73msl"), "Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_xsdgm"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_cusfp")]
+graph_offset = Vector2(-232, -116)
+
+[node name="RatLarryMesh" instance=ExtResource("1_h5w1q")]
+
+[node name="Skeleton3D" parent="Armature" index="0"]
+bones/2/rotation = Quaternion(0.394126, -6.7917e-08, 0.0292726, 0.91859)
+bones/3/rotation = Quaternion(0.0290726, -0.395337, 0.918071, -0.00309974)
+bones/4/rotation = Quaternion(0.394126, 8.29191e-08, -0.0292726, 0.91859)
+bones/6/rotation = Quaternion(-6.22532e-09, -7.66876e-08, -0.741794, 0.670627)
+bones/7/rotation = Quaternion(-0.065301, 0.0977858, 0.0264198, 0.992711)
+bones/8/rotation = Quaternion(-9.19014e-09, -1.0482e-07, -0.0860523, 0.996291)
+bones/9/rotation = Quaternion(0.16603, -0.162533, -0.678997, 0.696405)
+bones/10/rotation = Quaternion(-0.197915, 0.0102269, 0.0609247, 0.978271)
+bones/11/rotation = Quaternion(0.678997, 0.696405, -0.16603, -0.162533)
+bones/14/rotation = Quaternion(0.0451046, 0.0923143, -0.438285, 0.892945)
+bones/15/rotation = Quaternion(0.0175202, 0.268008, -0.0392019, 0.962459)
+bones/16/rotation = Quaternion(-0.0910862, 0.16958, 0.150842, 0.969635)
+bones/17/rotation = Quaternion(-0.132688, 0.0259657, 0.0540589, 0.989342)
+
+[node name="Mesh" parent="Armature/Skeleton3D" index="0"]
+surface_material_override/0 = ExtResource("2_5p6ak")
+
+[node name="AnimationTree" type="AnimationTree" parent="." index="2"]
+tree_root = SubResource("AnimationNodeStateMachine_y31j4")
+anim_player = NodePath("../AnimationPlayer")
+script = ExtResource("3_hhcwh")

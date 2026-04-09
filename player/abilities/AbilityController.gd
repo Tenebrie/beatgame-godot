@@ -7,14 +7,14 @@ class_name AbilityController extends Node
 func Add(ability: Ability) -> void:
 	add_child(ability)
 
-func Has(ability: GDScript) -> bool:
+func Has(ability: GDScript[Ability]) -> bool:
 	for child in get_children():
 		if is_instance_of(child, ability):
 			return true
 
 	return false
 
-func Count(ability: GDScript) -> int:
+func Count(ability: GDScript[Ability]) -> int:
 	var count := 0
 	for child in get_children():
 		if is_instance_of(child, ability):
@@ -22,7 +22,7 @@ func Count(ability: GDScript) -> int:
 
 	return count
 
-func Get(ability: GDScript) -> Ability:
+func Get(ability: GDScript[Ability]) -> Ability:
 	for child in get_children():
 		if is_instance_of(child, ability):
 			return child

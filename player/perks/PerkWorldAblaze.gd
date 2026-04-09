@@ -3,7 +3,7 @@ class_name PerkWorldAblaze extends Perk
 static var BaseHealthRestored := 0.1
 
 func _ready() -> void:
-	player.onTakeTurn.connect(func(_beat: float) -> void:
+	player.onTakeTurn.connect(func():
 		var healing := 0.0
 		var dancers := GlobalContext.GetDanceFloor().GetAllDancers()
 		for dancer: Dancer in dancers:

@@ -7,13 +7,13 @@ var aStar := AStar2D.new()
 var aStarWithoutAgents := AStar2D.new()
 
 func _ready() -> void:
-	SignalBus.OnRestoreTile.connect(func (_x: int, _y: int) -> void:
+	SignalBus.OnRestoreTile.connect(func ():
 		isGridValid = false
 	)
-	SignalBus.OnDestroyTile.connect(func (_x: int, _y: int) -> void:
+	SignalBus.OnDestroyTile.connect(func ():
 		isGridValid = false
 	)
-	parent.TilemapUpdated.connect(func() -> void:
+	parent.TilemapUpdated.connect(func ():
 		isGridValid = false
 	)
 	#SignalBus.OnPlayerMove.connect(func(to: Vector2i, from: Vector2i) -> void:

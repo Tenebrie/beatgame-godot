@@ -128,6 +128,7 @@ func GetAllDancers() -> Array[Dancer]:
 		if child is Dancer:
 			dancers.append(child)
 	return dancers
+
 #endregion
 
 #region Internal
@@ -139,11 +140,5 @@ func _ready() -> void:
 		if child is DanceTile or child is DanceLabel:
 			remove_child(child)
 			child.queue_free()
-
-func _on_telegraph_tile(x: int, y: int) -> void:
-	SignalBus.telegraphTile.emit(x, y)
-	var bpmMod: float = AudioSystem.get_current_bpm() / 60.0
-	await get_tree().create_timer(bpmMod).timeout
-	SignalBus.explodeTile.emit(x, y)
 
 #endregion

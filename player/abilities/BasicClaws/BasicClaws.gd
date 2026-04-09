@@ -17,7 +17,7 @@ static func GetRange() -> float:
 func _ready() -> void:
 	SignalBus.OnFullBeat.connect(onBasicBeat)
 
-func onBasicBeat(_beat: float) -> void:
+func onBasicBeat() -> void:
 	var danceFloor := GlobalContext.GetDanceFloor()
 	var dancers := danceFloor.GetAllDancers()
 	for dancer: Dancer in dancers:

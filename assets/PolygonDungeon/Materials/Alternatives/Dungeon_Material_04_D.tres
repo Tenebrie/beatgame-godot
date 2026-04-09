@@ -1,0 +1,12 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://dj5un4h3cuxse"]
+
+[ext_resource type="Texture2D" uid="uid://crfck484ffdhf" path="res://assets/PolygonDungeon/Textures/Alternatives/Dungeons_Texture_04_D.png" id="1_kldrd"]
+[ext_resource type="Texture2D" uid="uid://m8iyb5ny6l6e" path="res://assets/PolygonDungeon/Textures/Emmisive/Emmisive_01.png" id="2_r351g"]
+
+[resource]
+resource_name = "Dungeon_Material_04_D"
+albedo_texture = ExtResource("1_kldrd")
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_operator = 1
+emission_texture = ExtResource("2_r351g")

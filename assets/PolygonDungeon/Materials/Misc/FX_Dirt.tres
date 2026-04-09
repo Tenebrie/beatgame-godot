@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[resource]
+resource_name = "FX_Dirt"
+albedo_color = Color(0.678431, 0.572549, 0.486275, 1)
+emission = Color(0, 0, 0, 0)

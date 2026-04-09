@@ -1,0 +1,5 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[resource]
+resource_name = "Dungeons_Texture_Ghost"
+emission = Color(0.00924958, 0.628971, 0.55204, 0.94)

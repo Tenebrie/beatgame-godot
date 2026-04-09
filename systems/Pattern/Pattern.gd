@@ -26,7 +26,7 @@ func _init(newTiles: Array[Vector2i]) -> void:
 	var offset := BuilderOffset
 	explodeTimer.start(BuilderTime)
 	explodeTimer.timeout.connect(
-		func(_beat: float) -> void:
+		func() -> void:
 			beforeTrigger.emit()
 			for tile in tiles:
 				var x := tile[0] + offset.x
@@ -41,7 +41,7 @@ func Telegraph(delay: float) -> Pattern:
 	telegraphDelayTimer.start(BuilderTime + startDelay - delay, delay)
 	var offset := BuilderOffset
 	telegraphDelayTimer.timeout.connect(
-		func(_beat: float) -> void:
+		func() -> void:
 			beforeTelegraph.emit()
 			for tile in tiles:
 				var x := tile[0] + offset.x

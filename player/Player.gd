@@ -131,13 +131,10 @@ func keyToDirection(keycode: Key) -> Vector2i:
 			return Vector2i.ZERO
 #endregion
 
-func SetBasicAttackEffectEmitting(emitting: bool) -> void:
-	$PlayerFireEffect/GPUParticles3D.emitting = emitting
-
-func SetBasicAttackTargetingBoss(value: bool) -> void:
+func SetBasicAttackTargetingBoss(value: bool):
 	$AbilityController.basicAttack.SetAutoAim(value)
 
-static func AddPerk(perkClass: GDScript) -> Perk.Definition:
+static func AddPerk(perkClass: GDScript[Perk]) -> Perk.Definition:
 	var perk: Perk.Definition = perkClass.Build().ImplementedBy(perkClass)
 	perk.InstantiateForPlayer()
 	return perk
