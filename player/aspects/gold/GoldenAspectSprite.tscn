@@ -8,5 +8,6 @@
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
 billboard = 1
 shaded = true
+alpha_cut = 2
 texture_filter = 5
 texture = ExtResource("3_ct3xk")

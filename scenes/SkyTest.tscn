@@ -1,0 +1,93 @@
+[gd_scene format=3 uid="uid://bu38fr32l27ia"]
+
+[ext_resource type="PackedScene" uid="uid://bbg2pr2wb15nf" path="res://scenes/environment/CloudCover/CloudCover.tscn" id="1_43g2y"]
+[ext_resource type="Shader" uid="uid://cmxhw6riu3778" path="res://scenes/environment/CloudCover/CloudCover.gdshader" id="2_vq5bo"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_yy4bg"]
+
+[sub_resource type="Sky" id="Sky_tcfes"]
+sky_material = SubResource("ProceduralSkyMaterial_yy4bg")
+
+[sub_resource type="Environment" id="Environment_43g2y"]
+background_mode = 2
+sky = SubResource("Sky_tcfes")
+ambient_light_source = 3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yy4bg"]
+albedo_color = Color(0.37436002, 0.49, 0.20090002, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_tcfes"]
+material = SubResource("StandardMaterial3D_yy4bg")
+size = Vector2(5000, 5000)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_rt75k"]
+frequency = 0.0243
+fractal_octaves = 4
+
+[sub_resource type="NoiseTexture3D" id="NoiseTexture3D_ky3y8"]
+width = 128
+height = 128
+depth = 128
+noise = SubResource("FastNoiseLite_rt75k")
+seamless = true
+seamless_blend_skirt = 0.712
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ky3y8"]
+seed = 172
+frequency = 0.0802
+fractal_octaves = 2
+
+[sub_resource type="NoiseTexture3D" id="NoiseTexture3D_pojxw"]
+width = 128
+height = 128
+depth = 128
+noise = SubResource("FastNoiseLite_ky3y8")
+seamless = true
+seamless_blend_skirt = 0.713
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_43g2y"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("2_vq5bo")
+shader_parameter/CloudNoise = SubResource("NoiseTexture3D_ky3y8")
+shader_parameter/MacroNoise = SubResource("NoiseTexture3D_pojxw")
+shader_parameter/Brightness = 4.7
+shader_parameter/Coverage = 0.95
+shader_parameter/CloudSharpness = 1.45
+shader_parameter/StepSize = 0.01
+shader_parameter/SamplerScale = 47.0
+shader_parameter/WindStrength = 0.2
+shader_parameter/LayerSpeedDifference = 2.9
+shader_parameter/BoxHalfSize = Vector3(12500, 4.2325, 12500)
+shader_parameter/WindDirection = Vector3(1, 0, 0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_vq5bo"]
+resource_local_to_scene = true
+material = SubResource("ShaderMaterial_43g2y")
+size = Vector3(25000, 8.465, 25000)
+
+[node name="SkyTest" type="Node3D" unique_id=1366287011]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1405035684]
+environment = SubResource("Environment_43g2y")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1775656306]
+transform = Transform3D(1, 0, 0, 0, 0.6837623, 0.7297048, 0, -0.7297048, 0.6837623, 0, 2.0531516, 0)
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=2027728266]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4892137, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=820404596]
+mesh = SubResource("PlaneMesh_tcfes")
+
+[node name="CloudCover2" parent="." unique_id=793757056 instance=ExtResource("1_43g2y")]
+transform = Transform3D(0.9999999, 0, 0, 0, 1, 0, 0, 0, 0.9999999, -0.940959, 116.48034, 1.8190174)
+mesh = SubResource("BoxMesh_vq5bo")
+Size = Vector3(25000, 8.465, 25000)
+Brightness = 4.7
+Coverage = 0.95
+CloudSharpness = 1.45
+StepSize = 0.01
+SamplerScale = 47.0
+WindStrength = 0.2
+LayerSpeedDifference = 2.9

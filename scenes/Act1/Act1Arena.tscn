@@ -8,8 +8,9 @@
 [ext_resource type="Script" uid="uid://8dokvkhwr37k" path="res://systems/DanceFloor/DanceFloorPathing.gd" id="5_o6nij"]
 [ext_resource type="Script" uid="uid://x4gs5lrbd8rv" path="res://scenes/components/ActGenerator.gd" id="6_rss7n"]
 [ext_resource type="PackedScene" uid="uid://tagdgbiaqop6" path="res://ui/PlayerStatus/PlayerStatus.tscn" id="8_nrfpq"]
-[ext_resource type="PackedScene" uid="uid://k0prwpoxdlwp" path="res://assets/meshes/dummy01.tscn" id="9_0li8h"]
+[ext_resource type="Script" uid="uid://d1hs3glvfpe2d" path="res://scenes/environment/CloudCover/CloudCover2.gd" id="9_eo15j"]
 [ext_resource type="PackedScene" uid="uid://bfh1xks4dsghv" path="res://ui/PerformanceStats/PerformanceStats.tscn" id="10_0li8h"]
+[ext_resource type="Shader" uid="uid://cmxhw6riu3778" path="res://scenes/environment/CloudCover/CloudCover.gdshader" id="11_eo15j"]
 
 [sub_resource type="GDScript" id="GDScript_nrfpq"]
 script/source = "extends OmniLight3D
@@ -22,6 +23,63 @@ func _process(delta: float) -> void:
 	var target = player.position + Vector3(0, 0.1, 0)
 	position += (target - position) * 10.0 * delta
 "
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_rt75k"]
+frequency = 0.0243
+fractal_octaves = 4
+
+[sub_resource type="NoiseTexture3D" id="NoiseTexture3D_ky3y8"]
+width = 128
+height = 128
+depth = 128
+noise = SubResource("FastNoiseLite_rt75k")
+seamless = true
+seamless_blend_skirt = 0.712
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ky3y8"]
+seed = 172
+frequency = 0.0802
+fractal_octaves = 2
+
+[sub_resource type="NoiseTexture3D" id="NoiseTexture3D_pojxw"]
+width = 128
+height = 128
+depth = 128
+noise = SubResource("FastNoiseLite_ky3y8")
+seamless = true
+seamless_blend_skirt = 0.713
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eo15j"]
+resource_local_to_scene = true
+render_priority = 1
+shader = ExtResource("11_eo15j")
+shader_parameter/CloudNoise = SubResource("NoiseTexture3D_ky3y8")
+shader_parameter/MacroNoise = SubResource("NoiseTexture3D_pojxw")
+shader_parameter/Brightness = 24.9999994412
+shader_parameter/ExtraBrightness = 1.0
+shader_parameter/Coverage = 0.78999998234192
+shader_parameter/CloudSharpness = 2.0
+shader_parameter/StepSize = 2.749999938532
+shader_parameter/SamplerScale = 3.5
+shader_parameter/WindStrength = 0.0499999988824
+shader_parameter/LayerSpeedDifference = 0.30000000447036
+shader_parameter/Tint = Color(1, 1, 1, 1)
+shader_parameter/DenseTint = Color(1, 1, 1, 1)
+shader_parameter/DenseTintModifier = 1.0
+shader_parameter/BoxHalfSize = Vector3(22.8825, 0.8905, 24.1575)
+shader_parameter/WindDirection = Vector3(1, 0, 0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_olv3e"]
+resource_local_to_scene = true
+material = SubResource("ShaderMaterial_eo15j")
+size = Vector3(45.765, 1.781, 48.315)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_olv3e"]
+albedo_color = Color(1.732707e-06, 0.4006006, 0.5789716, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_envgt"]
+material = SubResource("StandardMaterial3D_olv3e")
+size = Vector2(100, 100)
 
 [sub_resource type="Sky" id="Sky_0li8h"]
 
@@ -49,6 +107,7 @@ script = ExtResource("5_o6nij")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="DanceFloor" unique_id=1221625678]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.7295959, 1)
+visible = false
 light_color = Color(0.93, 0.83514, 0.7626, 1)
 light_cull_mask = 4293918721
 shadow_enabled = true
@@ -61,6 +120,16 @@ transform = Transform3D(1, 0, 0, 0, 0.17364822, 0.9848077, 0, -0.9848077, 0.1736
 current = true
 script = ExtResource("4_nndyp")
 metadata/_custom_type_script = "uid://cihqnnkwn6s0v"
+
+[node name="CloudCover2" type="MeshInstance3D" parent="MainCamera" unique_id=490472644]
+transform = Transform3D(1, 0, 0, 0, 0.17364813, -0.9848067, 0, 0.9848067, 0.17364813, 0.87727165, -2.0401535, -11.8148)
+mesh = SubResource("BoxMesh_olv3e")
+script = ExtResource("9_eo15j")
+Size = Vector3(45.765, 1.781, 48.315)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MainCamera" unique_id=1622724181]
+transform = Transform3D(1, 0, 0, 0, 0.17364821, -0.9848076, 0, 0.9848076, 0.17364821, 0, -3.1258366, -23.486261)
+mesh = SubResource("PlaneMesh_envgt")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=428874576]
 transform = Transform3D(-0.33939472, 0.5137976, -0.78792334, 0, 0.83764243, 0.54621893, 0.940644, 0.18538383, -0.28429142, 0, 0.81200886, 0)
@@ -85,7 +154,7 @@ environment = SubResource("Environment_nrfpq")
 transform = Transform3D(1, 0, 0, 0, 0.7604526, 0.64939344, 0, -0.64939344, 0.7604526, 0, 2.0431721, 0)
 light_energy = 0.03
 
-[node name="DummyMesh" parent="." unique_id=1190131787 instance=ExtResource("9_0li8h")]
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 1, 0, 0)
-
 [node name="PerformanceStats" parent="." unique_id=1063591855 instance=ExtResource("10_0li8h")]
+
+[node name="DirectionalLight3D3" type="DirectionalLight3D" parent="." unique_id=1324244741]
+transform = Transform3D(-0.3317806, 0.6221628, -0.70910865, 0, 0.75168675, 0.6595203, 0.9433566, 0.21881604, -0.2493951, -2.79021, 1.7443371, -2.318735)

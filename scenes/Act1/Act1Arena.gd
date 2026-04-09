@@ -51,7 +51,7 @@ func _ready() -> void:
 
 func CreateChunk(startPosition: Vector2i, maxDepth: int, beatmaps: Array[Beatmap], depth := 0) -> void:
 	var chunk := actGenerator.GeneratePath(startPosition, 40, 0.6 + depth * 0.5)
-	actGenerator.GenerateDungeonStructural()
+	#actGenerator.GenerateDungeonStructural()
 	if Engine.is_editor_hint():
 		return
 

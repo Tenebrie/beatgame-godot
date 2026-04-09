@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://bbg2pr2wb15nf"]
+
+[ext_resource type="Shader" uid="uid://cmxhw6riu3778" path="res://scenes/environment/CloudCover/CloudCover.gdshader" id="1_rt75k"]
+[ext_resource type="Script" uid="uid://b6kdphcb3tp2t" path="res://scenes/environment/CloudCover/CloudCover.gd" id="2_ky3y8"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_rt75k"]
+frequency = 0.0243
+fractal_octaves = 4
+
+[sub_resource type="NoiseTexture3D" id="NoiseTexture3D_ky3y8"]
+width = 128
+height = 128
+depth = 128
+noise = SubResource("FastNoiseLite_rt75k")
+seamless = true
+seamless_blend_skirt = 0.712
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ky3y8"]
+seed = 172
+frequency = 0.0802
+fractal_octaves = 2
+
+[sub_resource type="NoiseTexture3D" id="NoiseTexture3D_pojxw"]
+width = 128
+height = 128
+depth = 128
+noise = SubResource("FastNoiseLite_ky3y8")
+seamless = true
+seamless_blend_skirt = 0.713
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ky3y8"]
+resource_local_to_scene = true
+render_priority = 127
+shader = ExtResource("1_rt75k")
+shader_parameter/CloudNoise = SubResource("NoiseTexture3D_ky3y8")
+shader_parameter/MacroNoise = SubResource("NoiseTexture3D_pojxw")
+shader_parameter/Brightness = 1.0
+shader_parameter/Coverage = 0.5
+shader_parameter/CloudSharpness = 2.0
+shader_parameter/StepSize = 0.025
+shader_parameter/SamplerScale = 20.0
+shader_parameter/WindStrength = 0.1
+shader_parameter/LayerSpeedDifference = 1.0
+shader_parameter/BoxHalfSize = Vector3(25, 5, 25)
+shader_parameter/WindDirection = Vector3(1, 0, 0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ug7ve"]
+resource_local_to_scene = true
+material = SubResource("ShaderMaterial_ky3y8")
+size = Vector3(50, 10, 50)
+
+[node name="CloudCover" type="MeshInstance3D" unique_id=793757056]
+transform = Transform3D(0.9999999, 0, 0, 0, 1, 0, 0, 0, 0.9999999, 0, 0, 0)
+mesh = SubResource("BoxMesh_ug7ve")
+script = ExtResource("2_ky3y8")
+Size = Vector3(50, 10, 50)
